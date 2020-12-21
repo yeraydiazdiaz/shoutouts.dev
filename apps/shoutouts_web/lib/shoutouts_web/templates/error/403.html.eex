@@ -18,7 +18,7 @@
             <span class="tracking-tight">shoutouts.dev</span>
             <span class="text-sm text-alert text-right p-0 -mt-4 mr-2">BETA</span>
           </div>
-          <img src="<%= Routes.static_path(@conn, "/images/logo.svg") %>" alt="shoutouts.dev logo" width="50px" height="50px" />
+          <img src="/images/logo.svg" alt="shoutouts.dev logo" width="50px" height="50px" />
         </a>
         <nav role="navigation">
           <div class="hidden lg:flex lg:flex-row lg:items-center">
@@ -28,14 +28,14 @@
                 <input type="text" name="q" placeholder="Search projects" class="ml-2 text-dark appearance-none outline-none bg-transparent" />
               </form>
             </div>
-              <a class="inline-block font-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :request, :github) %>">
+              <a class="inline-block font-bold hover:underline text-center" href="/auth/github">
                 <div class="flex flex-row items-center"><i class="fab fa-github fa-2x"></i><span class="ml-2">Login with GitHub</span></div>
               </a>
           </div>
           <div id="nav-bars" class="lg:hidden text-lg cursor-pointer"><i class="fas fa-bars"></i></div>
           <div id="nav-menu" class="hidden absolute top-0 right-0 mt-16 flex flex-col bg-white text-secondary border border-secondary">
-            <a class="inline-block text-primary font-bold hover:underline text-center px-6 py-4" href="<%= Routes.search_show_path(@conn, :index) %>">Search</a>
-              <a class="inline-block text-primary font-bold hover:underline text-center px-6 py-4" href="<%= Routes.auth_path(@conn, :request, :github) %>">
+            <a class="inline-block text-primary font-bold hover:underline text-center px-6 py-4" href="/search">Search</a>
+              <a class="inline-block text-primary font-bold hover:underline text-center px-6 py-4" href="/auth/github">
                 <div class="flex flex-row items-center"><i class="fab fa-github fa-2x"></i><span class="ml-2">Login with GitHub</span></div>
               </a>
           </div>
@@ -52,7 +52,7 @@
       </section>
       <div>
         <p class="text-xl text-center mb-10">Sorry, that you're not allowed to see this page.</p>
-        <p class="text-xl text-center">Try <a href="<%= Routes.auth_path(@conn, :request, :github) %>" class="link">logging in</a> if you haven't already, otherwise you may be trying to perform an action reserved for other users.</p>
+        <p class="text-xl text-center">Try <a href="/auth/github" class="link">logging in</a> if you haven't already, otherwise you may be trying to perform an action reserved for other users.</p>
       </div>
       <%# --- CONTENT STOPs HERE --- %>
     </main>
