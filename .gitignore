@@ -24,4 +24,3 @@ rel/artifacts/*.tar.gz
 
 .DS_Store
 .elixir_ls
-config.yaml
