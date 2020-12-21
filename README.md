@@ -1,7 +1,7 @@
 # shoutouts.dev
 
-[shoutouts.dev](https://shoutouts.dev) is a plaform for OSS users to post public
-messages of gratitude for projects they love.
+[shoutouts.dev](https://shoutouts.dev) is a website for OSS users to post public
+messages of gratitude for projects they use and love.
 
 shoutouts.dev is currently in **beta**, please use this repo to raise any issues
 with the site and discuss possible improvements.
@@ -17,17 +17,19 @@ First you'll need to install:
 
 - Elixir 1.11.2, probably best using your package manager.
 - Node 13, [`nvm`](https://github.com/nvm-sh/nvm) works best.
-- PostgreSQL 12, use Docker, your package manager, or [Postgres app](https://postgresapp.com/).
+- PostgreSQL 12, use Docker, your package manager, or [Postgres app](https://postgresapp.com/)
+- Docker, for making releases.
 
 Then:
 
-1. `cd apps/shoutouts_web/static/
+1. `cd apps/shoutouts_web/static/`
 2. `npm i`
 3. Back in the root dir, `mix deps.get`
-4. `mix ecto.create`
-5. `mix ecto.migrate`
-6. `mix run apps/shoutouts/priv/repo/seeds.exs`
-7. `mix phx.server` or `mix test`
+4. Tweak the database settings depending on your setup
+5. `mix ecto.create`
+6. `mix ecto.migrate`
+7. `mix run apps/shoutouts/priv/repo/seeds.exs`
+8. `mix phx.server` or `mix test`
 
 ### Configuration
 
@@ -52,7 +54,7 @@ The webpack configuration is modified from the default Phoenix includes:
 used in the templates. **This means changing classes in the web inspector may
 not work as expected as the new class may have been purged**. If you're
 experiencing issues when making CSS changes it's worth commenting out the
-PurgeCSS section until you're done.
+PurgeCSS section in `webpack.config.js` until you're happy with the result.
 - Fonts found in CSS are copied directly to /fonts/ and SVGs are included as
 URLs so they will need to be used in CSS classes.
 
@@ -67,6 +69,17 @@ while "backend" deps on the base's.
 We use [Distillery](https://hexdocs.pm/distillery/home.html) to produce release
 artifacts. These are built an Ubuntu 20.04 Docker image and a build bash
 script that produces release tarballs executable in any Ubuntu 20.04 system.
+
+`make release` will produce tarball with the release with the version number
+in `apps/shoutouts/mix.exs`. Note there is another version in `shoutouts_web`
+these should be change together to avoid confusion.
+
+Pre-release checklist:
+
+- Test the app using `make prod-server` to ensure production assets are correct.
+- Run `make mac-release` to create a Mac release and test locally via Distillery
+commands.
+- Create an Ubuntu release and test locally in VMs.
 
 ### Provider integrations
 
