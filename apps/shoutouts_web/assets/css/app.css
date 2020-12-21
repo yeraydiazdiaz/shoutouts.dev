@@ -1,0 +1,164 @@
+/* This file is for your main application css. */
+
+:root {
+    --color-primary: #2D2E64;
+    --color-secondary: #425EA7;
+    --color-alert: #cf093f;
+    --color-dark: #1D1D3E;
+    --color-dim: #F0F0FA;
+    --color-dimmer: #f9fafb;
+    --color-bone: #e5dcc5;
+    --color-contrast: #720524;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+    font-family: "Light";
+    src: url("../fonts/IBMPlexSans-Light.ttf");
+}
+
+@font-face {
+    font-family: "Bold";
+    src: url("../fonts/IBMPlexSans-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Logo";
+    src: url("../fonts/Inter-ExtraBold.woff");
+}
+
+.link {
+    @apply text-secondary underline;
+}
+
+.bg {
+    position: absolute;
+    z-index: -10;
+    background-image: url("../images/bg.svg");
+    background-repeat: repeat-x;
+    background-position: center top;
+    background-size: cover;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 1000px;
+}
+
+.alert-container {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.alert {
+    text-align: center;
+    padding: 1rem 2.5rem 1rem 3rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    max-width: 50%;
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+    .alert {
+        padding: 1rem 0.5rem 1rem 1rem;
+        margin: 0 0.5rem;
+        max-width: 100%;
+    }
+}
+
+.alert:after {
+    content: '\2716';
+    color: var(--color-jet);
+    padding-left: 1rem;
+}
+
+.alert-info {
+    background-color: var(--color-bone);
+}
+
+.alert-danger {
+    background-color: var(--color-alert);
+    color: var(--color-dimmer);
+}
+
+.alert-danger:after {
+    color: var(--color-dimmer);
+}
+
+.checkbox {
+    height: 1rem;
+    width: 1rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: 1px solid var(--color-secondary);
+    border-radius: 4px;
+    outline: none;
+    transition-duration: 0.1s;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+.checkbox:checked {
+    border: none;
+    background-color: var(--color-primary);
+}
+
+.checkbox:checked::before {
+    content: '\2714';
+    display: block;
+    text-align: center;
+    color: white;
+    line-height: 1;
+}
+
+.checkbox:checked:hover {
+    background-color: var(--color-secondary);
+}
+
+.checkbox:disabled {
+    cursor: default;
+}
+
+.checkbox:hover, .checkbox:disabled, .checkbox:disabled:hover {
+    background-color: var(--color-dim);
+}
+
+.shoutout {
+    position: relative;
+}
+
+.shoutout:before {
+    content: open-quote;
+    display: inline;
+    line-height: 0;
+    left: -10px;
+    position: absolute;
+    top: 30px;
+    color: var(--color-dim);
+    font-size: 3em;
+    z-index: -10;
+    font-weight: bolder;
+}
+
+.shoutout::after {
+    content: close-quote;
+    display: inline;
+    line-height: 0;
+    right: -30px;
+    position: absolute;
+    bottom: -20px;
+    color: var(--color-dim);
+    font-size: 3em;
+    z-index: -10;
+    font-weight: bolder;
+}

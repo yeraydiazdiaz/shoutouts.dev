@@ -1,0 +1,35 @@
+<%= f = form_for @changeset, "#",
+  id: "project-form",
+  class: "w-full max-w-3/4 lg:w-3/4",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <div class="w-full flex flex-col justify-between mb-8">
+  <%= label f, :description, "Description", class: "text-dark text-sm font-semibold" %>
+  <%= text_input f, :description, phx_debounce: "500", class: "h-12 px-3 py-1 text-lg bg-white border border-gray-400 rounded-md outline-none focus:shadow-inner focus:border focus:border-secondary resize-none #{error_class f, :description}", placeholder: "Where do I even start..." %>
+  <p class="text-xs text-gray-600">Shown in the project page and initially taken from the repository data.</p>
+  <%= error_tag f, :description %>
+  </div>
+
+  <div class="w-full flex flex-col mb-8">
+    <div class="flex flex-row items-center">
+      <%= label f, :pinned_only, "Show only pinned shoutouts", class: "font-semibold mr-2 cursor-pointer" %>
+      <%= checkbox f, :pinned_only, class: "checkbox" %>
+    </div>
+    <p class="text-xs text-gray-600">Users will still be able to leave shoutouts but the public page will only show those you've pinned.</p>
+  </div>
+
+  <div class="flex flex-row justify-between h-12 mt-2">
+    <div class="flex flex-row justify-end">
+      <%# This should disable itself, phx_disable_with but with the same text would be nice %>
+      <%= submit "Edit project", phx_disable_with: "Edit project", class: "text-dim font-bold bg-primary px-2 sm:px-4 py-2 lg:py-3 rounded-md leading-none mr-1 md:mr-4" %>
+      <a class="contents" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :delete, @project.id) %>">
+        <button class="leading-none text-dim font-bold bg-alert px-2 sm:px-4 py-2 lg:py-3 mr-1 lg:mr-0 rounded-md">Delete project</button>
+      </a>
+    </div>
+    <a class="contents" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">
+      <button class="leading-none text-dim font-bold bg-secondary px-6 py-3 rounded-md">Back</button>
+    </a>
+  </div>
+</form>

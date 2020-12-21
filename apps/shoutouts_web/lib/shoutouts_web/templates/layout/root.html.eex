@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%= if assigns[:page_title] do %><%= "#{assigns[:page_title]} | "%><% end %>shoutouts.dev</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <%= csrf_meta_tag() %>
+    <meta name="description" content="Open Source is hard. Show your gratitude.">
+    <meta name="author" content="ShoutOuts.dev">
+    <meta name="keywords" content="opensource open source projects developer shout-out shoutout shoutouts">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image:src" content="<%= Routes.static_url(@conn, "/images/logo_image.png") %>" />
+    <meta name="twitter:title" content="<%= if assigns[:page_title] do %><%= "#{assigns[:page_title]} | "%><% end %>shoutouts.dev" />
+    <meta name="twitter:description" content="Open Source is hard. Show your gratitute">
+    <meta name="twitter:creator" content="@yera_ee">
+    <meta name="twitter:site" content="@yera_ee">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="<%= Routes.index_show_url(@conn, :show) %>" />
+    <meta property="og:site_name" content="shoutouts.dev" />
+    <meta property="og:image" content="<%= Routes.static_url(@conn, "/images/logo_image.png") %>" />
+    <meta property="og:title" content="<%= if assigns[:page_title] do %><%= "#{assigns[:page_title]} | "%><% end %>shoutouts.dev" />
+    <meta property="og:description" content="Open Source is hard. Show your gratitute">
+    <%= unless Application.get_env(:shoutouts, :env) in [:dev, :test] do %>
+    <script async defer data-domain="shoutouts.dev" src="https://plausible.io/js/plausible.js"></script>
+    <% end %>
+  </head>
+  <body class="flex flex-col justify-between h-screen bg-dimmer">
+    <header class="flex-none flex flex-row items-center bg-primary text-dim shadow-bottom h-header px-4 lg:px-8 py-2">
+      <div class="mx-auto flex flex-row justify-between items-center w-full max-w-screen-xl">
+        <a class="flex flex-row items-center font-logo text-2xl lg:text-3xl" href="/">
+          <div class="flex flex-col">
+            <span class="tracking-tight">shoutouts.dev</span>
+            <span class="text-sm text-alert text-right p-0 -mt-4 mr-2">BETA</span>
+          </div>
+          <img src="<%= Routes.static_path(@conn, "/images/logo.svg") %>" alt="shoutouts.dev logo" width="50px" height="50px" />
+        </a>
+        <nav role="navigation">
+          <div class="hidden lg:flex lg:flex-row lg:items-center">
+            <div class="inline-block py-1 px-4 mr-8 bg-dim text-gray-400 rounded-md outline-none focus:shadow-inner focus:border focus:border-dim" />
+              <i class="fas fa-search"></i>
+              <form action="/search" method="GET" class="inline">
+                <input type="text" name="q" placeholder="Search projects" class="ml-2 text-gray-800 appearance-none outline-none bg-transparent" />
+              </form>
+            </div>
+            <%= if assigns[:current_user_id] do %>
+              <a class="inline-block font-bold hover:underline text-center mr-8" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
+              <a class="inline-block font-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
+            <% else %>
+              <a class="inline-block font-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :request, :github) %>">
+                <div class="flex flex-row items-center"><i class="fab fa-github fa-2x"></i><span class="ml-2">Login with GitHub</span></div>
+              </a>
+            <% end %>
+          </div>
+          <div id="nav-bars" class="lg:hidden text-lg cursor-pointer"><i class="fas fa-bars"></i></div>
+          <div id="nav-menu" class="hidden absolute top-0 right-0 mt-14 flex flex-col bg-dimmer text-secondary border border-secondary">
+            <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.search_show_path(@conn, :index) %>">Search</a>
+            <%= if assigns[:current_user_id] do %>
+              <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
+              <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
+            <% else %>
+              <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :request, :github) %>">
+                <div class="flex flex-row items-center"><i class="fab fa-github"></i><span class="ml-2">Login with GitHub</span></div>
+              </a>
+            <% end %>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main role="main" class="flex-grow m-auto p-4 md:p-8 w-full max-w-6xl">
+      <%= @inner_content %>
+    </main>
+    <footer class="flex-none text-gray-600 text-sm h-8 p-6 mt-4 flex items-center justify-around border-t border-dim">
+      <div>Crafted with 💙 by <a class="hover:underline" href="https://yeray.dev">Yeray Díaz</a> <a class="hover:underline ml-1" href="https://github.com/yeraydiazdiaz"><i class="fab fa-github"></i></a> <a class="hover:underline ml-1" href="https://twitter.com/yera_ee/"><i class="fab fa-twitter"></i></a></div>
+      <div><a href="/faq">FAQ</a></div>
+    </footer>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

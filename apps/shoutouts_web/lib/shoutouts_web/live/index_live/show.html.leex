@@ -1,0 +1,65 @@
+<div class="bg transform translate-y-8 md:-translate-y-16"></div>
+<section class="flex flex-col lg:flex-row lg:justify-around m-auto w-full lg:mt-8 mb-10 lg:mb-24">
+  <div class="flex flex-col items-center lg:w-11/12 m-auto lg:flex-row lg:justify-around lg:items-center">
+    <h1 class="tracking-tight text-4xl md:text-6xl text-center lg:text-left text-dim font-bold max-w-screen-xlm-auto">
+      <span style="text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.22)">shoutouts.dev</span>
+    </h1>
+    <h2 class="text-2xl md:text-4xl text-primary font-hairline leading-tight max-w-screen-xl">
+      <span>Open Source is hard<br />Show your gratitude</span>
+    </h2>
+  </div>
+</section>
+<section class="w-full mb-8 md:mb-12 lg:mb-20 flex flex-col lg:flex-row lg:w-5/6 lg:mx-auto lg:justify-between lg:items-center">
+  <div class="text-lg lg:w-1/2 md:mr-4">
+    <h3 class="text-2xl text-dark font-bold">Gratitude works</h3>
+    <p class="mt-4">
+      Maintaining an Open Source project is a labour of love, but most of the time the only feedback maintainers get are bug reports, issues and complaints.
+    </p>
+    <p class="mt-2">Write public shoutout letting them know how much you value their work.<p>
+    <p class="mt-2"><a class="link" href="<%= Routes.search_show_path(@socket, :index) %>">Search for your favourite projects</a> by owner, name or by programming language.</p>
+  </div>
+  <div class="text-right mt-12 mx-auto lg:mt-0">
+    <div class="relative flex flex-row pb-8">
+      <div>
+        <div class="shoutout text-3xl mb-3 pl-4">Your project is amazing!</p><p>Thanks for everything you do!</div>
+          <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
+          <div>
+            <p class="font-bold text-2xl">Amy Grateful</p>
+            <p>Prolific Open Source contributor</p>
+          </div>
+          <img alt="Sample avatar" class="w-12 h-12 rounded-full ml-4" src="<%= Routes.static_path(@socket, "/images/sample_avatar.png") %>" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="w-full mb-8 md:mb-12 lg:mb-20 flex flex-col items-center lg:flex-row-reverse lg:w-5/6 lg:mx-auto lg:justify-between">
+  <div class="lg:w-1/2">
+    <h3 class="text-2xl text-dark font-bold">Good vibes only, please</h3>
+    <div class="text-lg mt-4">
+      <p>No anonymous trolling allowed. Only real users with real accounts are allowed to post shoutouts.</p>
+      <p class="mt-4">Pin your shoutouts to customize your project page. Don't like a shoutout? Flag it with <a class="link" href="<%= Routes.faq_show_path(@socket, :index) %>#trolling">immediate consequences</a>.</p>
+    </div>
+  </div>
+  <div class="text-2xl mx-auto mt-12 lg:mt-0">
+    <div class="text-secondary mb-4 transform rotate-45"><i class="fas fa-thumbtack fa-2x"></i></div>
+    <div class="text-red-200 mb-4"><i class="far fa-flag fa-2x"></i></div>
+  </div>
+</section>
+<section class="w-full mb-8 flex flex-col items-center lg:flex-row lg:w-5/6 lg:mx-auto lg:justify-between">
+  <div class="lg:w-1/2">
+    <h3 class="text-2xl text-dark font-bold">Beyond stars and stats</h3>
+    <div class="text-lg mt-4">
+      <p>They're great and all, but they're not exactly personal or even relevant for small/niche projects.</p>
+      <p class="mt-4">Shoutouts are real feedback from real people your project is helping. A badge of honor.</p>
+    </div>
+  </div>
+  <div class="flex flex-col items-center justify-between text-xl mx-auto mt-12 lg:mt-0">
+    <div class="mb-8"><%= raw @badge %></div>
+  </div>
+</section>
+<%= if @current_user == nil do %>
+<section class="mt-20 text-center">
+  <a class="inline-block text-dim bg-primary text-xl font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to register your project</a>
+</section>
+<% end %>

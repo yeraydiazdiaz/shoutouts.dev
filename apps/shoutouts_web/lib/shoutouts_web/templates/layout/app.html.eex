@@ -1,0 +1,13 @@
+<%= if get_flash(@conn, :info) do %>
+<div class="alert-container">
+<span class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info"><%= get_flash(@conn, :info) %></span>
+</div>
+<% end %>
+
+<%= if get_flash(@conn, :error) do %>
+<div class="alert-container">
+<span class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error"><%= get_flash(@conn, :error) %></span>
+</div>
+<% end %>
+
+<%= @inner_content %>

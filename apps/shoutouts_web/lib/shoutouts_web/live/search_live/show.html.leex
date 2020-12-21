@@ -1,0 +1,36 @@
+<div class="bg transform translate-y-8 md:-translate-y-16"></div>
+<section class="m-auto w-full lg:mt-8">
+  <div class="flex flex-col items-center lg:w-11/12 m-auto lg:flex-row lg:justify-around lg:items-center">
+    <h1 class="tracking-tight text-4xl md:text-6xl text-center lg:text-left text-dim font-bold max-w-screen-xlm-auto">
+      <span style="text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.22)">shoutouts.dev</span>
+    </h1>
+    <h2 class="text-2xl md:text-4xl text-primary font-hairline leading-tight max-w-screen-xl">
+      <span>Open Source is hard<br />Show your gratitude</span>
+    </h2>
+  </div>
+
+  <%= live_component @socket, ShoutoutsWeb.SearchLive.SearchComponent, terms: @terms, id: :search %>
+
+  <div class="transition-opacity duration-500 ease-out opacity-0<%= if @terms == "" do %> opacity-100<% end %>">
+    <div class="text-2xl text-center text-gray-600 font-sans mb-8">Top projects by language</div>
+    <div class="flex flex-row flex-wrap items-top justify-around">
+      <%= for [lang, project_count, projects] <- @summary do %>
+        <div class="w-64 mb-8 mx-4 lg:mb-0">
+          <div class="text-xl flex flex-row items-center justify-between text-primary mb-2">
+            <a href="<%= Routes.search_show_path(%Plug.Conn{}, :index, %{"q" => lang}) %>" data-phx-link="redirect" data-phx-link-state="push" class="font-bold text-primary underline"><%= lang %></a>
+            <span class="text-sm"><%= project_count %> projects</span>
+          </div>
+          <div>
+          <%= for [owner, name, shoutout_count] <- projects do %>
+            <div class="flex flex-row items-center justify-between">
+              <div><a class="text-md link hover:no-underline" href="<%= Routes.project_show_path(@socket, :show, owner, name) %>" data-phx-link="redirect" data-phx-link-state="push"><%= owner %>/<%= name %></a></div>
+              <div class="text-primary text-sm"><%= shoutout_count %></div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</section>

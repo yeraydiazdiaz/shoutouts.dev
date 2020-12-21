@@ -1,0 +1,17 @@
+  <form action="#" phx-change="search" phx-submit="search" class="w-full flex flex-col my-8 md:mb-16 m-auto max-w-4xl">
+    <input type="text" name="q" placeholder="Find registered projects" value="<%= @terms %>" phx-debounce="500" autocomplete="off" class="text-lg lg:text-2xl mx-1 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" />
+  </form>
+
+  <div class="flex flex-wrap justify-around w-full md:max-w-6xl m-auto" id="search-results">
+  <%= for result <- @results do %>
+    <a id="<%= result.id %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, result.owner, result.name) %>" class="w-full lg:max-w-lg m-2 mb-8">
+      <div class="flex flex-col md:flex-row items-center justify-between border-t border-gray-700">
+        <div class="w-full">
+          <div class="text-xl h-8 text-dark font-bold p-2 mb-2 leading-none hover:underline"><%= Projects.name_with_owner(result) %></div>
+          <div class="text-sm px-2"><%= result.description %></div>
+        </div>
+        <div class="h-6 text-sm text-gray-500 h-1 pt-2 px-2 leading-none"><%= result.primary_language %></div>
+      </div>
+    </a>
+  <% end %>
+  </div>

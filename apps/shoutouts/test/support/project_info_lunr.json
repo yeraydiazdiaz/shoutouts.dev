@@ -1,0 +1,63 @@
+{
+  "data": {
+    "repository": {
+      "owner": {
+        "login": "yeraydiazdiaz"
+      },
+      "name": "lunr.py",
+      "createdAt": "2018-01-28T18:01:26Z",
+      "updatedAt": "2020-04-16T15:10:12Z",
+      "url": "https://github.com/yeraydiazdiaz/lunr.py",
+      "description": "A Python implementation of Lunr.js 🌖",
+      "homepageUrl": "http://lunr.readthedocs.io/",
+      "primaryLanguage": {
+        "name": "Python"
+      },
+    "languages": {
+        "nodes": [
+          {
+            "name": "Python"
+          },
+          {
+            "name": "JavaScript"
+          },
+          {
+            "name": "Makefile"
+          }
+        ]
+      },
+      "stargazers": {
+        "totalCount": 33
+      },
+      "issues": {
+        "totalCount": 0
+      },
+      "pullRequests": {
+        "totalCount": 0
+      },
+      "forks": {
+        "totalCount": 1
+      },
+      "collaborators": {
+        "totalCount": 1,
+        "nodes": [
+          {
+            "name": "Yeray Diaz Diaz",
+            "login": "yeraydiazdiaz"
+          }
+        ]
+      },
+      "ref": {
+        "target": {
+          "history": {
+            "nodes": [
+                {
+                  "authoredDate": "2020-04-16T15:09:50Z"
+                }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

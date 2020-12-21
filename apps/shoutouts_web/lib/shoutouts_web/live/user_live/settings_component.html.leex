@@ -1,0 +1,28 @@
+<%= f = form_for @changeset, "#",
+  id: "account-settings-form",
+  class: "w-full",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <div class="w-full flex flex-col justify-between mb-8">
+    <div class="w-full max-w-lg flex flex-col justify-between mt-8 mb-4">
+      <%= label f, :name, "Full name*", class: "text-dark text-sm font-semibold" %>
+      <%= text_input f, :name,  phx_debounce: "500", class: "max-w-lg px-3 py-1 mb-2 text-lg bg-dimmer border border-gray-400 rounded-md outline-none focus:shadow-inner focus:border focus:border-secondary resize-none #{error_class f, :description}", placeholder: "Where do I even start...", autofocus: true %>
+      <p class="text-xs text-gray-600">Displayed next to your shoutouts and your profile page.</p>
+      <%= error_tag f, :name %>
+    </div>
+    <div class="w-full flex flex-col justify-between mb-4">
+      <%= label f, :signature, "Signature", class: "text-dark text-sm" %>
+      <%= text_input f, :signature,  phx_debounce: "500", class: "max-w-lg px-3 py-1 mb-2 text-lg bg-dimmer border border-gray-400 rounded-md outline-none focus:shadow-inner focus:border focus:border-secondary resize-none #{error_class f, :description}", placeholder: "A grateful OSS user" %>
+      <p class="text-xs text-gray-600">Short sentence about yourself. If not left blank it will be included next to your shoutouts.</p>
+      <%= error_tag f, :signature %>
+    </div>
+  </div>
+
+  <div class="flex flex-row justify-start">
+    <%# This should disable itself, phx_disable_with but with the same text would be nice %>
+    <%= submit "Update settings", class: "text-dim font-bold bg-primary px-6 py-3 mt-2 rounded-md leading-none mr-4" %>
+    <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Back</a>
+  </div>
+</div>

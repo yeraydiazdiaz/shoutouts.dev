@@ -1,0 +1,45 @@
+<div class="bg transform translate-y-8 md:-translate-y-16"></div>
+<section class="m-auto w-full lg:mt-4">
+  <h1 class="text-gray-900 text-4xl font-bold mb-4">FAQ</h1>
+
+  <a href="#why"><h2 class="text-primary text-3xl font-bold mb-4" id="why">Why?</h2></a>
+  <div class="text-gray-900 text-xl mb-8">
+    <p class="mb-4">If you ever spent any time maintaining an Open Source project, you will have noticed that most of the feedback you get take the form of issues, bug reports, or questions.</p>
+    <p class="mb-4">And that's great, it means people are using the project and would like to continue using it. But sometimes you'd like to hear what people think first hand about it, how they use it, and how your work has impacted their lives.</p>
+    <p>That's why I wrote shoutouts.dev.</p>
+  </div>
+
+  <div class="text-gray-900 text-xl">
+    <a href="#trolling"><h2 class="text-primary text-3xl font-bold mb-4" id="trolling">What about trolling?</h2></a>
+    <div class="text-gray-900 text-xl">
+    <p class="mb-4">Any time you have users posting about other users there's a risk of abuse. It's not an easy problem to solve but shoutouts.dev has some strict rules and practices in place that I hope will prevent it, and it all starts with accountability.</p>
+    <ol>
+    <li class="mb-4">1. Only users whose provider (GitHub for now) account is older than 2 years are allowed to post shoutouts.</li>
+    <li class="mb-4">2. Owners of projects can flag shoutouts. One flagged shoutout will prevent the user from posting more shoutouts to any of the owner's other projects.</li>
+    <li class="mb-4">3. If more than three owners flag shoutouts from the same user, they will be banned from ever posting more shoutouts.</li>
+    </ol>
+    <p class="mb-4">These rules may vary over time depending on their success, but it is my hope that will make shoutouts.dev "good vibes only" site.</p>
+  </div>
+
+  <a href="#github-only"><h2 class="text-primary text-3xl font-bold mb-4" id="github-only">Why only GitHub repos?</h2></a>
+  <div class="text-gray-900 text-xl mb-8">
+    <p class="mb-4">Dev time mostly, but also because GitHub is quite dominant in the Open Source space at the moment. Don't worry though, adding support for other providers is definitely in the cards.</p>
+  </div>
+
+  <a href="#tech"><h2 class="text-primary text-3xl font-bold mb-4" id="tech">What did you use to build shoutouts.dev?</h2>
+  <div class="text-gray-900 text-xl mb-8">
+    <p class="mb-4">The site is written in <a class="link" href="https://elixir-lang.org/">Elixir</a> using the <a class="link" href="https://phoenixframework.org/">Phoenix Framework</a>, <a class="link" href="https://tailwindcss.com/">Tailwind CSS</a> and vanilla JavaScript on top of Phoenix's JS library.</p>
+    <p>When I say "vanilla" I mean I'm not using a JavaScript framework, the interactivity you see/feel comes from using Phoenix LiveView.</p>
+  </div>
+
+ <a href="#help"> <h2 class="text-primary text-3xl font-bold mb-4" id="help">Neat! How can I help?</h2></a>
+  <div class="text-gray-900 text-xl mb-8">
+    <p class="mb-4">I'm glad you like it! There's several ways:</p>
+    <ul class="list-disc pl-4">
+      <li>Leave a <a class="link" href="<%= ShoutoutsWeb.Router.Helpers.project_show_path(%Plug.Conn{}, :show, "yeraydiazdiaz", "shoutouts.dev") %>">shoutout for the project</a>, obvs.</li>
+      <li><a class="link" href="https://www.buymeacoffee.com/yeray">Buy me a coffee</a> (although I'll probably use the money to pay for hosting).</li>
+      <li>If you're into Elixir and want to help out, check out the <a class="link" href="https://github.com/yeraydiazdiaz/shoutouts.dev">site's GitHub repo</a>, any help is appreciated.</li>
+      <li>Use the site and tell others about it, spread the good vibes!</a>
+    </ul>
+  </div>
+</section>

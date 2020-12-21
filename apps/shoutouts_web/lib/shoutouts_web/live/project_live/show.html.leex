@@ -1,0 +1,158 @@
+<%# Duplication from live.html.leex
+Needed because updates at the render level don't seem to trigger a rerender of
+the layout view until a second click elsewhere (e.g. clicking hide/show flagged).
+Given the flash is removed after showing it's fairly safe to duplicate. %>
+<%= if live_flash(@flash, :info) do %>
+<div class="alert-container">
+<span class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info"><%= live_flash(@flash, :info) %></span>
+</div>
+<% end %>
+
+<%= if live_flash(@flash, :error) do %>
+<div class="alert-container">
+<span class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error"><%= live_flash(@flash, :error) %></span>
+</div>
+<% end %>
+<%# End duplication %>
+
+<div class="bg transform translate-y-8 md:-translate-y-16"></div>
+
+<%= if @live_action == :show do %>
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between">
+    <%# Project name and description %>
+    <div class="md:mb-4 lg:mb-0">
+      <div class="flex flex-row items-center mb-3">
+        <h1 class="font-logo text-2xl sm:text-4xl md:text-5xl mr-4"><%= Projects.name_with_owner(@project) %></h1>
+        <div>
+          <a href="<%= @project.url %>" target="_blank"><i class="fab fa-github fa-lg text-xl sm:text-2xl md:text-4xl"></i></a>
+        </div>
+      </div>
+      <div class="text-lg md:text-xl lg:text-2xl mb-3"><%= @project.description %></div>
+      <div class="text-sm">
+        <span class="text-dark">Written mostly in:</span>
+        <span class="font-bold"><%= @project.primary_language %></span>
+      </div>
+
+      <%# Shoutout count %>
+      <div class="mt-4">
+        <%= if @num_shoutouts == 0 do %>
+          <%# No shoutouts, add yours CTA %>
+          <h2 class="font-bold text-2xl mt-20">No shoutouts yet.</h2>
+          <%# Show CTA if the user has logged in, they are not the owner, and they haven't already added one %>
+          <%= if @current_user_id != nil and not @user_is_owner and @user_shoutout == nil do %>
+            <div class="flex flex-col mt-4">
+              <%# Disable the CTA if the user's provider accounts is too young or they have been banned %>
+              <div class="mb-4">
+                <a class="inline-block text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4<%= if @disable_cta do %> text-gray-400 bg-dim cursor-not-allowed<% end %>" <%= if @disable_cta do %> disabled="disabled"<% end %> data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :add, @project.owner, @project.name) %>">Be the first!</a>
+              </div>
+              <div class="w-full md:w-3/4 lg:w-1/2">
+                <%= if @user_account_too_young do %>
+                  <p class="text-sm pl-8">Sorry, only users with a provider account older than 2 years are allowed to add shoutouts.</p>
+                <% end %>
+                <%= if @user_is_banned_for_owner do %>
+                  <p class="font-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
+                  <p class="mt-2 text-dark">Please take a moment to consider the reasons the owner may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
+                <% end %>
+                <%= if @user_is_banned_globally do %>
+                  <p class="font-bold text-alert">Several owners have flagged your shoutouts, as a result you are not allowed to post more on any project.</p>
+                  <p class="mt-2 text-dark">Please take a moment to consider the reasons the owners may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="flex flex-row">
+            <%= if @user_is_owner do %>
+            <a href="<%= Routes.project_url(@socket, :badge, @project.owner, @project.name) %>">
+              <%= raw @badge %>
+            </a>
+            <div class="ml-4 text-xl text-secondary cursor-pointer" onclick="copyToClipboard(this)" data-clipboard-text="<%= Routes.project_url(@socket, :badge, @project.owner, @project.name) %>" title="Click to copy badge URL to clipboard">
+              <i class="far fa-copy"></i>
+              <span id="feedback" class="hidden text-base text-secondary"></span>
+            </div>
+            <% else %>
+            <%= raw @badge %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Buttons and info %>
+    <div class="lg:ml-4 lg:max-w-md">
+    <%= if @current_user == nil do %>
+      <%# If anonymous user log in CTA %>
+      <div>
+        <a class="inline-block mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to leave a shoutout</a>
+      </div>
+    <% else %>
+      <%= if @user_is_owner do %>
+        <%# If owner render some info about flagging and pinning %>
+        <%# # TODO: consider clicking to dismiss and possibly remember the decision %>
+        <div class="text-md mt-4 lg:text-right lg:mt-0">
+          <p>We hope you enjoy the shoutouts for your project. Note you can <span class="font-bold text-secondary">pin</span> or <span class="font-bold text-alert">flag</span> any of them.</p>
+          <p class="mt-2"><span class="text-secondary">Pinned</span> shoutouts will show at the top of the page.</p>
+          <p class="mt-2"><span class="text-alert">Flagging</span> a shoutout will hide it and prevent the user from adding more shoutouts to your other projects.</p>
+        </div>
+      <% else %>
+        <%# If registered user, project already has shoutouts and the user has not added a shoutouts: add shoutout CTA (there's another CTA above for projects with no shoutouts) %>
+        <%= if @num_shoutouts > 0 and @user_shoutout == nil do %>
+          <div class="mt-12 lg:mt-0 lg:text-right">
+            <%# Disable button if the account is not old enough or has been banned %>
+            <div class="mb-4">
+              <a class="inline-block font-bold px-6 py-3 h-10 rounded-md leading-4<%= if @disable_cta do %> text-gray-400 bg-gray-200 cursor-not-allowed<% else %> text-dim bg-primary<% end %>" <%= if @disable_cta do %> disabled="disabled"<% end %> data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :add, @project.owner, @project.name) %>">Add your shoutout</a>
+            </div>
+            <%= if @user_account_too_young do %>
+              <p class="text-sm mt-2 text-alert">Sorry, only users with an account older than 2 years are allowed to add shoutouts.</p>
+            <% end %>
+            <%= if @user_is_banned_for_owner do %>
+              <p class="font-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
+              <p class="mt-2 text-dark">Please take a moment to consider the reasons why the owner may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
+            <% end %>
+            <%= if @user_is_banned_globally do %>
+              <p class="font-bold text-alert">Several owners have flagged your shoutouts, as a result you are not allow to post shououts on any project.</p>
+              <p class="mt-2 text-dark">Please take a moment to consider the reasons the owners may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+
+  <div class="flex flex-row flex-wrap mt-12 lg:mt-20">
+  <%= for shoutout <- Enum.sort(@shoutouts, &((&1.pinned and not &2.pinned) or (&1.inserted_at < &2.inserted_at))) do %>
+    <%= if @user_is_owner or (shoutout.pinned or (not shoutout.pinned and not @project.pinned_only)) do %>
+      <%= live_component @socket, ShoutoutsWeb.ProjectLive.ShoutoutComponent, id: shoutout.id, shoutout: shoutout, user_is_owner: @user_is_owner %>
+    <% end %>
+  <% end %>
+  </div>
+
+  <%= if @user_is_owner and @flagged_shoutouts != [] do %>
+    <div class="w-full text-center mt-8">
+      <button class="bg-gray-500 text-dim px-4 py-2 rounded" phx-click="toggle_flagged"><%= if @show_flagged_shoutouts do %>Hide<% else %>Show<% end %> <%= length(@flagged_shoutouts) %> flagged shoutouts</button>
+    </div>
+    <%= if @show_flagged_shoutouts do %>
+      <div class="flex flex-row flex-wrap mt-8">
+      <%= for shoutout <- @flagged_shoutouts do %>
+        <%= live_component @socket, ShoutoutsWeb.ProjectLive.ShoutoutComponent, id: shoutout.id, shoutout: shoutout, user_is_owner: @user_is_owner %>
+      <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= if @live_action == :add do %>
+<h1 class="font-logo text-4xl mt-4 mb-8 mr-4 leading-tight">Add shoutout for <span class="text-primary ml-2"><%= Projects.name_with_owner(@project) %></span></h1>
+  <%= cond do %>
+  <% @project.user_id == @current_user_id -> %>
+    <p class="text-lg mb-12">Sorry, owners cannot leave shoutouts for their own projects.</p>
+    <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
+  <% @user_shoutout -> %>
+    <p class="text-lg mb-12">Thanks, but you have already left a shoutout for this project:</p>
+    <div class="text-3xl shoutout pl-8 mb-12"><%= text_to_html(@user_shoutout.text) %></div>
+    <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
+  <% true -> %>
+    <%= live_component @socket, ShoutoutsWeb.ProjectLive.FormComponent, id: @project.id, project: @project, current_user: @current_user, current_user_id: @current_user_id %>
+  <% end %>
+<% end %>

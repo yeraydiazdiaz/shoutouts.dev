@@ -1,0 +1,143 @@
+<div class="bg transform translate-y-0 md:-translate-y-16"></div>
+<div class="flex flex-col lg:flex-row">
+  <div class="w-full lg:max-w-xxs flex flex-col items-center pt-4 lg:pt-8">
+    <div class="w-full flex flex-row lg:flex-col justify-center items-center">
+      <img alt="<%= @current_user.username %>s' avatar" class="w-16 lg:w-4/6 lg:max-w-xs rounded-full mr-4 lg:mr-0 lg:mb-4" src="<%= @current_user.avatar_url %>" />
+      <div class="flex flex-col items-center">
+        <p class="text-2xl font-bold"><%= @current_user.name %></p>
+        <p class="text-lg font-normal"><a class="hover:underline" href="https://github.com/<%= @current_user.username %>"/>@<%= @current_user.username %></a></p>
+      </div>
+    </div>
+    <div class="w-full mt-8">
+    <a class="block w-full font-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :projects do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Projects</a>
+    <a class="block w-full text-sm py-2 px-8 border-b-1 border-dim hover:bg-dim <%= if @live_action == :add do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Add projects</a>
+    <a class="block w-full font-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :shoutouts do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :shoutouts) %>">Shoutouts</a>
+    <a class="block w-full font-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :show do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :show) %>">Account settings</a>
+    </div>
+  </div>
+
+  <div class="w-full mt-4 lg:pl-4 lg:pl-12">
+  <%= if @live_action == :show do %>
+    <h1 class="font-logo text-4xl text-dark leading-tight">Account settings</h1>
+    <%= live_component @socket, ShoutoutsWeb.UserLive.SettingsComponent,
+      id: @current_user.id,
+      current_user: @current_user%>
+  <% end %>
+
+  <%= if @live_action == :projects do %>
+    <div class="mb-8 flex flex-row justify-between">
+      <h1 class="font-logo text-4xl text-dark">Your projects</h1>
+    </div>
+    <div class="mb-8">
+      <%= if length(@projects) == 0 do %>
+        <p>You have no registered projects.</p>
+      <% else %>
+        <table class="table-auto w-full">
+          <thead>
+            <tr>
+              <th class="px-2 md:px-4 py-2 text-left font-normal text-xs text-secondary">Project</th>
+              <th class="px-2 md:px-4 py-2 text-left font-normal text-xs text-secondary">Shoutouts</th>
+            </tr>
+          </thead>
+          <tbody>
+          <%= for [id, owner, name, shoutouts] <- @projects do %>
+            <tr>
+              <td class="px-1 md:px-4 py-2">
+                <a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, owner, name) %>" class="hover:underline" title="Go to project"><%= name %></a>
+              </td>
+              <td class="px-1 md:px-4 py-2"><%= shoutouts %></td>
+              <td class="lg:px-4 py-2 text-center">
+                <a class="text-sm text-dim bg-primary px-3 py-1 mt-4 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :edit_project, id) %>">Edit project</a>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+    <a class="text-dim bg-primary font-bold px-6 py-3 mt-4 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Add projects</a>
+  <% end %>
+
+  <%= if @live_action == :shoutouts do %>
+    <div class="mb-8 flex flex-row justify-between">
+      <h1 class="font-logo text-4xl text-dark leading-tight">Your shoutouts</h1>
+    </div>
+    <div class="mb-8">
+      <%= if length(@shoutouts) == 0 do %>
+        <p>You have not added any shoutouts yet.</p>
+      <% else %>
+        <table class="table-auto w-full">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 text-left font-normal text-xs text-secondary">Project</th>
+              <th class="px-4 py-2 text-left font-normal text-xs text-secondary">Shoutout</th>
+              <th class="px-4 py-2 text-left font-normal text-xs text-secondary">Pinned</th>
+            </tr>
+          </thead>
+          <tbody>
+          <%= for [text, pinned, owner, name] <- @shoutouts do %>
+            <tr>
+              <td class="px-4 py-2 hover:underline">
+                <a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, owner, name) %>" class="hover:underline" title="Go to project"><%= owner %>/<%= name %></a>
+              </td>
+              <td class="px-4 py-2"><%= text %></td>
+              <td class="px-4 py-2"><%= if pinned do %>&#10004;<% end %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= if @live_action == :add do %>
+    <div class="mb-8 flex flex-row justify-between">
+      <h1 class="font-logo text-4xl text-dark">Add projects</h1>
+    </div>
+    <p class="text-primary text-xl">Select one or more repositories to add, only repositories you <strong>own</strong> are eligible:</p>
+
+    <form action="#" class="w-full mt-8" id="form" method="post" phx-submit="submit">
+      <div class="w-full flex flex-row flex-wrap mb-8">
+        <%= for repo <- @repos do %>
+          <div class="flex flex-row items-center h-8 w-full lg:w-1/2">
+            <label for="<%= "repos[#{repo}]" %>" class="mr-2 leading-none cursor-pointer"><%= repo %></label>
+            <input type="checkbox" id="<%= "repos[#{repo}]" %>" name="<%= "repos[#{repo}]" %>" class="checkbox" />
+          </div>
+        <% end %>
+      </div>
+      <%# This should disable itself, phx_disable_with but with the same text would be nice %>
+      <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4" %>
+    </form>
+
+    <%= if @existing_repos do %>
+      <p class="mt-8 text-primary text-md mb-4">Not finding a project? The following have been already registered by you our another owner:</p>
+      <div class="w-full flex flex-row flex-wrap justify-between mb-8">
+      <%= for repo <- @existing_repos do %>
+        <div><a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, repo.owner, repo.name) %>" class="link"><%= repo.owner %>/<%= repo.name %></a></div>
+      <% end %>
+      </div>
+    <% end %>
+
+    <a class="inline-block text-dim bg-secondary font-bold px-6 py-3 mt-2 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Back</a>
+  <% end %>
+
+  <%= if @live_action == :edit_project do %>
+    <div class="mb-8 flex flex-row justify-between">
+      <h1 class="font-logo text-2xl lg:text-4xl">Edit <span class="text-primary"><%= Projects.name_with_owner(@project) %></span></h1>
+    </div>
+    <%= live_component @socket, ShoutoutsWeb.UserLive.EditProjectComponent,
+      id: @project.id,
+      project: @project %>
+  <% end %>
+
+  <%= if @live_action == :delete do %>
+    <div class="mb-8 flex flex-col justify-between">
+      <h1 class="font-logo text-4xl mb-8">Delete <%= Projects.name_with_owner(@project) %>?</h1>
+      <p class="mb-4">All shoutouts will also be deleted, are you sure?<p>
+      <div class="flex flex-row">
+        <button class="cursor-pointer inline-block text-dim bg-alert font-bold px-6 py-3 mt-2 rounded-md leading-4 mr-8" phx-click="delete">Yes, I'm sure</button>
+        <a class="inline-block text-dim bg-secondary font-bold px-6 py-3 mt-2 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects, id: @project.id) %>">Never mind</a>
+      <div>
+    </div>
+  <% end %>
+</div>
