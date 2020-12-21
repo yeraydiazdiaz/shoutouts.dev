@@ -57,7 +57,7 @@ defmodule Shoutouts.AccountsTest do
 
   describe "create_user_from_auth" do
     test "creates a user" do
-      assert {:ok, user} = Accounts.create_user_from_auth(@ueberauth_success)
+      assert {:ok, _user} = Accounts.create_user_from_auth(@ueberauth_success)
     end
 
     test "returns errors if user with the same provider_id exists" do
