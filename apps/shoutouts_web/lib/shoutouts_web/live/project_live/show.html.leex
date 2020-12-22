@@ -4,13 +4,13 @@ the layout view until a second click elsewhere (e.g. clicking hide/show flagged)
 Given the flash is removed after showing it's fairly safe to duplicate. %>
 <%= if live_flash(@flash, :info) do %>
 <div class="alert-container">
-<span class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info"><%= live_flash(@flash, :info) %></span>
+<div id="alert" class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info" phx-hook="alertAutoDismissal"><%= live_flash(@flash, :info) %></div>
 </div>
 <% end %>
 
 <%= if live_flash(@flash, :error) do %>
 <div class="alert-container">
-<span class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error"><%= live_flash(@flash, :error) %></span>
+<div class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error"><%= live_flash(@flash, :error) %></div>
 </div>
 <% end %>
 <%# End duplication %>

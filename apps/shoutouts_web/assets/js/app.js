@@ -49,6 +49,12 @@ const hooks = {
         this.pushEventTo("#shoutout-form", "validate", payload);
       }
     }
+  },
+  alertAutoDismissal: {
+    mounted() {
+      const el = this.el;
+      setTimeout(() => {el.click()}, 2500);
+    }
   }
 }
 

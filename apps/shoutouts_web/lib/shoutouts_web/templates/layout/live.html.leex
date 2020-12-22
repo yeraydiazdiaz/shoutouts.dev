@@ -1,6 +1,6 @@
 <%= if live_flash(@flash, :info) do %>
 <div class="alert-container">
-<div class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info"><%= live_flash(@flash, :info) %></div>
+<div id="alert" class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info" phx-hook="alertAutoDismissal"><%= live_flash(@flash, :info) %></div>
 </div>
 <% end %>
 
