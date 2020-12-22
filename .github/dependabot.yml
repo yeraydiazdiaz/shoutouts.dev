@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "hex"
+    directory: "/apps/shoutouts/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "hex"
+    directory: "/apps/shoutouts_web/"
+    schedule:
+      interval: "daily"
