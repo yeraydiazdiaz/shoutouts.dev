@@ -7,7 +7,8 @@ ENV REFRESHED_AT=2020-09-26 \
     HOME=/opt/build \
     TERM=xterm \
     DEBIAN_FRONTEND=noninteractive \
-    DEBCONF_NONINTERACTIVE_SEEN=true
+    DEBCONF_NONINTERACTIVE_SEEN=true \
+    COOKIE=${COOKIE}
 
 WORKDIR /opt/build
 
@@ -48,6 +49,7 @@ RUN npm install
 WORKDIR /opt/build
 
 # Copy all the app files
+ARG COOKIE
 COPY . /opt/build/
 
 CMD ["/bin/bash"]

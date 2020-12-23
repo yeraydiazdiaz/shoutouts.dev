@@ -36,7 +36,7 @@ end
 environment :prod do
   set(include_erts: true)
   set(include_src: false)
-  set(cookie: :"x:x:7X16!B&HV(NRiq]&sXR^@D6|xxg:D!Y6tjYmYt~ws0oL1hnv*Z_.Y?>GX4G|")
+  set(cookie: :crypto.hash(:sha256, System.get_env("COOKIE")) |> Base.encode16 |> String.to_atom)
   set(vm_args: "rel/vm.args")
 end
 
@@ -46,7 +46,7 @@ end
 # will be used by default
 
 release :shoutouts_umbrella do
-  set(version: "0.1.1")
+  set(version: current_version(:shoutouts))
 
   set(
     applications: [

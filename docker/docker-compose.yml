@@ -5,5 +5,7 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
+      args:
+        COOKIE: ${COOKIE}
     volumes:
     - ../rel/artifacts:/opt/build/rel/artifacts
