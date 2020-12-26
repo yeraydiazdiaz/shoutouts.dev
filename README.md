@@ -1,5 +1,7 @@
 # shoutouts.dev
 
+[![shoutouts.dev](https://shoutouts.dev/projects/yeraydiazdiaz/shoutouts.dev/badge)](https://shoutouts.dev/projects/yeraydiazdiaz/shoutouts.dev)
+
 [shoutouts.dev](https://shoutouts.dev) is a website for OSS users to post public
 messages of gratitude for projects they use and love.
 
