@@ -109,7 +109,7 @@
       <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4" %>
     </form>
 
-    <%= if @existing_repos do %>
+    <%= if length(@existing_repos) > 0 do %>
       <p class="mt-8 text-primary text-md mb-4">Not finding a project? The following have been already registered by you our another owner:</p>
       <div class="w-full flex flex-row flex-wrap justify-between mb-8">
       <%= for repo <- @existing_repos do %>
