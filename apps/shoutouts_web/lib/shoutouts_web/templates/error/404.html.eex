@@ -47,7 +47,7 @@
       <%# --- CONTENT STARTS HERE --- %>
       <section class="flex flex-col lg:flex-row lg:justify-around lg:items-center m-auto w-full mt-8 mb-12">
         <h1 class="tracking-tight text-4xl sm:text-5xl md:text-6xl text-center lg:text-left text-dim font-bold max-w-screen-xlm-auto">
-          <span style="text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.22)">Not found</span>
+          <span class="textshadow">Not found</span>
         </h1>
         <h2 class="text-2xl md:text-4xl text-primary text-center lg:text-left leading-tight">
           <span>Sorry, that URL does not exist</span>

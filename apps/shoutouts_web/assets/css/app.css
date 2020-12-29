@@ -35,6 +35,10 @@
     @apply text-secondary underline;
 }
 
+.textshadow {
+    text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.22);
+}
+
 .bg {
     position: absolute;
     z-index: -10;
