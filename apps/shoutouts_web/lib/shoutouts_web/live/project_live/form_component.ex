@@ -64,7 +64,7 @@ defmodule ShoutoutsWeb.ProjectLive.FormComponent do
   defp get_flash(project) do
     case project.pinned_only do
       true ->
-        "Thanks! This project shows only a selection of shoutouts by the owner. Don't worry, though, we'll make sure they get it."
+        "Thanks! This project shows only a selection of shoutouts compiled by the owner. Don't worry, though, I'm sure they'll appreciate it."
 
       false ->
         "Shoutout added correctly. Thank you!"
