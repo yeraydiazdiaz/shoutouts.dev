@@ -18,7 +18,7 @@ practices is greatly appreciated.
 First you'll need to install:
 
 - Elixir 1.11.2, probably best using your package manager.
-- Node 13, [`nvm`](https://github.com/nvm-sh/nvm) works best.
+- Node 14, [`nvm`](https://github.com/nvm-sh/nvm) works best.
 - PostgreSQL 12, use Docker, your package manager, or [Postgres app](https://postgresapp.com/)
 - Docker, for making releases.
 
