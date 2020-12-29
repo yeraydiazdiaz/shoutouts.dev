@@ -32,7 +32,6 @@ defmodule Shoutouts.Shoutouts.Shoutout do
     ])
     |> validate_required([:text, :user_id, :project_id], message: "Must not be empty")
     |> validate_length(:text, min: 10, max: 250)
-    |> validate_format(:text, ~r/^[a-zA-Z0-9\ \.,!?\-\_'"\n#]+$/, message: "Invalid character")
     |> assoc_constraint(:user)
     |> assoc_constraint(:project)
     |> unique_constraint([:user_id, :project_id])
