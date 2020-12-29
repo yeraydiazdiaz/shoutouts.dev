@@ -59,6 +59,17 @@ defmodule Shoutouts.ShoutoutsTest do
       assert [{:project, _}] = changeset.errors
     end
 
+    test "allows emojis" do
+      user = Factory.insert(:user)
+      project = Factory.insert(:project)
+      text = "I like emojis 🎉"
+
+      {:ok, shoutout} =
+        Shoutouts.create_shoutout(user, project, %{text: text})
+
+      assert shoutout.text == "I like emojis 🎉"
+    end
+
     test "fails if already existing shoutout, i.e. one shoutout per user + project" do
       user = Factory.insert(:user)
       project = Factory.insert(:project)
