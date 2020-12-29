@@ -88,13 +88,11 @@ commands.
 
 #### GitHub
 
-A developer app must be created to allow users to sign in with:
+A GitHub OAuth App must be created to allow users to sign in with the
+authorization callback URL set to `http://<DOMAIN>/auth/github/callback`,
+in dev `http://localhost:4000`.
 
-- "Request user authorizaion (OAuth) during installation"
-- Callback URL `http://<DOMAIN>/auth/github/`
-- "Webhook" disabled
-
-The app's ID, client ID and client secret need to be set in their respective
+The app client ID and client secret need to be set in their respective
 configuration variables.
 
 Additionally a GitHub API token is used to retrieve public information about
