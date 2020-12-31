@@ -72,6 +72,7 @@ config :plug_content_security_policy,
     default_src: ~w('self'),
     img_src: ~w('self' data:),
     style_src: ~w('self' 'unsafe-inline'),
+    script_src: ~w('self' https://plausible.io)
   }
 
 # Import environment specific config. This must remain at the bottom
