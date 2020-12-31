@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <%= csrf_meta_tag() %>
     <meta name="description" content="Open Source is hard. Show your gratitude.">
-    <meta name="author" content="ShoutOuts.dev">
+    <meta name="author" content="shoutouts.dev">
     <meta name="keywords" content="opensource open source projects developer shout-out shoutout shoutouts">
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image:src" content="<%= Routes.static_url(@conn, "/images/logo_image.png") %>" />
