@@ -81,6 +81,7 @@ module.exports = (env, args) => {
         new OptimizeCSSAssetsPlugin({}),
       ]
     },
+    devtool: "source-map",
   };
 
   if (args.mode === 'production') {
