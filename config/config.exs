@@ -65,6 +65,15 @@ config :sentry,
 
 config :logger, Sentry.LoggerBackend, capture_log_messages: true
 
+config :plug_content_security_policy,
+  nonces_for: [],
+  report_only: false,
+  directives: %{
+    default_src: ~w('self'),
+    img_src: ~w('self' data:),
+    style_src: ~w('self' 'unsafe-inline'),
+  }
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
