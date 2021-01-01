@@ -6,7 +6,7 @@
     <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
       <div class="<%= if @shoutout.flagged do %>text-gray-400<% end %>">
         <p class="font-bold text-xl md:text-2xl"><%= @shoutout.user.name %></p>
-        <%= if @shoutout.user.signature do %><p class="text-sm md:text-md"><%= @shoutout.user.signature %></p><% end %></p>
+        <%= if @shoutout.user.signature do %><p class="text-sm md:text-md"><%= @shoutout.user.signature %></p><% end %>
       </div>
       <img alt="<%= @shoutout.user.username %>s' avatar" class="w-12 h-12 rounded-full ml-4" src="<%= @shoutout.user.avatar_url %>" />
     </div>
