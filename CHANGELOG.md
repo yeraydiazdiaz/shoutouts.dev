@@ -1,5 +1,10 @@
 # Changelog
 
+## [21.1.2] - 2021-01-01
+
+- Fix CSP for avatars in production.
+- Add badge FAQ section.
+
 ## [21.1.1] - 2021-01-01
 
 - Remove emoji and markup limitation on shoutouts.
