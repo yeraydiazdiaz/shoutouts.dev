@@ -1,5 +1,10 @@
 # Changelog
 
+## [21.1.1] - Unreleased
+
+- Remove emoji and markup limitation on shoutouts.
+- Add Content Security Policy.
+
 ## [20.1.1] - 2020-12-29
 
 - Config update to migrate to GitHub OAuth App:
