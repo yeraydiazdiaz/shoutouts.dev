@@ -66,7 +66,7 @@ config :plug_content_security_policy,
   report_only: false,
   directives: %{
     default_src: ~w('self'),
-    img_src: ~w('self' data: https://avatars1.githubusercontent.com),
+    img_src: ~w('self' data: https://*.githubusercontent.com),
     style_src: ~w('self' 'unsafe-inline'),
     script_src: ~w('self' https://plausible.io),
     connect_src: ~w('self' wss: https://plausible.io),
