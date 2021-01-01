@@ -7,7 +7,7 @@ mac-release:
 	MIX_ENV=prod mix distillery.release
 
 release:
-	docker-compose -f docker/docker-compose.yml build
+	COOKIE="$(shell cat .dev/COOKIE)" docker-compose -f docker/docker-compose.yml build
 	docker-compose -f docker/docker-compose.yml run app /opt/build/docker/build.sh
 
 .PHONY: release
