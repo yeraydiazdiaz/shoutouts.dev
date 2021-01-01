@@ -26,6 +26,12 @@
     <p class="mb-4">Dev time mostly, but also because GitHub is quite dominant in the Open Source space at the moment. Don't worry though, adding support for other providers is definitely in the cards.</p>
   </div>
 
+  <a href="#badge"><h2 class="text-primary text-3xl font-bold mb-4" id="badge">How do I add my project's badge to the README?</h2></a>
+  <div class="text-gray-900 text-xl mb-8">
+    <p class="mb-4">Easy, just add the following to your README file:</p>
+    <div class="border-gray-900 bg-dim p-4 my-4 overflow-auto">[![shoutouts.dev](https://shoutouts.dev/projects/<span class="text-alert">ME/MY_PROJECT</span>/badge)](https://shoutouts.dev/projects/<span class="text-alert">ME/MY_PROJECT</span>)</div>
+  </div>
+
   <a href="#tech"><h2 class="text-primary text-3xl font-bold mb-4" id="tech">What did you use to build shoutouts.dev?</h2>
   <div class="text-gray-900 text-xl mb-8">
     <p class="mb-4">The site is written in <a class="link" href="https://elixir-lang.org/">Elixir</a> using the <a class="link" href="https://phoenixframework.org/">Phoenix Framework</a>, <a class="link" href="https://tailwindcss.com/">Tailwind CSS</a> and vanilla JavaScript on top of Phoenix's JS library.</p>
@@ -38,8 +44,8 @@
     <ul class="list-disc pl-4">
       <li>Leave a <a class="link" href="<%= ShoutoutsWeb.Router.Helpers.project_show_path(%Plug.Conn{}, :show, "yeraydiazdiaz", "shoutouts.dev") %>">shoutout for the project</a>, obvs.</li>
       <li><a class="link" href="https://www.buymeacoffee.com/yeray">Buy me a coffee</a> (although I'll probably use the money to pay for hosting).</li>
-      <li>If you're into Elixir and want to help out, check out the <a class="link" href="https://github.com/yeraydiazdiaz/shoutouts.dev">site's GitHub repo</a>, any help is appreciated.</li>
-      <li>Use the site and tell others about it, spread the good vibes!</a>
+      <li>If you're into Elixir and want to help out, check out the site's <a class="link" href="https://github.com/yeraydiazdiaz/shoutouts.dev">GitHub repo</a>, any help is appreciated.</li>
+      <li>Register your projects, leave shoutouts, and tell others about it. Spread the good vibes!</a>
     </ul>
   </div>
 </section>
