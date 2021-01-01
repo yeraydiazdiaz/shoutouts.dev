@@ -60,6 +60,18 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+# The only difference with dev is `wss`
+config :plug_content_security_policy,
+  nonces_for: [],
+  report_only: false,
+  directives: %{
+    default_src: ~w('self'),
+    img_src: ~w('self' data: https://avatars1.githubusercontent.com),
+    style_src: ~w('self' 'unsafe-inline'),
+    script_src: ~w('self' https://plausible.io),
+    connect_src: ~w('self' wss: https://plausible.io),
+  }
+
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 import_config "prod.secret.exs"
