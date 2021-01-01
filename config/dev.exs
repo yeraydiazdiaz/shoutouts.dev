@@ -68,3 +68,14 @@ config :phoenix, :plug_init_mode, :runtime
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+config :plug_content_security_policy,
+  nonces_for: [],
+  report_only: false,
+  directives: %{
+    default_src: ~w('self'),
+    img_src: ~w('self' data: https://*.githubusercontent.com),
+    style_src: ~w('self' 'unsafe-inline'),
+    script_src: ~w('self' https://plausible.io),
+    connect_src: ~w('self' ws: https://plausible.io),
+  }
