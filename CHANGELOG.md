@@ -1,6 +1,6 @@
 # Changelog
 
-## [21.1.1] - Unreleased
+## [21.1.1] - 2021-01-01
 
 - Remove emoji and markup limitation on shoutouts.
 - Add Content Security Policy.
