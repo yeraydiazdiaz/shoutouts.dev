@@ -93,6 +93,7 @@ defmodule ShoutoutsWeb do
       import Phoenix.View
 
       import ShoutoutsWeb.ErrorHelpers
+      import ShoutoutsWeb.Helpers
       import ShoutoutsWeb.Gettext
       alias ShoutoutsWeb.Router.Helpers, as: Routes
     end

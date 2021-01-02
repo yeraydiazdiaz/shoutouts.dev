@@ -23,7 +23,7 @@
     <div class="w-full min-h-32 lg:w-1/2 lg:pl-2">
       <p class="text-sm text-gray-400 mb-4">Preview</p>
       <%= if @changeset.valid? do %>
-      <div class="text-3xl shoutout pl-8"><%= text_to_html(@changeset.changes.text) %></div>
+      <div class="text-3xl shoutout pl-8"><%= text_to_html(render_emojis(@changeset.changes.text)) %></div>
       <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
         <div>
           <p class="font-bold text-2xl"><%= @current_user.name %></p>
