@@ -44,7 +44,8 @@ defmodule Shoutouts.MixProject do
       {:hackney, "~> 1.16.0"},
       {:uuid, "~> 1.1"},
       {:vapor, "~> 0.10"},
-      {:distillery, "~> 2.0"}
+      {:distillery, "~> 2.0"},
+      {:exmoji, "~> 0.3.0"}  # might fit better on _web but it depends on jason
     ]
   end
 
