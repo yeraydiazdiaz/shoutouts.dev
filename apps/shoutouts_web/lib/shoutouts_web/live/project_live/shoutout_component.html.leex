@@ -1,7 +1,7 @@
 <div class="relative flex flex-row pb-8 lg:mr-16">
   <div>
     <div class="shoutout text-2xl md:text-3xl mb-3 pl-4<%= if @shoutout.flagged do %> text-gray-400<% end %>">
-      <%= text_to_html(@shoutout.text) %>
+      <%= text_to_html(render_emojis(@shoutout.text)) %>
     </div>
     <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
       <div class="<%= if @shoutout.flagged do %>text-gray-400<% end %>">
