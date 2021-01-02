@@ -22,6 +22,7 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
+      "--watch",
       "--watch-options-stdin",
       cd: Path.expand("../apps/shoutouts_web/assets", __DIR__)
     ]
