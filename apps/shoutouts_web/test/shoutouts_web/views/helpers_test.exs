@@ -17,4 +17,8 @@ defmodule ShoutoutsWeb.HelpersTest do
   test "trims leading and trailing whitespace" do
     assert Helpers.render_emojis(" << space here :skull: space here >> ") == "<< space here 💀 space here >>"
   end
+
+  test "returns the colon substring if no such emoji exists" do
+    assert Helpers.render_emojis(":foobar: aint no emoji") == ":foobar: aint no emoji"
+  end
 end

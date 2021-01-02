@@ -20,9 +20,11 @@ defmodule ShoutoutsWeb.Helpers do
   end
 
   def convert_emoji(word) do
-    case Regex.run(~r/:(\w+):/, word) do
-      nil -> word
-      [_, short_name ] -> Exmoji.from_short_name(short_name) |> Exmoji.EmojiChar.render
+    with [_, short_name ] <- Regex.run(~r/:(\w+):/, word),
+      emoji_char when emoji_char != nil <- Exmoji.from_short_name(short_name)
+      do Exmoji.EmojiChar.render(emoji_char)
+    else
+      _ -> word
     end
   end
 end
