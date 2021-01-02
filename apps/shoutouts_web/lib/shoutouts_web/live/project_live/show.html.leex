@@ -149,8 +149,8 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     <p class="text-lg mb-12">Sorry, owners cannot leave shoutouts for their own projects.</p>
     <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
   <% @user_shoutout -> %>
-    <p class="text-lg mb-12">Thanks, but you have already left a shoutout for this project:</p>
-    <div class="text-3xl shoutout pl-8 mb-12"><%= text_to_html(@user_shoutout.text) %></div>
+    <p class="text-lg mb-12">You already left a shoutout for this project, maybe you can encourage other users to add one?</p>
+    <div class="text-3xl shoutout pl-8 mb-12"><%= text_to_html(render_emojis(@user_shoutout.text)) %></div>
     <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
   <% true -> %>
     <%= live_component @socket, ShoutoutsWeb.ProjectLive.FormComponent, id: @project.id, project: @project, current_user: @current_user, current_user_id: @current_user_id %>
