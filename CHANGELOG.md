@@ -1,5 +1,9 @@
 # Changelog
 
+## [21.1.3] - 2021-01-04
+
+- Render :colon-emojis: on descriptions and shoutouts.
+
 ## [21.1.2] - 2021-01-01
 
 - Fix CSP for avatars in production.
