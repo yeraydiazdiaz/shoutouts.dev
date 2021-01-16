@@ -26,7 +26,7 @@ RUN \
     dpkg -i erlang-solutions_2.0_all.deb && \
     rm erlang-solutions_2.0_all.deb && \
     apt-get update -y && \
-    apt-get install -y erlang elixir npm
+    apt-get install -y erlang elixir npm build-essential ca-certificates curl
 
 # Install updated versions of hex/rebar
 RUN mix local.rebar --force
