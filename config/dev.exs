@@ -80,3 +80,6 @@ config :plug_content_security_policy,
     script_src: ~w('self' https://plausible.io),
     connect_src: ~w('self' ws: https://plausible.io),
   }
+
+config :appsignal, :config,
+  active: false
