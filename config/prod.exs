@@ -75,3 +75,5 @@ config :plug_content_security_policy,
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
 import_config "prod.secret.exs"
+
+config :appsignal, :config, active: true

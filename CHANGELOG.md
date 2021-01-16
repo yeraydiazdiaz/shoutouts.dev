@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add AppSignal. Thanks!
+
 ## [21.1.3] - 2021-01-04
 
 - Render :colon-emojis: on descriptions and shoutouts.

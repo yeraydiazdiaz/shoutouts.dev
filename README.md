@@ -97,3 +97,8 @@ configuration variables.
 
 Additionally a GitHub API token is used to retrieve public information about
 the user.
+
+## Sponsors
+
+[AppSignal](https://appsignal.com), graciously provides free monitoring through
+their [Open-Source and "For Good" initiative](https://appsignal.com/open-source).

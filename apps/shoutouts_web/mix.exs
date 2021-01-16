@@ -55,7 +55,8 @@ defmodule ShoutoutsWeb.MixProject do
       {:plug_cowboy, "~> 2.3"},
       {:ueberauth_github, "~> 0.8"},
       {:sentry, "~> 8.0"},
-      {:plug_content_security_policy, "~> 0.2"}
+      {:plug_content_security_policy, "~> 0.2"},
+      {:appsignal_phoenix, "~> 2.0"}
     ]
   end
 
