@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Render colon emojis on search results
+
 ## [21.1.4] - 2021-01-16
 
 - Add AppSignal. Thanks!

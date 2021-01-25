@@ -8,7 +8,7 @@
       <div class="flex flex-col md:flex-row items-center justify-between border-t border-gray-700">
         <div class="w-full">
           <div class="text-xl h-8 text-dark font-bold p-2 mb-2 leading-none hover:underline"><%= Projects.name_with_owner(result) %></div>
-          <div class="text-sm px-2"><%= result.description %></div>
+          <div class="text-sm px-2"><%= render_emojis result.description %></div>
         </div>
         <div class="h-6 text-sm text-gray-500 h-1 pt-2 px-2 leading-none"><%= result.primary_language %></div>
       </div>
