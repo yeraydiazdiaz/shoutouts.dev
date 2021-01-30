@@ -50,7 +50,6 @@ RUN npm install
 WORKDIR /opt/build
 
 # Copy all the app files
-ARG COOKIE
 COPY . /opt/build/
 
 CMD ["/bin/bash"]

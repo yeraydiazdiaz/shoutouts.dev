@@ -2,10 +2,12 @@ version: "3.4"
 
 services:
   app:
+    image: shoutouts
+    environment:
+      COOKIE: ${COOKIE}
+      APPSIGNAL_PUSH_API_KEY: ${APPSIGNAL_PUSH_API_KEY}
     build:
       context: ../
       dockerfile: docker/Dockerfile
-      args:
-        COOKIE: ${COOKIE}
     volumes:
     - ../rel/artifacts:/opt/build/rel/artifacts
