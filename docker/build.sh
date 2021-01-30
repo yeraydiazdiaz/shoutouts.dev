@@ -14,6 +14,7 @@ mkdir -p /opt/app/rel/artifacts
 export MIX_ENV=prod
 
 # Fetch deps and compile
+mix deps.clean appsignal  # workaround for https://github.com/appsignal/appsignal-elixir/issues/254
 mix deps.get
 # Maybe run an explicit clean to remove any build artifacts from the host?
 mix compile
