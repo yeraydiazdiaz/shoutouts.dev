@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Fix AppSignal configuration.
 - Render colon emojis on search results
 
 ## [21.1.4] - 2021-01-16
