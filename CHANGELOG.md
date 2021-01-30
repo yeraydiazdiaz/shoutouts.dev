@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.1.5] - 2021-01-30
 
 - Fix AppSignal configuration.
 - Render colon emojis on search results
