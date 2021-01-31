@@ -14,6 +14,11 @@ config :shoutouts,
   ecto_repos: [Shoutouts.Repo],
   env: Mix.env()
 
+config :shoutouts, Shoutouts.Scheduler,
+  jobs: [
+    {"* * * * *", fn -> IO.inspect("Hello from quantum") end}
+  ]
+
 config :shoutouts_web,
   ecto_repos: [Shoutouts.Repo],
   generators: [context_app: :shoutouts]
@@ -70,6 +75,7 @@ config :appsignal, :config,
   push_api_key: System.get_env("APPSIGNAL_PUSH_API_KEY"),
   env: Mix.env,
   active: false
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
