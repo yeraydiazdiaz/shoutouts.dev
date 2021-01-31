@@ -46,7 +46,8 @@ defmodule Shoutouts.MixProject do
       {:vapor, "~> 0.10"},
       {:distillery, "~> 2.0"},
       {:exmoji, "~> 0.3.0"},  # might fit better on _web but it depends on jason
-      {:appsignal, "~> 2.0"}
+      {:appsignal, "~> 2.0"},
+      {:quantum, "~> 3.0"}
     ]
   end
 
