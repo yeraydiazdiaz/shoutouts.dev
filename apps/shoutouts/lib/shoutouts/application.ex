@@ -14,7 +14,8 @@ defmodule Shoutouts.Application do
     children = [
       Shoutouts.ProcessRegistry,
       Shoutouts.Repo,
-      Shoutouts.ProjectCache
+      Shoutouts.ProjectCache,
+      Shoutouts.Scheduler,
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Shoutouts.Supervisor)
