@@ -42,7 +42,6 @@ config :ueberauth, Ueberauth,
       {Ueberauth.Strategy.Github,
        [
          default_scope: "user,public_repo,notifications",
-         allow_private_emails: true
        ]}
   ]
 
