@@ -273,4 +273,13 @@ defmodule Shoutouts.Projects do
 
     Repo.all(query)
   end
+
+  def refresh_project(project, provider_app) do
+    client = provider_app.client()
+    with {:ok, project_info} <- provider_app.project_info(client, project.owner, project.name) do
+      update_project(project, project_info)
+    else
+      {:error, response} -> {:error, response}
+    end
+  end
 end

@@ -1,6 +1,9 @@
 defmodule Shoutouts.ProjectsTest do
   use Shoutouts.DataCase, async: true
 
+  import Mox
+  setup :verify_on_exit!
+
   alias Shoutouts.Factory
   alias Shoutouts.Projects
   alias Shoutouts.Projects.Project
@@ -181,6 +184,39 @@ defmodule Shoutouts.ProjectsTest do
       assert p1.name == "p1"
       assert p2.owner == "bob"
       assert p2.name == "p2"
+    end
+  end
+
+  describe "refresh project" do
+    test "updates project information" do
+      project = Factory.insert(:project, description: "Old description")
+
+      Shoutouts.MockProviderApp
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProviderApp
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, %{"description" => "New description"}}
+      end)
+
+      {:ok, updated_project} = Projects.refresh_project(project, Shoutouts.MockProviderApp)
+
+      assert updated_project.description == "New description"
+    end
+
+    test "does not update project on error" do
+      project = Factory.insert(:project, description: "Old description")
+
+      Shoutouts.MockProviderApp
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProviderApp
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:error, %Tesla.Env{status: 500}}
+      end)
+
+      {:error, _} = Projects.refresh_project(project, Shoutouts.MockProviderApp)
+      assert Projects.get_project!(project.id) == project
     end
   end
 end
