@@ -10,6 +10,8 @@ config :shoutouts, Shoutouts.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :shoutouts, :github_token, "1234"
+
 # Configure the Tesla Mock adapter in tests
 config :tesla, adapter: Tesla.Mock
 
