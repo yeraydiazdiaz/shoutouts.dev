@@ -24,7 +24,7 @@ defmodule ShoutoutsWeb.MixProject do
   def application do
     [
       mod: {ShoutoutsWeb.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth_github]
+      extra_applications: [:logger, :runtime_tools, :ueberauth_github, :shoutouts]
     ]
   end
 
