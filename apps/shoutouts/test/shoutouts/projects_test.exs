@@ -191,15 +191,15 @@ defmodule Shoutouts.ProjectsTest do
     test "updates project information" do
       project = Factory.insert(:project, description: "Old description")
 
-      Shoutouts.MockProviderApp
+      Shoutouts.MockProvider
       |> expect(:client, fn -> Tesla.Client end)
 
-      Shoutouts.MockProviderApp
+      Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
         {:ok, %{"description" => "New description"}}
       end)
 
-      {:ok, updated_project} = Projects.refresh_project(project, Shoutouts.MockProviderApp)
+      {:ok, updated_project} = Projects.refresh_project(project)
 
       assert updated_project.description == "New description"
     end
@@ -207,16 +207,34 @@ defmodule Shoutouts.ProjectsTest do
     test "does not update project on error" do
       project = Factory.insert(:project, description: "Old description")
 
-      Shoutouts.MockProviderApp
+      Shoutouts.MockProvider
       |> expect(:client, fn -> Tesla.Client end)
 
-      Shoutouts.MockProviderApp
+      Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
         {:error, %Tesla.Env{status: 500}}
       end)
 
-      {:error, _} = Projects.refresh_project(project, Shoutouts.MockProviderApp)
+      {:error, _} = Projects.refresh_project(project)
       assert Projects.get_project!(project.id) == project
     end
+  end
+
+  test "refresh all projects" do
+    project = Factory.insert(:project, description: "Old description")
+
+    Shoutouts.MockProvider
+    |> expect(:client, fn -> Tesla.Client end)
+
+    Shoutouts.MockProvider
+    |> expect(:project_info, fn _client, _owner, _name ->
+      {:ok, %{"description" => "New description"}}
+    end)
+
+    {:ok, errors} = Projects.refresh_all_projects()
+
+    assert errors == []
+    updated_project = Projects.get_project!(project.id)
+    assert updated_project.description == "New description"
   end
 end

@@ -12,6 +12,8 @@ config :shoutouts, Shoutouts.Repo,
 
 config :shoutouts, :github_token, "1234"
 
+config :shoutouts, :default_provider, Shoutouts.MockProvider
+
 # Configure the Tesla Mock adapter in tests
 config :tesla, adapter: Tesla.Mock
 

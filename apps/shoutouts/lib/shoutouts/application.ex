@@ -14,7 +14,6 @@ defmodule Shoutouts.Application do
     children = [
       Shoutouts.ProcessRegistry,
       Shoutouts.Repo,
-      Shoutouts.ProjectCache,
       Shoutouts.Scheduler,
     ]
 
