@@ -2,11 +2,12 @@ defmodule Shoutouts.Projects do
   @moduledoc """
   The Projects context.
   """
-
+  require Logger
   import Ecto.Query, warn: false
   alias Shoutouts.Repo
 
   alias Shoutouts.Projects.Project
+  alias Shoutouts.Provider
   alias Shoutouts.Shoutouts.Shoutout
   @default_order [desc: :inserted_at]
 
@@ -274,9 +275,54 @@ defmodule Shoutouts.Projects do
     Repo.all(query)
   end
 
-  def refresh_project(project, provider_app) do
-    client = provider_app.client()
-    with {:ok, project_info} <- provider_app.project_info(client, project.owner, project.name) do
+  @doc """
+  Returns the provider module for a specific user.
+  """
+  def provider_for_user(_user) do
+    # TOOD: Returns the provider for a particular user
+    # Would it be possible for a single user to have more than one provider?
+    Application.get_env(:shoutouts, :default_provider, Shoutouts.Providers.GitHub)
+  end
+
+  @doc """
+  Returns the user's repositories on the speficied provider.
+  """
+  def user_repositories(user) do
+    provider_for_user(user)
+    |> Provider.user_repositories(user.username)
+  end
+
+  @doc """
+  Returns a project's information user's repositories on the speficied provider.
+  """
+  def project_info(user, owner, name) do
+    provider_for_user(user)
+    |> Provider.project_info(owner, name)
+  end
+
+  def refresh_all_projects() do
+    errors = Repo.all(
+      from(p in Project,
+        order_by: ^@default_order
+      )
+    )
+    |> Enum.reduce([], fn project, errors ->
+      with {:ok, project} <- refresh_project(project) do
+        Logger.info("Updated #{project.owner}/#{project.name}")
+        errors
+      else
+        {:error, _response} -> Logger.error("Could not update project")
+        [project.id | errors]
+      end
+    end)
+    case length(errors) do
+      0 -> {:ok, []}
+      errors -> {:error, errors}
+    end
+  end
+
+  def refresh_project(project) do
+    with {:ok, project_info} <- provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
       update_project(project, project_info)
     else
       {:error, response} -> {:error, response}

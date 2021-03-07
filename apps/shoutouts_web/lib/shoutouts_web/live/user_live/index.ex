@@ -3,7 +3,6 @@ defmodule ShoutoutsWeb.UserLive.Index do
 
   require Logger
 
-  alias Shoutouts.GitHubApp
   alias Shoutouts.Accounts
   alias Shoutouts.Projects
   alias Shoutouts.Shoutouts
@@ -75,9 +74,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
     Logger.debug("Add projects for logged in user")
     %{assigns: %{current_user: user}} = socket = get_user(socket, current_user_id)
 
-    possible_repos =
-      GitHubApp.client()
-      |> GitHubApp.user_repositories(user.username)
+    possible_repos = Projects.user_repositories(user)
 
     case possible_repos do
       {:ok, possible_repos} ->
@@ -185,12 +182,10 @@ defmodule ShoutoutsWeb.UserLive.Index do
   end
 
   defp create_projects(repos, current_user) do
-    client = GitHubApp.client()
-
     Map.keys(repos)
     |> Stream.map(&String.split(&1, "/"))
     |> Stream.map(fn [owner, name] ->
-      Task.async(fn -> GitHubApp.project_info(client, owner, name) end)
+      Task.async(fn -> Projects.project_info(current_user, owner, name) end)
     end)
     |> Stream.map(&Task.await/1)
     |> Stream.map(fn {:ok, attrs} -> Projects.create_project(current_user, attrs) end)

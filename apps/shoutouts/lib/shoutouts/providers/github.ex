@@ -1,18 +1,23 @@
-defmodule Shoutouts.GitHubApp do
+defmodule Shoutouts.Providers.GitHub do
   @moduledoc """
   Functions that interact with the GitHub API.
 
   This module requires a personal access token.
   """
+  @behaviour Shoutouts.Provider
+  alias Shoutouts.Providers.ProviderProject
+
   @base_middlewares [
     {Tesla.Middleware.BaseUrl, "https://api.github.com/"},
     Tesla.Middleware.JSON
   ]
 
+  @impl true
   def client() do
     client(Application.get_env(:shoutouts, :github_token))
   end
 
+  @impl true
   def client(token) do
     (@base_middlewares ++
        [
@@ -46,16 +51,7 @@ defmodule Shoutouts.GitHubApp do
     end
   end
 
-  @doc """
-  Returns a list of owner/name string for repos owned by the user.
-
-  Note this includes co-owned repos.
-
-  ## Examples
-
-    iex> client() |> user_repositories("yeraydiazdiaz")
-    {:ok, ["yeraydiazdiaz/shoutouts.dev", "yeraydiazdiaz/lunr.py"]}
-  """
+  @impl true
   def user_repositories(client, login, cursor \\ nil) do
     # TODO: affiliations don't seem to include collaborations?
     after_param =
@@ -103,11 +99,13 @@ defmodule Shoutouts.GitHubApp do
     end
   end
 
+  @impl true
   def project_info(client, repo_with_owner) do
     [owner, name] = String.split(repo_with_owner, "/")
     project_info(client, owner, name)
   end
 
+  @impl true
   def project_info(client, owner, name) do
     query = """
     {
@@ -145,19 +143,19 @@ defmodule Shoutouts.GitHubApp do
       repo = response["data"]["repository"]
       {:ok, parse_repo(repo)}
     else
-      response -> {:error, response}
+      {:error, response} -> {:error, response}
     end
   end
 
   def parse_repo(nil) do
-    {:error, :no_such_repo}
+    :no_such_repo
   end
 
   def parse_repo(repo) do
     {:ok, created_at, _} = DateTime.from_iso8601(repo["createdAt"])
     {:ok, updated_at, _} = DateTime.from_iso8601(repo["updatedAt"])
 
-    %{
+    %ProviderProject{
       provider_id: repo["databaseId"],
       owner: repo["owner"]["login"],
       name: repo["name"],

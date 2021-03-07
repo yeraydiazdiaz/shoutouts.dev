@@ -12,11 +12,12 @@ use Mix.Config
 # Configure Mix tasks and generators
 config :shoutouts,
   ecto_repos: [Shoutouts.Repo],
+  default_provider: Shoutouts.Providers.GitHub,
   env: Mix.env()
 
 config :shoutouts, Shoutouts.Scheduler,
   jobs: [
-    {"* * * * *", fn -> IO.inspect("Hello from quantum") end}
+    # {"* * * * *", fn -> IO.inspect("Hello from quantum") end}
   ]
 
 config :shoutouts_web,
