@@ -17,7 +17,7 @@ config :shoutouts,
 
 config :shoutouts, Shoutouts.Scheduler,
   jobs: [
-    # {"* * * * *", fn -> IO.inspect("Hello from quantum") end}
+    # {"* * * * *", {Shoutouts.Projects, :refresh_all_projects, []}}
   ]
 
 config :shoutouts_web,
