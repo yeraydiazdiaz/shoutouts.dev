@@ -196,7 +196,14 @@ defmodule Shoutouts.ProjectsTest do
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
-        {:ok, %{"description" => "New description"}}
+      {:ok, %Shoutouts.Providers.ProviderProject{
+        description: "New description",
+        provider_id: project.provider_id,
+        owner: project.owner,
+        name: project.name,
+        url: project.url,
+        primary_language: project.primary_language,
+      }}
       end)
 
       {:ok, updated_project} = Projects.refresh_project(project)
@@ -228,7 +235,14 @@ defmodule Shoutouts.ProjectsTest do
 
     Shoutouts.MockProvider
     |> expect(:project_info, fn _client, _owner, _name ->
-      {:ok, %{"description" => "New description"}}
+      {:ok, %Shoutouts.Providers.ProviderProject{
+        description: "New description",
+        provider_id: project.provider_id,
+        owner: project.owner,
+        name: project.name,
+        url: project.url,
+        primary_language: project.primary_language,
+      }}
     end)
 
     {:ok, errors} = Projects.refresh_all_projects()

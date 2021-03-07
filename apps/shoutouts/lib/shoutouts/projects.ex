@@ -4,8 +4,8 @@ defmodule Shoutouts.Projects do
   """
   require Logger
   import Ecto.Query, warn: false
-  alias Shoutouts.Repo
 
+  alias Shoutouts.Repo
   alias Shoutouts.Projects.Project
   alias Shoutouts.Provider
   alias Shoutouts.Shoutouts.Shoutout
@@ -323,7 +323,7 @@ defmodule Shoutouts.Projects do
 
   def refresh_project(project) do
     with {:ok, project_info} <- provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
-      update_project(project, project_info)
+      update_project(project, Map.from_struct(project_info))
     else
       {:error, response} -> {:error, response}
     end
