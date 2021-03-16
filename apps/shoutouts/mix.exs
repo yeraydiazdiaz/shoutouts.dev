@@ -41,7 +41,7 @@ defmodule Shoutouts.MixProject do
       {:jason, "~> 1.0"},
       {:ex_machina, "~> 2.4"},
       {:tesla, "~> 1.3.0"},
-      {:hackney, "~> 1.16.0"},
+      {:hackney, "~> 1.17.1"},
       {:uuid, "~> 1.1"},
       {:vapor, "~> 0.10"},
       {:distillery, "~> 2.0"},
