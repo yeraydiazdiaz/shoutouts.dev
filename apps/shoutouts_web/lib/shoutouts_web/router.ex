@@ -58,22 +58,24 @@ defmodule ShoutoutsWeb.Router do
   # as long as you are also using SSL (which you should anyway).
   import Phoenix.LiveDashboard.Router
 
-  pipeline :dashboard do
-    plug :dashboard_auth
-  end
+  if Mix.env() == :dev do
+    pipeline :dashboard do
+      plug :dashboard_auth
+    end
 
-  defp dashboard_auth(conn, _opts) do
-    creds = Application.get_env(:shoutouts_web, :dashboard_auth)
-    Plug.BasicAuth.basic_auth(conn, creds)
-  end
+    defp dashboard_auth(conn, _opts) do
+      creds = Application.get_env(:shoutouts_web, :dashboard_auth)
+      Plug.BasicAuth.basic_auth(conn, creds)
+    end
 
-  scope "/dashboard" do
-    pipe_through(:browser)
-    pipe_through(:dashboard)
+    scope "/dashboard" do
+      pipe_through(:browser)
+      pipe_through(:dashboard)
 
-    live_dashboard("/",
-      metrics: ShoutoutsWeb.Telemetry,
-      ecto_repos: [Shoutouts.Repo]
-    )
+      live_dashboard("/",
+        metrics: ShoutoutsWeb.Telemetry,
+        ecto_repos: [Shoutouts.Repo]
+      )
+    end
   end
 end
