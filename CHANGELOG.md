@@ -1,9 +1,13 @@
 # Changelog
 
+## [21.1.6] - 2021-03-20
+
+- Dashboard endpoint available only in dev.
+
 ## [21.1.5] - 2021-01-30
 
 - Fix AppSignal configuration.
-- Render colon emojis on search results
+- Render colon emojis on search results.
 
 ## [21.1.4] - 2021-01-16
 
