@@ -227,28 +227,47 @@ defmodule Shoutouts.ProjectsTest do
     end
   end
 
-  test "refresh all projects" do
-    project = Factory.insert(:project, description: "Old description")
+  describe "refresh all projects" do
 
-    Shoutouts.MockProvider
-    |> expect(:client, fn -> Tesla.Client end)
+    test "updates projects" do
+      project = Factory.insert(:project, description: "Old description")
 
-    Shoutouts.MockProvider
-    |> expect(:project_info, fn _client, _owner, _name ->
-      {:ok, %Shoutouts.Providers.ProviderProject{
-        description: "New description",
-        provider_id: project.provider_id,
-        owner: project.owner,
-        name: project.name,
-        url: project.url,
-        primary_language: project.primary_language,
-      }}
-    end)
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
 
-    {:ok, errors} = Projects.refresh_all_projects()
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, %Shoutouts.Providers.ProviderProject{
+          description: "New description",
+          provider_id: project.provider_id,
+          owner: project.owner,
+          name: project.name,
+          url: project.url,
+          primary_language: project.primary_language,
+        }}
+      end)
 
-    assert errors == []
-    updated_project = Projects.get_project!(project.id)
-    assert updated_project.description == "New description"
+      {:ok, errors} = Projects.refresh_all_projects()
+
+      assert errors == []
+      updated_project = Projects.get_project!(project.id)
+      assert updated_project.description == "New description"
+    end
+
+    test "returns a list of project IDs that generated errors" do
+      project = Factory.insert(:project, description: "Old description")
+
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:error, "Boom!"}
+      end)
+
+      {:error, errors} = Projects.refresh_all_projects()
+
+      assert errors == [project.id]
+    end
   end
 end
