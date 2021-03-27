@@ -300,12 +300,17 @@ defmodule Shoutouts.Projects do
     |> Provider.project_info(owner, name)
   end
 
-  def refresh_all_projects() do
-    errors = Repo.all(
-      from(p in Project,
-        order_by: ^@default_order
-      )
+  def refresh_all_projects(limit \\ 0) do
+    base_query = from(p in Project,
+      order_by: ^@default_order
     )
+    query = if limit > 0 do
+      from(base_query, limit: ^limit)
+    else
+      base_query
+    end
+
+    errors = Repo.all(query)
     |> Enum.reduce([], fn project, errors ->
       with {:ok, project} <- refresh_project(project) do
         Logger.info("Updated #{project.owner}/#{project.name}")
