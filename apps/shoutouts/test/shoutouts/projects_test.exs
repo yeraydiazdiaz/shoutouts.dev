@@ -269,5 +269,33 @@ defmodule Shoutouts.ProjectsTest do
 
       assert errors == [project.id]
     end
+
+    test "updates a number of projects if provided" do
+      project_to_update = Factory.insert(:project, description: "Old description")
+      project_not_to_update = Factory.insert(:project)
+
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, %Shoutouts.Providers.ProviderProject{
+          description: "New description",
+          provider_id: project_to_update.provider_id,
+          owner: project_to_update.owner,
+          name: project_to_update.name,
+          url: project_to_update.url,
+          primary_language: project_to_update.primary_language,
+        }}
+      end)
+
+      {:ok, errors} = Projects.refresh_all_projects(1)
+
+      assert errors == []
+      updated_project = Projects.get_project!(project_to_update.id)
+      assert updated_project.description == "New description"
+      not_updated_project = Projects.get_project!(project_not_to_update.id)
+      assert not_updated_project.description == project_not_to_update.description
+    end
   end
 end
