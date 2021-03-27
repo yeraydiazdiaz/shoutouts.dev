@@ -45,6 +45,9 @@ The configuration is split in several files in the `config` directory.
 via [Vapor](https://github.com/keathley/vapor), check each sub-app's
 `application.exs` for more details.
 
+Vapor will read from `config.yaml` placed in the project root, copy the
+`config.template.yaml` file and edit accordingly.
+
 ### Frontend
 
 We use Tailwind CSS and some vanilla JS in conjunction with Phoenix's JS library.
