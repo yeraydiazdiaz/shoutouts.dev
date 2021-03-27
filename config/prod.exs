@@ -2,6 +2,11 @@ use Mix.Config
 
 config :shoutouts, :env, :prod
 
+config :shoutouts, Shoutouts.Scheduler,
+  jobs: [
+    {"39 1 */3 * *", {Shoutouts.Projects, :refresh_all_projects, [100]}}
+  ]
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.

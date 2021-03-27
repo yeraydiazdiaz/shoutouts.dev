@@ -15,11 +15,6 @@ config :shoutouts,
   default_provider: Shoutouts.Providers.GitHub,
   env: Mix.env()
 
-config :shoutouts, Shoutouts.Scheduler,
-  jobs: [
-    # {"* * * * *", {Shoutouts.Projects, :refresh_all_projects, []}}
-  ]
-
 config :shoutouts_web,
   ecto_repos: [Shoutouts.Repo],
   generators: [context_app: :shoutouts]
