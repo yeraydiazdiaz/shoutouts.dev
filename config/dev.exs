@@ -7,6 +7,11 @@ config :shoutouts, Shoutouts.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :shoutouts, Shoutouts.Scheduler,
+  jobs: [
+    # {"*/2 * * * *", {Shoutouts.Projects, :refresh_all_projects, []}}
+  ]
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
