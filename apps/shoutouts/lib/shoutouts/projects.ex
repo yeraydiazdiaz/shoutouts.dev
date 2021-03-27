@@ -317,7 +317,7 @@ defmodule Shoutouts.Projects do
     end)
     case length(errors) do
       0 -> {:ok, []}
-      errors -> {:error, errors}
+      _ -> {:error, errors}
     end
   end
 
