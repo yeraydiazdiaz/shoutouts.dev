@@ -1,5 +1,9 @@
 # Changelog
 
+## [21.1.7] - 2021-03-28
+
+- Added background task to update projects.
+
 ## [21.1.6] - 2021-03-20
 
 - Dashboard endpoint available only in dev.
