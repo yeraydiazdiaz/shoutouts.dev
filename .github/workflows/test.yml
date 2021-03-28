@@ -22,5 +22,6 @@ jobs:
         with:
           otp-version: '23'
           elixir-version: '1.11.2'
+      - run: cp config.template.yaml config.yaml
       - run: mix deps.get
       - run: mix test
