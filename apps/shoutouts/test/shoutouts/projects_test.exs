@@ -196,14 +196,15 @@ defmodule Shoutouts.ProjectsTest do
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
-      {:ok, %Shoutouts.Providers.ProviderProject{
-        description: "New description",
-        provider_id: project.provider_id,
-        owner: project.owner,
-        name: project.name,
-        url: project.url,
-        primary_language: project.primary_language,
-      }}
+        {:ok,
+         %Shoutouts.Providers.ProviderProject{
+           description: "New description",
+           provider_id: project.provider_id,
+           owner: project.owner,
+           name: project.name,
+           url: project.url,
+           primary_language: project.primary_language
+         }}
       end)
 
       {:ok, updated_project} = Projects.refresh_project(project)
@@ -228,7 +229,6 @@ defmodule Shoutouts.ProjectsTest do
   end
 
   describe "refresh projects" do
-
     test "updates projects from data in provider's API" do
       project = Factory.insert(:project, description: "Old description")
 
@@ -237,14 +237,15 @@ defmodule Shoutouts.ProjectsTest do
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
-        {:ok, %Shoutouts.Providers.ProviderProject{
-          description: "New description",
-          provider_id: project.provider_id,
-          owner: project.owner,
-          name: project.name,
-          url: project.url,
-          primary_language: project.primary_language,
-        }}
+        {:ok,
+         %Shoutouts.Providers.ProviderProject{
+           description: "New description",
+           provider_id: project.provider_id,
+           owner: project.owner,
+           name: project.name,
+           url: project.url,
+           primary_language: project.primary_language
+         }}
       end)
 
       {:ok, errors} = Projects.refresh_projects(0)
@@ -279,14 +280,15 @@ defmodule Shoutouts.ProjectsTest do
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
-        {:ok, %Shoutouts.Providers.ProviderProject{
-          description: "New description",
-          provider_id: project_to_update.provider_id,
-          owner: project_to_update.owner,
-          name: project_to_update.name,
-          url: project_to_update.url,
-          primary_language: project_to_update.primary_language,
-        }}
+        {:ok,
+         %Shoutouts.Providers.ProviderProject{
+           description: "New description",
+           provider_id: project_to_update.provider_id,
+           owner: project_to_update.owner,
+           name: project_to_update.name,
+           url: project_to_update.url,
+           primary_language: project_to_update.primary_language
+         }}
       end)
 
       {:ok, errors} = Projects.refresh_projects(0, 1)
