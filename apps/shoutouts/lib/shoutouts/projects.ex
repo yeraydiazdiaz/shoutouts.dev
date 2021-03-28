@@ -300,26 +300,37 @@ defmodule Shoutouts.Projects do
     |> Provider.project_info(owner, name)
   end
 
-  def refresh_all_projects(limit \\ 0) do
-    base_query = from(p in Project,
-      order_by: ^@default_order
-    )
-    query = if limit > 0 do
-      from(base_query, limit: ^limit)
-    else
-      base_query
-    end
+  def refresh_projects(days_since_last_update, limit \\ 0) do
+    update_at_threshold = DateTime.add(DateTime.utc_now(), -days_since_last_update * 60 * 3600)
 
-    errors = Repo.all(query)
-    |> Enum.reduce([], fn project, errors ->
-      with {:ok, project} <- refresh_project(project) do
-        Logger.info("Updated #{project.owner}/#{project.name}")
-        errors
+    base_query =
+      from(p in Project,
+        where:
+          (not is_nil(p.updated_at) and p.updated_at <= ^update_at_threshold) or
+            p.inserted_at <= ^update_at_threshold,
+        order_by: ^@default_order
+      )
+
+    query =
+      if limit > 0 do
+        from(base_query, limit: ^limit)
       else
-        {:error, _response} -> Logger.error("Could not update project")
-        [project.id | errors]
+        base_query
       end
-    end)
+
+    errors =
+      Repo.all(query)
+      |> Enum.reduce([], fn project, errors ->
+        with {:ok, project} <- refresh_project(project) do
+          Logger.info("Updated #{project.owner}/#{project.name}")
+          errors
+        else
+          {:error, _response} ->
+            Logger.error("Could not update project")
+            [project.id | errors]
+        end
+      end)
+
     case length(errors) do
       0 -> {:ok, []}
       _ -> {:error, errors}
@@ -327,7 +338,8 @@ defmodule Shoutouts.Projects do
   end
 
   def refresh_project(project) do
-    with {:ok, project_info} <- provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
+    with {:ok, project_info} <-
+           provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
       update_project(project, Map.from_struct(project_info))
     else
       {:error, response} -> {:error, response}
