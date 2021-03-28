@@ -9,7 +9,7 @@ config :shoutouts, Shoutouts.Repo,
 
 config :shoutouts, Shoutouts.Scheduler,
   jobs: [
-    # {"*/2 * * * *", {Shoutouts.Projects, :refresh_all_projects, []}}
+    # {"*/2 * * * *", {Shoutouts.Projects, :refresh_projects, [7]}}
   ]
 
 # For development, we disable any cache and enable
