@@ -227,9 +227,9 @@ defmodule Shoutouts.ProjectsTest do
     end
   end
 
-  describe "refresh all projects" do
+  describe "refresh projects" do
 
-    test "updates projects" do
+    test "updates projects from data in provider's API" do
       project = Factory.insert(:project, description: "Old description")
 
       Shoutouts.MockProvider
@@ -247,7 +247,7 @@ defmodule Shoutouts.ProjectsTest do
         }}
       end)
 
-      {:ok, errors} = Projects.refresh_all_projects()
+      {:ok, errors} = Projects.refresh_projects(0)
 
       assert errors == []
       updated_project = Projects.get_project!(project.id)
@@ -265,7 +265,7 @@ defmodule Shoutouts.ProjectsTest do
         {:error, "Boom!"}
       end)
 
-      {:error, errors} = Projects.refresh_all_projects()
+      {:error, errors} = Projects.refresh_projects(0)
 
       assert errors == [project.id]
     end
@@ -289,13 +289,23 @@ defmodule Shoutouts.ProjectsTest do
         }}
       end)
 
-      {:ok, errors} = Projects.refresh_all_projects(1)
+      {:ok, errors} = Projects.refresh_projects(0, 1)
 
       assert errors == []
       updated_project = Projects.get_project!(project_to_update.id)
       assert updated_project.description == "New description"
       not_updated_project = Projects.get_project!(project_not_to_update.id)
       assert not_updated_project.description == project_not_to_update.description
+    end
+
+    test "only updates projects with updated_at older than specified days" do
+      project = Factory.insert(:project, description: "Old description")
+
+      {:ok, errors} = Projects.refresh_projects(1)
+
+      assert errors == []
+      not_updated_project = Projects.get_project!(project.id)
+      assert not_updated_project.description == project.description
     end
   end
 end
