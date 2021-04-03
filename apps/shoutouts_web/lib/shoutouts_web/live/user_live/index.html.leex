@@ -110,7 +110,7 @@
     </form>
 
     <%= if length(@existing_repos) > 0 do %>
-      <p class="mt-8 text-primary text-md mb-4">Not finding a project? The following have been already registered by you our another owner:</p>
+      <p class="mt-8 text-primary text-md mb-4">Can't find a project? The following have been already registered by you our another owner:</p>
       <div class="w-full flex flex-row flex-wrap justify-between mb-8">
       <%= for repo <- @existing_repos do %>
         <div><a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, repo.owner, repo.name) %>" class="link"><%= repo.owner %>/<%= repo.name %></a></div>
