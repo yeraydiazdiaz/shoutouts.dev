@@ -309,13 +309,39 @@ defmodule Shoutouts.Shoutouts do
     update_shoutout(shoutout, %{flagged: false})
   end
 
+  @doc """
+  Renders a badge for a project from its owner and name, returns nil if project
+  has no shoutouts.
+
+  ## Examples
+
+      iex> badge_for_project("nope", "definitelynot")
+      nil
+
+      iex> badge_for_project("yeraydiazdiaz", "shoutouts.dev")
+      "<svg....></svg>"
+
+  """
   def badge_for_project(owner, name) do
+    # TODO: write number_of_shoutouts function
     case list_shoutouts_for_project(owner, name) do
+      # TODO: why nil? we should return a badge with 0
       [] -> nil
       shoutouts -> render_badge(length(shoutouts))
     end
   end
 
+  @doc """
+  Renders a badge with the specified number of shoutouts.
+
+  Optionally specify a scale factor, defaults to 1.
+
+  ## Examples
+
+      iex> render_badge(7)
+      "<svg....></svg>"
+
+  """
   def render_badge(num_shoutouts, scale \\ 1) do
     width = 106 * scale
     height = 20 * scale
@@ -363,6 +389,9 @@ defmodule Shoutouts.Shoutouts do
     end
   end
 
+  @doc """
+  Returns the latest pinned shoutouts for the projects with more shoutouts.
+  """
   def shoutouts_for_top_projects(top_n \\ 5) do
     top_projects = from(
       p in Project,
