@@ -29,4 +29,10 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     assert html =~ Routes.faq_show_path(conn, :index)
   end
 
+  test "renders an existing shoutout", %{conn: conn} do
+    shoutout = Factory.insert(:shoutout)
+    {:ok, _view, html} = live(conn, Routes.index_show_path(conn, :show))
+    assert html =~ shoutout.text
+  end
+
 end

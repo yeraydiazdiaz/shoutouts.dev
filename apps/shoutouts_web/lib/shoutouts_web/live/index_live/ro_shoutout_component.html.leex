@@ -1,0 +1,16 @@
+<div class="relative flex flex-row pb-8">
+  <a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @shoutout.project.owner, @shoutout.project.name) %>">
+  <div>
+    <div class="shoutout text-xl md:text-2xl mb-3 pl-4">
+      <%= text_to_html(render_emojis(@shoutout.text)) %>
+    </div>
+    <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
+      <div class="<%= if @shoutout.flagged do %>text-gray-400<% end %>">
+        <p class="font-bold text-xl md:text-2xl"><%= @shoutout.user.name %></p>
+        <%= if @shoutout.user.signature do %><p class="text-sm md:text-md"><%= @shoutout.user.signature %></p><% end %>
+      </div>
+      <img alt="<%= @shoutout.user.username %>s' avatar" class="w-12 h-12 rounded-full ml-4" src="<%= @shoutout.user.avatar_url %>" />
+    </div>
+  </div>
+  </a>
+</div>

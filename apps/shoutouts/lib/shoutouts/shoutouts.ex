@@ -413,7 +413,8 @@ defmodule Shoutouts.Shoutouts do
         on: s.project_id == tp.id,
         join: fs in subquery(first_shoutouts),
         on: s.id == fs.id and fs.row_number == 1,
-        order_by: [desc: tp.count]
+        order_by: [desc: tp.count],
+        preload: [:user, :project]
       )
     )
   end

@@ -16,9 +16,13 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         do: Accounts.get_user!(current_user_id),
         else: nil
 
+    shoutouts = Shoutouts.shoutouts_for_top_projects()
+
     {:ok,
      socket
      |> assign(:badge, Shoutouts.render_badge(13, 1.5))
-     |> assign(:current_user, user)}
+     |> assign(:current_user, user)
+     |> assign(:shoutouts, shoutouts)
+     |> assign(:shoutout, List.first(shoutouts))}
   end
 end
