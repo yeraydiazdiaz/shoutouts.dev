@@ -8,6 +8,7 @@ defmodule Shoutouts.Shoutouts do
 
   alias Shoutouts.Shoutouts.Shoutout
   alias Shoutouts.Shoutouts.Vote
+  alias Shoutouts.Projects.Project
 
   @default_order [desc: :inserted_at]
 
@@ -360,5 +361,31 @@ defmodule Shoutouts.Shoutouts do
       number when number > 1000 -> "#{div(number, 1000)}K"
       number -> "#{number}"
     end
+  end
+
+  def shoutouts_for_top_projects(top_n \\ 5) do
+    top_projects = from(
+      p in Project,
+      left_join: s in assoc(p, :shoutouts),
+      group_by: [p.id],
+      order_by: [desc: count(s.id)],
+      select: %{id: p.id, count: count(s.id)},
+      limit: ^top_n
+    )
+    first_shoutouts = from(
+      s in Shoutout,
+      select: %{id: s.id, row_number: over(row_number(), :project_partition)},
+      windows: [project_partition: [partition_by: :project_id, order_by: [desc: :pinned, desc: :inserted_at]]]
+    )
+    Repo.all(
+      from(
+        s in Shoutout,
+        join: tp in subquery(top_projects),
+        on: s.project_id == tp.id,
+        join: fs in subquery(first_shoutouts),
+        on: s.id == fs.id and fs.row_number == 1,
+        order_by: [desc: tp.count]
+      )
+    )
   end
 end

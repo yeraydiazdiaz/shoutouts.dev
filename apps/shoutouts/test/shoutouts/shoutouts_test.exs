@@ -286,4 +286,29 @@ defmodule Shoutouts.ShoutoutsTest do
       assert [{:shoutout, _}] = changeset.errors
     end
   end
+
+  describe "shoutouts_for_top_projects" do
+
+    test "returns the last pinned shoutout for each top project" do
+      p1 = Factory.insert(:project, %{primary_language: "Elixir"})
+      1..2
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p1}) end)
+
+      p2 = Factory.insert(:project, %{primary_language: "Elixir", owner: "somewhat", name: "popular"})
+      1..3
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p2}) end)
+      p2_shoutout = Factory.insert(:shoutout, %{project: p2, pinned: true}) 
+
+      p3 = Factory.insert(:project, %{primary_language: "Python", owner: "very", name: "popular"})
+      1..4
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p3}) end)
+      p3_shoutout = Factory.insert(:shoutout, %{project: p3, pinned: true}) 
+      Factory.insert(:shoutout, %{project: p3, pinned: false})  # more recent but pinned first
+
+      [s1, s2] = Shoutouts.shoutouts_for_top_projects(2)
+      assert p3_shoutout.id == s1.id
+      assert p2_shoutout.id == s2.id
+    end
+    
+  end
 end
