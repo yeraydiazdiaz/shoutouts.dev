@@ -40,7 +40,7 @@ defmodule Shoutouts.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},
       {:ex_machina, "~> 2.4"},
-      {:tesla, "~> 1.3.0"},
+      {:tesla, "~> 1.4.1"},
       {:hackney, "~> 1.17.3"},
       {:uuid, "~> 1.1"},
       {:vapor, "~> 0.10"},
