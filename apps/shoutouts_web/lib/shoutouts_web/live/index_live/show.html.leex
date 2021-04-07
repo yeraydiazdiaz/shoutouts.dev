@@ -17,9 +17,9 @@
     </p>
     <p class="mt-2"><a class="link" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Search for your favourite projects</a> and write public shoutout letting them know how much you value their work.</p>
   </div>
-  <div class="relative mt-12 h-32 lg:w-1/2 lg:mt-0">
+  <div class="relative mt-12 mb-4 h-48 lg:mb-0 lg:w-1/2 lg:mt-0">
     <%= for i <- 0..length(@shoutouts) - 1 do %>
-      <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, id: Enum.at(@shoutouts, i).id, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
+      <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
     <% end %>
   </div>
 </section>

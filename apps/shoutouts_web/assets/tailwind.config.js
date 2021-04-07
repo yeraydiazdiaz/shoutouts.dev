@@ -31,7 +31,12 @@ module.exports = {
         'bottom': '0px 3px 3px rgba(0, 0, 0, .25)'
       },
       height: {
-        header: '56px'
+        header: '56px',
+        '36': '9rem',
+        '40': '10rem',
+        '44': '11rem',
+        '48': '12rem',
+        '52': '13rem',
       },
       width: {
         '72': '18rem',

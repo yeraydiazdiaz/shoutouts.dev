@@ -29,10 +29,33 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     assert html =~ Routes.faq_show_path(conn, :index)
   end
 
-  test "renders an existing shoutout", %{conn: conn} do
-    shoutout = Factory.insert(:shoutout)
-    {:ok, _view, html} = live(conn, Routes.index_show_path(conn, :show))
-    assert html =~ shoutout.text
+  test "renders existing shoutouts", %{conn: conn} do
+    s1 = Factory.insert(:shoutout)
+    # Force s2 to appear first respecting logic in shoutouts_for_top_projects
+    p1 = Factory.insert(:project)
+    s2 = Factory.insert(:shoutout, %{project: p1, pinned: true})
+    _ = Factory.insert(:shoutout, %{project: p1})
+    {:ok, view, _html} = live(conn, Routes.index_show_path(conn, :show))
+
+    assert view |> element(".opacity-100") |> render() =~ s2.text
+    assert view |> element(".opacity-0") |> render() =~ s1.text
+  end
+
+  test "sending carrousel switch changes visible shoutouts", %{conn: conn} do
+    s1 = Factory.insert(:shoutout)
+    # Force s2 to appear first respecting logic in shoutouts_for_top_projects
+    p1 = Factory.insert(:project)
+    s2 = Factory.insert(:shoutout, %{project: p1, pinned: true})
+    _ = Factory.insert(:shoutout, %{project: p1})
+    {:ok, view, _html} = live(conn, Routes.index_show_path(conn, :show))
+
+    assert view |> element(".opacity-100") |> render() =~ s2.text
+    assert view |> element(".opacity-0") |> render() =~ s1.text
+
+    send(view.pid, :carrousel_switch)
+
+    assert view |> element(".opacity-100") |> render() =~ s1.text
+    assert view |> element(".opacity-0") |> render() =~ s2.text
   end
 
 end
