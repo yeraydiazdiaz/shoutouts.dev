@@ -33,6 +33,11 @@ module.exports = {
       height: {
         header: '56px'
       },
+      width: {
+        '72': '18rem',
+        '80': '20rem',
+        '96': '24rem'
+      },
       maxWidth: {
         'xxs': '14rem'
       },
