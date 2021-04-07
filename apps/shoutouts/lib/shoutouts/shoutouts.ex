@@ -8,6 +8,7 @@ defmodule Shoutouts.Shoutouts do
 
   alias Shoutouts.Shoutouts.Shoutout
   alias Shoutouts.Shoutouts.Vote
+  alias Shoutouts.Projects.Project
 
   @default_order [desc: :inserted_at]
 
@@ -308,13 +309,39 @@ defmodule Shoutouts.Shoutouts do
     update_shoutout(shoutout, %{flagged: false})
   end
 
+  @doc """
+  Renders a badge for a project from its owner and name, returns nil if project
+  has no shoutouts.
+
+  ## Examples
+
+      iex> badge_for_project("nope", "definitelynot")
+      nil
+
+      iex> badge_for_project("yeraydiazdiaz", "shoutouts.dev")
+      "<svg....></svg>"
+
+  """
   def badge_for_project(owner, name) do
+    # TODO: write number_of_shoutouts function
     case list_shoutouts_for_project(owner, name) do
+      # TODO: why nil? we should return a badge with 0
       [] -> nil
       shoutouts -> render_badge(length(shoutouts))
     end
   end
 
+  @doc """
+  Renders a badge with the specified number of shoutouts.
+
+  Optionally specify a scale factor, defaults to 1.
+
+  ## Examples
+
+      iex> render_badge(7)
+      "<svg....></svg>"
+
+  """
   def render_badge(num_shoutouts, scale \\ 1) do
     width = 106 * scale
     height = 20 * scale
@@ -360,5 +387,35 @@ defmodule Shoutouts.Shoutouts do
       number when number > 1000 -> "#{div(number, 1000)}K"
       number -> "#{number}"
     end
+  end
+
+  @doc """
+  Returns the latest pinned shoutouts for the projects with more shoutouts.
+  """
+  def shoutouts_for_top_projects(top_n \\ 5) do
+    top_projects = from(
+      p in Project,
+      left_join: s in assoc(p, :shoutouts),
+      group_by: [p.id],
+      order_by: [desc: count(s.id)],
+      select: %{id: p.id, count: count(s.id)},
+      limit: ^top_n
+    )
+    first_shoutouts = from(
+      s in Shoutout,
+      select: %{id: s.id, row_number: over(row_number(), :project_partition)},
+      windows: [project_partition: [partition_by: :project_id, order_by: [desc: :pinned, desc: :inserted_at]]]
+    )
+    Repo.all(
+      from(
+        s in Shoutout,
+        join: tp in subquery(top_projects),
+        on: s.project_id == tp.id,
+        join: fs in subquery(first_shoutouts),
+        on: s.id == fs.id and fs.row_number == 1,
+        order_by: [desc: tp.count],
+        preload: [:user, :project]
+      )
+    )
   end
 end

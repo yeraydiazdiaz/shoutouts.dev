@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added latest shoutout from most popular projects in home page.
+
 ## [21.1.7] - 2021-03-28
 
 - Added background task to update projects.

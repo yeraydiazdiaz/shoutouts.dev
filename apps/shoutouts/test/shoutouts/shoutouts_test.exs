@@ -64,8 +64,7 @@ defmodule Shoutouts.ShoutoutsTest do
       project = Factory.insert(:project)
       text = "I like emojis 🎉"
 
-      {:ok, shoutout} =
-        Shoutouts.create_shoutout(user, project, %{text: text})
+      {:ok, shoutout} = Shoutouts.create_shoutout(user, project, %{text: text})
 
       assert shoutout.text == "I like emojis 🎉"
     end
@@ -185,8 +184,7 @@ defmodule Shoutouts.ShoutoutsTest do
       {:ok, _} = Shoutouts.flag_shoutout(shoutout)
       _ = Factory.insert(:shoutout, user: shoutout.user)
 
-      num_flagged =
-        Shoutouts.count_flagged_shoutouts_for_user_and_owner(shoutout.user.id)
+      num_flagged = Shoutouts.count_flagged_shoutouts_for_user_and_owner(shoutout.user.id)
 
       assert num_flagged == 2
     end
@@ -223,8 +221,7 @@ defmodule Shoutouts.ShoutoutsTest do
       shoutout = Factory.insert(:shoutout, user: shoutout.user, project: project_owner_b)
       {:ok, _} = Shoutouts.flag_shoutout(shoutout)
 
-      shoutout =
-        Factory.insert(:shoutout, user: shoutout.user, project: project_b_owner_b)
+      shoutout = Factory.insert(:shoutout, user: shoutout.user, project: project_b_owner_b)
 
       {:ok, _} = Shoutouts.flag_shoutout(shoutout)
 
@@ -265,8 +262,7 @@ defmodule Shoutouts.ShoutoutsTest do
         Factory.params_for(:user)
         |> Map.put(:id, UUID.uuid4())
 
-      {:error, %Ecto.Changeset{} = changeset} =
-        Shoutouts.vote_shoutout(shoutout, user, "up")
+      {:error, %Ecto.Changeset{} = changeset} = Shoutouts.vote_shoutout(shoutout, user, "up")
 
       assert not changeset.valid?
       assert [{:user, _}] = changeset.errors
@@ -279,11 +275,68 @@ defmodule Shoutouts.ShoutoutsTest do
         Factory.insert(:shoutout)
         |> Map.put(:id, UUID.uuid4())
 
-      {:error, %Ecto.Changeset{} = changeset} =
-        Shoutouts.vote_shoutout(shoutout, user, "up")
+      {:error, %Ecto.Changeset{} = changeset} = Shoutouts.vote_shoutout(shoutout, user, "up")
 
       assert not changeset.valid?
       assert [{:shoutout, _}] = changeset.errors
+    end
+  end
+
+  describe "shoutouts_for_top_projects" do
+    test "returns the last pinned shoutout for each top project" do
+      p1 = Factory.insert(:project, %{primary_language: "Elixir"})
+
+      1..2
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p1}) end)
+
+      p2 =
+        Factory.insert(:project, %{primary_language: "Elixir", owner: "somewhat", name: "popular"})
+
+      1..3
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p2}) end)
+
+      p2_shoutout = Factory.insert(:shoutout, %{project: p2, pinned: true})
+
+      p3 = Factory.insert(:project, %{primary_language: "Python", owner: "very", name: "popular"})
+
+      1..4
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p3}) end)
+
+      p3_shoutout = Factory.insert(:shoutout, %{project: p3, pinned: true})
+      # more recent but pinned first
+      Factory.insert(:shoutout, %{project: p3, pinned: false})
+
+      [s1, s2] = Shoutouts.shoutouts_for_top_projects(2)
+      assert p3_shoutout.id == s1.id
+      assert p2_shoutout.id == s2.id
+    end
+
+    test "returns the last shoutout for each top project" do
+      p1 = Factory.insert(:project, %{primary_language: "Elixir"})
+
+      1..2
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p1}) end)
+
+      p2 =
+        Factory.insert(:project, %{primary_language: "Elixir", owner: "somewhat", name: "popular"})
+
+      1..3
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p2}) end)
+
+
+      p3 = Factory.insert(:project, %{primary_language: "Python", owner: "very", name: "popular"})
+
+      1..4
+      |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p3}) end)
+
+      # Force meaningful inserted_at difference
+      Process.sleep(750)
+      p2_shoutout = Factory.insert(:shoutout, %{project: p2})
+      p3_shoutout = Factory.insert(:shoutout, %{project: p3})
+
+      [s1, s2] = Shoutouts.shoutouts_for_top_projects(2)
+      assert p3_shoutout.id == s1.id
+      assert p2_shoutout.id == s2.id
     end
   end
 end
