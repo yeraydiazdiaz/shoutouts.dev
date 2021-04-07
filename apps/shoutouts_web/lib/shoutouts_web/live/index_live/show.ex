@@ -5,6 +5,8 @@ defmodule ShoutoutsWeb.IndexLive.Show do
 
   require Logger
 
+  @carrousel_timeout 3000
+
   @doc """
   Home page.
   """
@@ -18,11 +20,19 @@ defmodule ShoutoutsWeb.IndexLive.Show do
 
     shoutouts = Shoutouts.shoutouts_for_top_projects()
 
+    if connected?(socket), do: Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
+
     {:ok,
      socket
      |> assign(:badge, Shoutouts.render_badge(13, 1.5))
      |> assign(:current_user, user)
      |> assign(:shoutouts, shoutouts)
-     |> assign(:shoutout, List.first(shoutouts))}
+     |> assign(:shoutout_idx, 0)}
+  end
+
+  def handle_info(:carrousel_switch, socket) do
+    Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
+    next_idx = rem((socket.assigns[:shoutout_idx] + 1), length(socket.assigns[:shoutouts]))
+    {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
 end
