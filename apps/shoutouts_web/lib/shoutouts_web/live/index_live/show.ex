@@ -6,7 +6,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
 
   require Logger
 
-  @carrousel_timeout 3000
+  @carrousel_timeout 10000
 
   @doc """
   Home page.
