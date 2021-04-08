@@ -40,7 +40,6 @@ defmodule ShoutoutsWeb.IndexLive.Show do
   Handles the click on the carrousel buttons to switch the active shoutout.
   """
   def handle_event("carrousel_switch", %{"idx" => idx}, socket) do
-    Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
     {next_idx, ""} = Integer.parse(idx)
     {:noreply, socket
       |> assign(:shoutout_idx, next_idx)
@@ -54,7 +53,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
   If the user has previously clicked on a button we don't do anything, otherwise we switch.
   """
   def handle_info(:carrousel_timeout, %{assigns: %{should_switch: false}} = socket) do
-    {:noreply, socket |> assign(:should_switch, true)}
+    {:noreply, socket}
   end
 
   def handle_info(:carrousel_timeout, %{assigns: %{should_switch: true}} = socket) do
