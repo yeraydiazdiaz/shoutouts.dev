@@ -35,6 +35,11 @@ defmodule ShoutoutsWeb.IndexLive.Show do
      |> assign(:shoutout_idx, 0)}
   end
 
+  def handle_event("carrousel_switch", %{"idx" => idx}, socket) do
+    {next_idx, ""} = Integer.parse(idx)
+    {:noreply, assign(socket, :shoutout_idx, next_idx)}
+  end
+
   def handle_info(:carrousel_switch, socket) do
     Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
     next_idx = rem(socket.assigns[:shoutout_idx] + 1, length(socket.assigns[:shoutouts]))
