@@ -25,7 +25,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         stp -> stp
       end
 
-    if connected?(socket), do: Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
+    if connected?(socket), do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
 
     {:ok,
      socket
@@ -35,13 +35,19 @@ defmodule ShoutoutsWeb.IndexLive.Show do
      |> assign(:shoutout_idx, 0)}
   end
 
+  @doc """
+  Handles the click on the carrousel buttons to switch the active shoutout.
+  """
   def handle_event("carrousel_switch", %{"idx" => idx}, socket) do
     {next_idx, ""} = Integer.parse(idx)
     {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
 
-  def handle_info(:carrousel_switch, socket) do
-    Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
+  @doc """
+  Handles the timeout on the carrousel to switch the active shoutout.
+  """
+  def handle_info(:carrousel_timeout, socket) do
+    Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
     next_idx = rem(socket.assigns[:shoutout_idx] + 1, length(socket.assigns[:shoutouts]))
     {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
