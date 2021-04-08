@@ -9,8 +9,8 @@ defmodule ShoutoutsWeb.IndexLiveTest do
 
   def login_user(conn, %User{} = user) do
     conn
-      |> assign(:ueberauth_auth, TestHelpers.auth_for_user(user))
-      |> get(Routes.auth_path(conn, :callback, :github))
+    |> assign(:ueberauth_auth, TestHelpers.auth_for_user(user))
+    |> get(Routes.auth_path(conn, :callback, :github))
   end
 
   test "renders links and register CTA for anonymous users", %{conn: conn} do
@@ -58,7 +58,7 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     assert view |> element(".opacity-0") |> render() =~ s2.text
   end
 
-  test "clicking carrousel buttons changes visible shoutouts", %{conn: conn} do
+  test "clicking carrousel buttons changes visible shoutouts and prevents timeout", %{conn: conn} do
     s1 = Factory.insert(:shoutout)
     # Force s2 to appear first respecting logic in shoutouts_for_top_projects
     p1 = Factory.insert(:project)
@@ -71,6 +71,10 @@ defmodule ShoutoutsWeb.IndexLiveTest do
 
     view |> element(".bg-dim") |> render_click()
     assert view |> element(".opacity-100") |> render() =~ s1.text
-  end
 
+    # timeout switching does nothing once user has clicked
+    send(view.pid, :carrousel_timeout)
+
+    assert view |> element(".opacity-100") |> render() =~ s1.text
+  end
 end
