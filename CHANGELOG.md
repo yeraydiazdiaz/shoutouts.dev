@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added buttons to shoutout carrousel in home page.
+
 ## [21.1.8] - 2021-04-07
 
 - Added latest shoutout from most popular projects in home page.
