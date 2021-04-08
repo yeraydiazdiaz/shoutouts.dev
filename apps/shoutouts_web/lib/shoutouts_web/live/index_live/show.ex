@@ -6,7 +6,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
 
   require Logger
 
-  @carrousel_timeout 10000
+  @carrousel_timeout 3000
 
   @doc """
   Home page.
@@ -25,7 +25,8 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         stp -> stp
       end
 
-    if connected?(socket), do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
+    if connected?(socket) and shoutouts != [],
+      do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
 
     {:ok,
      socket
@@ -41,10 +42,11 @@ defmodule ShoutoutsWeb.IndexLive.Show do
   """
   def handle_event("carrousel_switch", %{"idx" => idx}, socket) do
     {next_idx, ""} = Integer.parse(idx)
-    {:noreply, socket
-      |> assign(:shoutout_idx, next_idx)
-      |> assign(:should_switch, false)
-    }
+
+    {:noreply,
+     socket
+     |> assign(:shoutout_idx, next_idx)
+     |> assign(:should_switch, false)}
   end
 
   @doc """
