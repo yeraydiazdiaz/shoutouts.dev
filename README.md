@@ -24,7 +24,7 @@ First you'll need to install:
 
 Then:
 
-1. `cd apps/shoutouts_web/static/`
+1. `cd apps/shoutouts_web/assets/`
 2. `npm i`
 3. Back in the root dir, `mix deps.get`
 4. Tweak the database settings depending on your setup
