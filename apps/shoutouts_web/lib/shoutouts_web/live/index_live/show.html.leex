@@ -17,10 +17,19 @@
     </p>
     <p class="mt-2"><a class="link" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Search for your favourite projects</a> and write public shoutout letting them know how much you value their work.</p>
   </div>
-  <div class="relative mt-12 mb-4 h-48 lg:mb-0 lg:w-1/2 lg:mt-0">
-    <%= for i <- 0..length(@shoutouts) - 1 do %>
-      <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
-    <% end %>
+  <div class="mt-12 mb-4 h-48 lg:my-0 lg:w-1/2 lg:h-64">
+    <div class="flex flex-col">
+      <div class="relative h-48 lg:h-64">
+        <%= for i <- 0..length(@shoutouts) - 1 do %>
+          <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
+        <% end %>
+      </div>
+      <div class="flex flex-row justify-evenly">
+        <%= for i <- 0..length(@shoutouts) - 1 do %>
+          <div class="block h-2 w-16 <%= if i == @shoutout_idx do %>bg-bone<% else %>bg-dim<% end %>"></div>
+        <% end %>
+      </div>
+    </div>
   </div>
 </section>
 <section class="w-full mb-14 flex flex-col items-center lg:flex-row-reverse lg:w-5/6 lg:mx-auto lg:justify-between">

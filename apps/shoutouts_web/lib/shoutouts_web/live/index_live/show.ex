@@ -19,10 +19,11 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         do: Accounts.get_user!(current_user_id),
         else: nil
 
-    shoutouts = case Shoutouts.shoutouts_for_top_projects() do
-      [] -> [default_shoutout()]
-      stp -> stp
-    end
+    shoutouts =
+      case Shoutouts.shoutouts_for_top_projects() do
+        [] -> [default_shoutout()]
+        stp -> stp
+      end
 
     if connected?(socket), do: Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
 
@@ -36,7 +37,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
 
   def handle_info(:carrousel_switch, socket) do
     Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
-    next_idx = rem((socket.assigns[:shoutout_idx] + 1), length(socket.assigns[:shoutouts]))
+    next_idx = rem(socket.assigns[:shoutout_idx] + 1, length(socket.assigns[:shoutouts]))
     {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
 
