@@ -19,24 +19,48 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         do: Accounts.get_user!(current_user_id),
         else: nil
 
-    shoutouts = case Shoutouts.shoutouts_for_top_projects() do
-      [] -> [default_shoutout()]
-      stp -> stp
-    end
+    shoutouts =
+      case Shoutouts.shoutouts_for_top_projects() do
+        [] -> [default_shoutout()]
+        stp -> stp
+      end
 
-    if connected?(socket), do: Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
+    if connected?(socket) and length(shoutouts) > 1,
+      do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
 
     {:ok,
      socket
      |> assign(:badge, Shoutouts.render_badge(13, 1.5))
      |> assign(:current_user, user)
      |> assign(:shoutouts, shoutouts)
-     |> assign(:shoutout_idx, 0)}
+     |> assign(:shoutout_idx, 0)
+     |> assign(:should_switch, true)}
   end
 
-  def handle_info(:carrousel_switch, socket) do
-    Process.send_after(self(), :carrousel_switch, @carrousel_timeout)
-    next_idx = rem((socket.assigns[:shoutout_idx] + 1), length(socket.assigns[:shoutouts]))
+  @doc """
+  Handles the click on the carrousel buttons to switch the active shoutout.
+  """
+  def handle_event("carrousel_switch", %{"idx" => idx}, socket) do
+    {next_idx, ""} = Integer.parse(idx)
+
+    {:noreply,
+     socket
+     |> assign(:shoutout_idx, next_idx)
+     |> assign(:should_switch, false)}
+  end
+
+  @doc """
+  Handles the timeout on the carrousel to switch the active shoutout.
+
+  If the user has previously clicked on a button we don't do anything, otherwise we switch.
+  """
+  def handle_info(:carrousel_timeout, %{assigns: %{should_switch: false}} = socket) do
+    {:noreply, socket}
+  end
+
+  def handle_info(:carrousel_timeout, %{assigns: %{should_switch: true}} = socket) do
+    Process.send_after(self(), :carrousel_timeout, @carrousel_timeout) 
+    next_idx = rem(socket.assigns[:shoutout_idx] + 1, length(socket.assigns[:shoutouts]))
     {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
 

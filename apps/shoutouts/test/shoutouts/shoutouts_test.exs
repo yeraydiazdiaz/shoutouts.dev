@@ -330,7 +330,7 @@ defmodule Shoutouts.ShoutoutsTest do
       |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p3}) end)
 
       # Force meaningful inserted_at difference
-      Process.sleep(750)
+      Process.sleep(1000)
       p2_shoutout = Factory.insert(:shoutout, %{project: p2})
       p3_shoutout = Factory.insert(:shoutout, %{project: p3})
 
