@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.1.9] - 2021-04-08
 
 - Added buttons to shoutout carrousel in home page.
 
