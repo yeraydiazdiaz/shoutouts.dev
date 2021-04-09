@@ -17,7 +17,8 @@ defmodule ShoutoutsWeb.AuthController do
   the user is redirected to the page they were in.
 
   Note the redirect URL is set on the GitHub app configuration, so when testing
-  on a different env, e.g. VirtualBox logging in will not work unless amended.
+  on a different env, e.g. VirtualBox, logging in will not work unless changed
+  in the GitHub app.
   """
   def request(
         %{assigns: %{current_user_id: nil}} = conn,
@@ -43,7 +44,7 @@ defmodule ShoutoutsWeb.AuthController do
 
   # OAuth failure callback, can't do a lot just log and flash.
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
-    Logger.debug("Authentication failure")
+    Logger.error("Authentication failure")
 
     conn
     |> put_flash(
