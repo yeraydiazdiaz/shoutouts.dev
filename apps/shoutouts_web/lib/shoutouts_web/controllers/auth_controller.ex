@@ -25,7 +25,7 @@ defmodule ShoutoutsWeb.AuthController do
         %{"provider" => provider_name} = _params
       ) do
     conn
-    |> put_session(:redirect_to, get_referer(conn))
+    |> put_session(:redirect_to, redirect_target(conn))
     |> Ueberauth.run_request(provider_name, get_provider_config())
   end
 
@@ -39,7 +39,7 @@ defmodule ShoutoutsWeb.AuthController do
     conn
     |> ShoutoutsWeb.Auth.login(user)
     |> put_flash(:info, "Successfully authenticated.")
-    |> redirect(to: get_redirect_to(conn))
+    |> redirect(to: redirect_to(conn))
   end
 
   # OAuth failure callback, can't do a lot just log and flash.
@@ -51,7 +51,7 @@ defmodule ShoutoutsWeb.AuthController do
       :error,
       "Sorry, something went wrong with the authentication. We'll look into it but please try again later."
     )
-    |> redirect(to: get_redirect_to(conn))
+    |> redirect(to: redirect_to(conn))
   end
 
   # OAuth callback with no assigns, i.e. not yet processed by Ueberauth.
@@ -89,14 +89,21 @@ defmodule ShoutoutsWeb.AuthController do
     end
   end
 
-  defp get_referer(conn) do
+  def redirect_target(conn) do
+    case fetch_query_params(conn).query_params do
+      %{"next" => next_path} -> next_path
+      _ -> referer_from_headers(conn)
+    end
+  end
+
+  defp referer_from_headers(conn) do
     case Enum.find(conn.req_headers, fn {header, _value} -> header == "referer" end) do
       {"referer", referer} -> referer
       nil -> nil
     end
   end
 
-  defp get_redirect_to(conn) do
+  defp redirect_to(conn) do
     default_path = Router.Helpers.user_index_path(conn, :projects)
 
     case get_session(conn, :redirect_to) do

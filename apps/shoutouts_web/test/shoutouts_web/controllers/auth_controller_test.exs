@@ -2,6 +2,7 @@ defmodule ShoutoutsWeb.AuthControllerTest do
   use ShoutoutsWeb.ConnCase
 
   alias Shoutouts.Factory
+  alias ShoutoutsWeb.AuthController
 
   @ueberauth_success %Ueberauth.Auth{
     info: %Ueberauth.Auth.Info{
@@ -65,5 +66,21 @@ defmodule ShoutoutsWeb.AuthControllerTest do
 
     conn = get(conn, "/")
     assert html_response(conn, 200) =~ "You have logged out"
+  end
+
+  describe "redirect_target" do
+    test "returns nil by default", %{conn: conn} do
+      assert AuthController.redirect_target(conn) == nil
+    end
+
+    test "returns referer from HTTP request headers" do
+      conn = %Plug.Conn{req_headers: [{"referer", "/some/referer"}]}
+      assert AuthController.redirect_target(conn) == "/some/referer"
+    end
+
+    test "returns value of 'next' query arg if present" do
+      conn = %Plug.Conn{query_string: "next=%2Fsome%2fpath"}
+      assert AuthController.redirect_target(conn) == "/some/path"
+    end
   end
 end
