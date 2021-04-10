@@ -1,0 +1,18 @@
+<div class="bg text-dark transform translate-y1 md:-translate-y-16"></div>
+<h1 class="text-3xl font-logo mb-8">Register a project</h1>
+<p class="font-sans text-dark">Registering a project will allow yourself and other thankful users to post shoutouts for it.</p>
+<p class="font-sans text-dark mb-2">The project's owner(s) will be able to claim the project at any point to manage its shoutouts.</p>
+<p class="font-sans text-dark mb-4">Only public projects hosted in GitHub are permitted at this time.</p>
+<%= if @current_user_id == nil do %>
+  <p class="font-sans font-bold text-alert mt-8 mb-8">You must log in before you can register a project.</p>
+  <a class="text-dim bg-primary font-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in with GitHub</a>
+<% else %>
+  <form action="#" phx-change="search" phx-submit="search" class="w-full flex flex-col my-8">
+  <label class="font-sans text-xl mb-4" for="owner_name">Please enter the URL or owner's username and project name you'd like to register:</label>
+  <input type="text" name="owner_name" placeholder="author/project" value="" phx-debounce="500" autocomplete="off" class="text-lg lg:text-2xl mx-1 mb-8 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" />
+  <div class="flex flex-row justify-between">
+  <button class="text-dim bg-primary font-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Register project</button>
+  <a class="block text-dim bg-secondary font-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Back</a>
+  </div>
+  </form>
+<% end %>

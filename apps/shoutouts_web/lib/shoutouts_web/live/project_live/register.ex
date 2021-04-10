@@ -1,4 +1,4 @@
-defmodule ShoutoutsWeb.ProjectLive.Add do
+defmodule ShoutoutsWeb.ProjectLive.Register do
   @moduledoc """
   LiveView for adding unclaimed projects.
   """
@@ -10,4 +10,10 @@ defmodule ShoutoutsWeb.ProjectLive.Add do
   alias Shoutouts.Projects.Project
 
   require Logger
+
+  def mount(_params, session, socket) do
+    {:ok,
+     socket
+     |> assign(:current_user_id, Map.get(session, "current_user_id"))}
+  end
 end
