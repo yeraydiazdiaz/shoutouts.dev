@@ -13,7 +13,7 @@ defmodule ShoutoutsWeb.ErrorHelpers do
     errors = get_errors_from_form(form)
     Enum.map(Keyword.get_values(errors, field), fn error ->
       content_tag(:span, String.capitalize(translate_error(error)),
-        class: "text-red-800 text-sm",
+        class: "text-alert text-sm",
         data: [phx_error_for: input_id(form, field)]
       )
     end)

@@ -32,8 +32,34 @@ defmodule ShoutoutsWeb.SearchLiveTest do
     assert has_element?(view, "form a", "Back")
   end
 
+  describe "invalid inputs render an error" do
+    test "missing /", %{conn: conn} do
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "not-valid"}
+             }) =~
+               "Has invalid format"
+    end
+
+    test "invalid GitHub URL", %{conn: conn} do
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "https://not-github.com/foo/bar"}
+             }) =~
+               "Has invalid format"
+    end
+  end
+
   # accepts GitHub URLs
-  # non-conforming GH URLs render an error
-  # accepts onwer/name, or owner\W+name
-  # malformed owner/name strings render an error
+  # accepts owner/name
 end
