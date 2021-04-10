@@ -2,10 +2,18 @@
     <input type="text" name="q" placeholder="Find registered projects" value="<%= @terms %>" phx-debounce="500" autocomplete="off" class="text-lg lg:text-2xl mx-1 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" />
   </form>
 
-  <div class="flex flex-wrap justify-around w-full md:max-w-6xl m-auto" id="search-results">
   <%= if @terms != "" and length(@results) == 0 do %>
-    <div class="text-2xl text-center text-gray-600 font-sans mb-8">Sorry, no projects match your query</div>
+    <div class="text-2xl text-center text-gray-800 font-sans mb-8">Sorry, no projects match your query</div>
+    <div class="text-xl text-center text-primary font-sans mb-4">Would you like to register the project and leave a shoutout?</div>
+    <div class="text-center">
+    <%= if @current_user_id == nil do %>
+      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github, next: Routes.project_register_path(@socket, :index)) %>">Log in to register the project</a>
+    <% else %>
+      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Register the project</a>
+    <% end %>
+    </div>
   <% else %>
+    <div class="flex flex-wrap justify-around w-full md:max-w-6xl m-auto" id="search-results">
     <%= for result <- @results do %>
       <a id="<%= result.id %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, result.owner, result.name) %>" class="w-full lg:max-w-lg m-2 mb-8">
         <div class="flex flex-col md:flex-row items-center justify-between border-t border-gray-700">
@@ -16,6 +24,6 @@
           <div class="h-6 text-sm text-gray-500 h-1 pt-2 px-2 leading-none"><%= result.primary_language %></div>
         </div>
       </a>
+    </div>
     <% end %>
   <% end %>
-  </div>

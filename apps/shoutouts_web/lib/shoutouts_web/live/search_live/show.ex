@@ -7,21 +7,23 @@ defmodule ShoutoutsWeb.SearchLive.Show do
   @doc """
   Query arg terms.
   """
-  def mount(%{"q" => terms}, _session, socket) do
+  def mount(%{"q" => terms}, session, socket) do
     summary = Projects.summary_by_languages(6, 5)
 
     {:ok,
      socket
+     |> assign(:current_user_id, Map.get(session, "current_user_id"))
      |> assign(:terms, terms)
      |> assign(:summary, summary)}
   end
 
   # No query arg entry point.
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     summary = Projects.summary_by_languages(6, 5)
 
     {:ok,
      socket
+     |> assign(:current_user_id, Map.get(session, "current_user_id"))
      |> assign(:terms, "")
      |> assign(:summary, summary)}
   end

@@ -8,26 +8,28 @@ defmodule ShoutoutsWeb.SearchLive.SearchComponent do
   require Logger
 
   def mount(socket) do
+    {:ok,
+      socket
+      |> assign(:current_user_id, nil)
+      |> assign(:terms, "")
+      |> assign(:results, [])}
+  end
+
+  def update(%{terms: "", current_user_id: current_user_id} = assigns, socket) do
+    IO.inspect(assigns)
     socket =
       socket
+      |> assign(:current_user_id, current_user_id)
       |> assign(:terms, "")
       |> assign(:results, [])
 
     {:ok, socket}
   end
 
-  def update(%{terms: ""}, socket) do
+  def update(%{terms: terms, current_user_id: current_user_id}, socket) do
     socket =
       socket
-      |> assign(:terms, "")
-      |> assign(:results, [])
-
-    {:ok, socket}
-  end
-
-  def update(%{terms: terms}, socket) do
-    socket =
-      socket
+      |> assign(:current_user_id, current_user_id)
       |> assign(:terms, terms)
       |> assign(:results, do_search(terms))
 
