@@ -11,6 +11,7 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
   @impl true
   def mount(_params, session, socket) do
     changeset = Registration.changeset(%Registration{}, %{url_or_owner_name: ""})
+
     {:ok,
      socket
      |> assign(:current_user_id, Map.get(session, "current_user_id"))
@@ -18,8 +19,17 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
   end
 
   @impl true
-  def handle_event("validate", %{"registration" => params}, %{assigns: %{changeset: changeset}} = socket) do
-    changeset = Registration.changeset(changeset.data, params)
+  def handle_event(
+        "validate",
+        %{"registration" => params},
+        %{assigns: %{changeset: changeset}} = socket
+      ) do
+    changeset =
+      case Map.get(params, "url_or_owner_name") do
+        "" -> Registration.changeset(%Registration{}, params)
+        _ -> Registration.validate_changeset(changeset.data, params)
+      end
+
     {:noreply, assign(socket, :changeset, changeset)}
   end
 end

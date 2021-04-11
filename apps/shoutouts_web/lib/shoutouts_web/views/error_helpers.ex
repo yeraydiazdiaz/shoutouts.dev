@@ -12,7 +12,7 @@ defmodule ShoutoutsWeb.ErrorHelpers do
     # Workaround the project form not having errors while the changeset does
     errors = get_errors_from_form(form)
     Enum.map(Keyword.get_values(errors, field), fn error ->
-      content_tag(:span, String.capitalize(translate_error(error)),
+      content_tag(:span, translate_error(error),
         class: "text-alert text-sm",
         data: [phx_error_for: input_id(form, field)]
       )

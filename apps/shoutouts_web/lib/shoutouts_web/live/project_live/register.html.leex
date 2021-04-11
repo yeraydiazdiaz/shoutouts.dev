@@ -12,7 +12,7 @@
     class: "w-full flex flex-col my-8",
     phx_change: "validate",
     phx_submit: "register" %>
-    <%= label f, :url_or_owner_name, "Please enter the URL or owner's username and project name you'd like to register", class: "font-sans text-xl mb-4"%>
+    <%= label f, :url_or_owner_name, "Please enter the URL or owner's username and project name you'd like to register:", class: "font-sans text-xl mb-4"%>
     <%= text_input f, :url_or_owner_name, placeholder: "author/project", phx_debounce: "500", autocomplete: "off", class: "text-lg lg:text-2xl mb-4 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" %>
     <%= error_tag f, :url_or_owner_name %>
     <div class="flex flex-row justify-between mt-8">
