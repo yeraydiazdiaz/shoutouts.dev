@@ -16,7 +16,8 @@
     <%= text_input f, :url_or_owner_name, placeholder: "author/project", phx_debounce: "500", autocomplete: "off", class: "text-lg lg:text-2xl mb-4 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" %>
     <%= error_tag f, :url_or_owner_name %>
     <div class="flex flex-row justify-between mt-8">
-    <%= submit "Register project", class: "text-dim bg-primary font-bold px-6 py-3 rounded-md" %>
+
+   <button class="font-bold px-6 py-3 rounded-md text-dim <%= if @disabled do %>bg-light cursor-not-allowed<% else %>bg-primary<% end %>" type="submit" <%= if @disabled do %> disabled="disabled"<% end %>>Register project</button> 
     <a class="block text-dim bg-secondary font-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Back</a>
     </div>
 <% end %>

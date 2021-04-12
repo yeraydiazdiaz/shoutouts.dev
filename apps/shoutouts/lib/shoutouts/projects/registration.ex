@@ -3,7 +3,7 @@ defmodule Shoutouts.Projects.Registration do
 
   defstruct [:url_or_owner_name, :owner, :name, :provider_project]
 
-  @types %{url_or_owner_name: :string, name: :string, owner: :string}
+  @types %{url_or_owner_name: :string, name: :string, owner: :string, provider_project: :string}
   @regex ~r/^(?:https:\/\/github\.com\/)?([\w-]+?)\/([\w-\.]+)$/
 
   def changeset(%Shoutouts.Projects.Registration{} = registration, attrs) do

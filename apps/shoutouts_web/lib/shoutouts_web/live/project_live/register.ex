@@ -15,7 +15,8 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
     {:ok,
      socket
      |> assign(:current_user_id, Map.get(session, "current_user_id"))
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign(:disabled, true)}
   end
 
   @impl true
@@ -30,7 +31,12 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
         _ -> Registration.validate_changeset(changeset.data, params)
       end
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply,
+     socket
+     |> assign(:changeset, changeset)
+     |> assign(
+       :disabled,
+       Map.get(changeset.changes, :url_or_owner_name) in [nil, ""] or not changeset.valid?
+     )}
   end
-
 end

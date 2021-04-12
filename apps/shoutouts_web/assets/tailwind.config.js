@@ -12,7 +12,9 @@ module.exports = {
       colors: {
         'primary': 'var(--color-primary)',
         'secondary': 'var(--color-secondary)',
+        'light': 'var(--color-light)',
         'alert': 'var(--color-alert)',
+        'dark': 'var(--color-dark)',
         'dim': 'var(--color-dim)',
         'dimmer': 'var(--color-dimmer)',
         'bone': 'var(--color-bone)',
