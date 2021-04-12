@@ -39,4 +39,22 @@ defmodule Shoutouts.Factory do
       project: build(:project)
     }
   end
+
+  def provider_project_factory do
+    %Shoutouts.Providers.ProviderProject{
+      provider_id: sequence(:provider_id, fn x -> x end),
+      owner: sequence(:owner, &"owner-#{&1}"),
+      name: sequence(:name, &"name-#{&1}"),
+      primary_language: sequence(:primary_language, ["python", "elixir", "rust", "javascript"]),
+      url: sequence(:url, &"https://github.com/owner-#{&1}/name-#{&1}"),
+      description:
+        sequence(:description, [
+          "http client",
+          "web framework",
+          "machine learning",
+          "text processing"
+        ]),
+    }
+    
+  end
 end

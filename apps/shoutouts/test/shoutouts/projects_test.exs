@@ -310,4 +310,50 @@ defmodule Shoutouts.ProjectsTest do
       assert not_updated_project.description == project.description
     end
   end
+
+  describe "validate_registration" do
+    test "returns error for already registered projects" do
+      project = Factory.insert(:project)
+      {:error, :already_exists} = Projects.validate_registration(project.owner, project.name)
+    end
+
+    test "returns error for non-existing projects in the provider" do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, :no_such_repo}
+      end)
+
+      {:error, :no_such_repo} =
+        Projects.validate_registration("doesnot", "exist", Shoutouts.MockProvider)
+    end
+
+    test "returns error for error fetching project information" do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:error, %Tesla.Env{status: 500}}
+      end)
+
+      {:error, :provider_error} =
+        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
+    end
+
+    test "returns ok for projects that are not yet registered and exist in the provider" do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, Factory.provider_project_factory()}
+      end)
+
+      :ok =
+        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
+    end
+  end
 end

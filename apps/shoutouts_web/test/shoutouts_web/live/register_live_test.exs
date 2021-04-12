@@ -60,6 +60,27 @@ defmodule ShoutoutsWeb.SearchLiveTest do
     end
   end
 
-  # accepts GitHub URLs
+  test "GitHub URLs must match existing projects", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:error, %Tesla.Env{status: 500}}
+      end)
+
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "https://github.com/foo/bar"}
+             }) =~
+               "The project does not exist or is not public, please check the URL for typos"
+  end
+
+  # projects that already exists show an error and a link
   # accepts owner/name
 end

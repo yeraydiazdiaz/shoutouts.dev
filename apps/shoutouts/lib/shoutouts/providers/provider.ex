@@ -33,11 +33,40 @@ defmodule Shoutouts.Provider do
               cursor :: integer()
             ) :: {:ok, [binary()]} | {:error, response :: Tesla.Env.t()}
 
+  @doc """
+  Returns project information given a "owner/repo" string.
+
+  ## Examples
+
+    iex> client() |> project_info("yeraydiazdiaz/shoutouts.dev")
+    {:ok, %Shoutouts.Providers.ProviderProject{...}}
+
+    iex> client() |> project_info("yeraydiazdiaz/nope")
+    {:ok, :no_such_repo}
+
+    iex> client() |> project_info("yeraydiazdiaz/nope")
+    {:error, %Tesla.Response{status_code: 500, ...}}
+  """
   @callback project_info(
               client :: TeslaClient.t(),
               repo_with_owner :: binary()
             ) :: {:ok, Shoutouts.Providers.ProviderProject} | {:error, response :: Tesla.Env.t()}
 
+
+  @doc """
+  Returns project information given a owner and repo strings.
+
+  ## Examples
+
+    iex> client() |> project_info("yeraydiazdiaz", "shoutouts.dev")
+    {:ok, %Shoutouts.Providers.ProviderProject{...}}
+
+    iex> client() |> project_info("yeraydiazdiaz", "nope")
+    {:ok, :no_such_repo}
+
+    iex> client() |> project_info("yeraydiazdiaz", "nope")
+    {:error, %Tesla.Env{status: 500, ...}}
+  """
   @callback project_info(
               client :: TeslaClient.t(),
               owner :: binary(),

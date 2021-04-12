@@ -31,16 +31,16 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Gets a single project by owner and name.
+  Gets a single project by owner and name. Unflagged shoutouts are preloaded.
 
   Raises `Ecto.NoResultsError` if the Project does not exist.
 
   ## Examples
 
-      iex> get_project_by_owner_and_name("me", "mine")
+      iex> get_project_by_owner_and_name!("me", "mine")
       %Project{}
 
-      iex> get_project_by_owner_and_name("me", "nope")
+      iex> get_project_by_owner_and_name!("me", "nope")
       ** (Ecto.NoResultsError)
 
   """
@@ -58,6 +58,26 @@ defmodule Shoutouts.Projects do
       )
 
     Repo.one!(q)
+  end
+
+  @doc """
+  Returns whether a project by owner and name.
+
+  ## Examples
+
+      iex> project_exists?("me", "mine")
+      {:ok, %Project{}}
+
+      iex> get_project_by_owner_and_name("me", "nope")
+      ** (Ecto.NoResultsError)
+
+  """
+  def project_exists?(owner, name, provider \\ :github) do
+    Repo.exists?(
+      from(p in Project,
+        where: p.owner == ^owner and p.name == ^name and p.provider == ^provider
+      )
+    )
   end
 
   @doc """
@@ -276,7 +296,8 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Returns the provider module for a specific user.
+  Returns the provider module for a specific user, defaulting to the provider
+  set in the application env's :default_provider.
   """
   def provider_for_user(_user) do
     # TOOD: Returns the provider for a particular user
@@ -285,7 +306,7 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Returns the user's repositories on the speficied provider.
+  Returns the user's repositories on their provider.
   """
   def user_repositories(user) do
     provider_for_user(user)
@@ -293,7 +314,7 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Returns a project's information user's repositories on the speficied provider.
+  Returns a project's information using a user provider given a owner and name strings.
   """
   def project_info(user, owner, name) do
     provider_for_user(user)
@@ -343,6 +364,18 @@ defmodule Shoutouts.Projects do
       update_project(project, Map.from_struct(project_info))
     else
       {:error, response} -> {:error, response}
+    end
+  end
+
+  def validate_registration(owner, name, provider \\ Shoutouts.Providers.GitHubProvider) do
+    if project_exists?(owner, name) do
+      {:error, :already_exists}
+    else
+      case Provider.project_info(provider, owner, name) do
+        {:ok, :no_such_repo} -> {:error, :no_such_repo}
+        {:ok, _} -> :ok
+        {:error, _} -> {:error, :provider_error}
+      end
     end
   end
 end
