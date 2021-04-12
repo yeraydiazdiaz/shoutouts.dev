@@ -347,13 +347,15 @@ defmodule Shoutouts.ProjectsTest do
       Shoutouts.MockProvider
       |> expect(:client, fn -> Tesla.Client end)
 
+      project_info = Factory.provider_project_factory()
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
-        {:ok, Factory.provider_project_factory()}
+        {:ok, project_info}
       end)
 
-      :ok =
+      {:ok, pi} =
         Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
+      assert pi == project_info
     end
   end
 end
