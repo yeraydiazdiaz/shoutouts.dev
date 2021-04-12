@@ -373,7 +373,7 @@ defmodule Shoutouts.Projects do
     else
       case Provider.project_info(provider, owner, name) do
         {:ok, :no_such_repo} -> {:error, :no_such_repo}
-        {:ok, project_info} -> {:ok, project_info}
+        {:ok, provider_project} -> {:ok, provider_project}
         {:error, _} -> {:error, :provider_error}
       end
     end

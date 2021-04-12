@@ -343,19 +343,21 @@ defmodule Shoutouts.ProjectsTest do
         Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
     end
 
-    test "returns ok for projects that are not yet registered and exist in the provider" do
+    test "returns {:ok, provider_project} for projects that are not yet registered and exist in the provider" do
       Shoutouts.MockProvider
       |> expect(:client, fn -> Tesla.Client end)
 
-      project_info = Factory.provider_project_factory()
+      provider_project = Factory.provider_project_factory()
+
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
-        {:ok, project_info}
+        {:ok, provider_project}
       end)
 
       {:ok, pi} =
         Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
-      assert pi == project_info
+
+      assert pi == provider_project
     end
   end
 end
