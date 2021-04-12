@@ -9,7 +9,7 @@
     <%= if @current_user_id == nil do %>
       <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github, next: Routes.project_register_path(@socket, :index)) %>">Log in to register the project</a>
     <% else %>
-      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Register the project</a>
+      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_register_path(@socket, :index) %>">Register the project</a>
     <% end %>
     </div>
   <% else %>
