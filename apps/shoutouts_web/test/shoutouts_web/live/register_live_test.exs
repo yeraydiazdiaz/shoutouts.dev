@@ -43,7 +43,7 @@ defmodule ShoutoutsWeb.SearchLiveTest do
              |> render_change(:validate, %{
                "registration" => %{"url_or_owner_name" => "not-valid"}
              }) =~
-               "Has invalid format"
+               "A GitHub project URL or owner/name is required"
     end
 
     test "invalid GitHub URL", %{conn: conn} do
@@ -56,7 +56,7 @@ defmodule ShoutoutsWeb.SearchLiveTest do
              |> render_change(:validate, %{
                "registration" => %{"url_or_owner_name" => "https://not-github.com/foo/bar"}
              }) =~
-               "Has invalid format"
+               "A GitHub project URL or owner/name is required"
     end
   end
 
