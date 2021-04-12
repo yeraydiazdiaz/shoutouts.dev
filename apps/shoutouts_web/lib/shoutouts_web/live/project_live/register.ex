@@ -32,4 +32,5 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
+
 end

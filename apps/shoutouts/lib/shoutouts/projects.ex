@@ -12,14 +12,14 @@ defmodule Shoutouts.Projects do
   @default_order [desc: :inserted_at]
 
   @doc """
-  Creates a project.
+  Creates a project with an owner.
 
   ## Examples
 
-      iex> create_project(%{field: value})
+      iex> create_project(%User{}, %{field: value})
       {:ok, %Project{}}
 
-      iex> create_project(%{field: bad_value})
+      iex> create_project(%User{}, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -367,7 +367,11 @@ defmodule Shoutouts.Projects do
     end
   end
 
-  def validate_registration(owner, name, provider \\ Shoutouts.Providers.GitHubProvider) do
+  def validate_registration(owner, name, provider \\ nil) do
+    provider =
+      if provider == nil,
+        do: Application.get_env(:shoutouts, :default_provider, Shoutouts.Providers.GitHub)
+
     if project_exists?(owner, name) do
       {:error, :already_exists}
     else

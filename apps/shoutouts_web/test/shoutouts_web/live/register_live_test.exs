@@ -1,6 +1,9 @@
 defmodule ShoutoutsWeb.SearchLiveTest do
   use ShoutoutsWeb.ConnCase
 
+  import Mox
+  setup :verify_on_exit!
+
   import Phoenix.LiveViewTest
 
   alias Shoutouts.Accounts.User
@@ -60,27 +63,82 @@ defmodule ShoutoutsWeb.SearchLiveTest do
     end
   end
 
-  test "GitHub URLs must match existing projects", %{conn: conn} do
-      Shoutouts.MockProvider
-      |> expect(:client, fn -> Tesla.Client end)
+  test "GitHub URLs must exist in the provider", %{conn: conn} do
+    Shoutouts.MockProvider
+    |> expect(:client, fn -> Tesla.Client end)
 
-      Shoutouts.MockProvider
-      |> expect(:project_info, fn _client, _owner, _name ->
-        {:error, %Tesla.Env{status: 500}}
-      end)
+    Shoutouts.MockProvider
+    |> expect(:project_info, fn _client, _owner, _name ->
+      {:ok, :no_such_repo}
+    end)
 
-      user = Factory.insert(:user)
-      conn = login_user(conn, user)
+    user = Factory.insert(:user)
+    conn = login_user(conn, user)
 
-      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
 
-      assert view
-             |> render_change(:validate, %{
-               "registration" => %{"url_or_owner_name" => "https://github.com/foo/bar"}
-             }) =~
-               "The project does not exist or is not public, please check the URL for typos"
+    assert view
+           |> render_change(:validate, %{
+             "registration" => %{"url_or_owner_name" => "https://github.com/foo/bar"}
+           }) =~
+             "The project does not exist or is not public, please check the URL for typos"
   end
 
-  # projects that already exists show an error and a link
+  test "owner/name must exist in the provider", %{conn: conn} do
+    Shoutouts.MockProvider
+    |> expect(:client, fn -> Tesla.Client end)
+
+    Shoutouts.MockProvider
+    |> expect(:project_info, fn _client, _owner, _name ->
+      {:ok, :no_such_repo}
+    end)
+
+    user = Factory.insert(:user)
+    conn = login_user(conn, user)
+
+    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+    assert view
+           |> render_change(:validate, %{
+             "registration" => %{"url_or_owner_name" => "foo/bar"}
+           }) =~
+             "The project does not exist or is not public, please check the URL for typos"
+  end
+
+  test "provider errors invalidate changeset", %{conn: conn} do
+    Shoutouts.MockProvider
+    |> expect(:client, fn -> Tesla.Client end)
+
+    Shoutouts.MockProvider
+    |> expect(:project_info, fn _client, _owner, _name ->
+      {:error, %Tesla.Env{status: 500}}
+    end)
+
+    user = Factory.insert(:user)
+    conn = login_user(conn, user)
+
+    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+    assert view
+           |> render_change(:validate, %{
+             "registration" => %{"url_or_owner_name" => "foo/bar"}
+           }) =~
+             "There was an error trying to validate the project, please try again later"
+  end
+
+  test "projects must not already been registered", %{conn: conn} do
+    project = Factory.insert(:project)
+    user = Factory.insert(:user)
+    conn = login_user(conn, user)
+
+    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+    assert view
+           |> render_change(:validate, %{
+             "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
+           }) =~
+             "The project has already been registered"
+  end
+
   # accepts owner/name
 end
