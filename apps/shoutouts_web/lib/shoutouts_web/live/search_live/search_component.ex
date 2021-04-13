@@ -16,7 +16,6 @@ defmodule ShoutoutsWeb.SearchLive.SearchComponent do
   end
 
   def update(%{terms: "", current_user_id: current_user_id} = assigns, socket) do
-    IO.inspect(assigns)
     socket =
       socket
       |> assign(:current_user_id, current_user_id)
