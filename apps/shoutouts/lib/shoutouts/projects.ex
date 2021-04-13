@@ -359,6 +359,8 @@ defmodule Shoutouts.Projects do
   end
 
   def refresh_project(project) do
+    # TODO: refresh project should use the project's ID to protect us from projects
+    # moving organizations
     with {:ok, project_info} <-
            provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
       update_project(project, Map.from_struct(project_info))

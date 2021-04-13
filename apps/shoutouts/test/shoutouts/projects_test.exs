@@ -8,13 +8,21 @@ defmodule Shoutouts.ProjectsTest do
   alias Shoutouts.Projects
   alias Shoutouts.Projects.Project
 
-  test "projects are associated with a user" do
+  test "projects can be associated with a user" do
     _ = Factory.insert(:project)
 
     [project] = Projects.list_projects()
 
     assert project.user
     assert not project.pinned_only
+  end
+
+  test "projects may not be associated with a user" do
+    _ = Factory.insert(:project, user: nil)
+
+    [project] = Projects.list_projects()
+
+    assert project.user == nil
   end
 
   test "we can fetch a user's projects" do
