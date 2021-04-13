@@ -327,7 +327,7 @@ defmodule Shoutouts.ProjectsTest do
       end)
 
       {:error, :no_such_repo} =
-        Projects.validate_registration("doesnot", "exist", Shoutouts.MockProvider)
+        Projects.validate_registration("doesnot", "exist")
     end
 
     test "returns error for error fetching project information" do
@@ -340,7 +340,7 @@ defmodule Shoutouts.ProjectsTest do
       end)
 
       {:error, :provider_error} =
-        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
+        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev")
     end
 
     test "returns {:ok, provider_project} for projects that are not yet registered and exist in the provider" do
@@ -355,7 +355,7 @@ defmodule Shoutouts.ProjectsTest do
       end)
 
       {:ok, pi} =
-        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev", Shoutouts.MockProvider)
+        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev")
 
       assert pi == provider_project
     end
