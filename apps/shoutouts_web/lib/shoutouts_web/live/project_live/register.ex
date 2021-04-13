@@ -5,6 +5,7 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
   use ShoutoutsWeb, :live_view
 
   alias Shoutouts.Projects.Registration
+  alias Shoutouts.Projects
 
   require Logger
 
@@ -38,5 +39,29 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
        :disabled,
        Map.get(changeset.changes, :url_or_owner_name) in [nil, ""] or not changeset.valid?
      )}
+  end
+
+  @impl true
+  def handle_event(
+        "register",
+        %{"registration" => params},
+        %{assigns: %{changeset: changeset}} = socket
+      ) do
+    changeset = Registration.validate_changeset(changeset.data, params)
+    case Projects.create_project(Map.from_struct(changeset.changes.provider_project)) do
+      {:ok, project} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Project registered correctly")
+         |> push_redirect(to: Routes.project_show_path(socket, :add, project.owner, project.name))}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        Logger.error("Error on query", changeset.errors)
+
+        {:noreply,
+         socket
+         |> assign(:changeset, changeset)
+         |> put_flash(:error, "Error registering project, please try again later")}
+    end
   end
 end

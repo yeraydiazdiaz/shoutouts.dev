@@ -1,4 +1,4 @@
-defmodule ShoutoutsWeb.SearchLiveTest do
+defmodule ShoutoutsWeb.RegisterLiveTest do
   use ShoutoutsWeb.ConnCase
 
   import Mox
@@ -35,8 +35,8 @@ defmodule ShoutoutsWeb.SearchLiveTest do
     assert has_element?(view, "form a", "Back")
   end
 
-  describe "invalid inputs render an error" do
-    test "missing /", %{conn: conn} do
+  describe "validate" do
+    test "input with missing /", %{conn: conn} do
       user = Factory.insert(:user)
       conn = login_user(conn, user)
 
@@ -61,103 +61,134 @@ defmodule ShoutoutsWeb.SearchLiveTest do
              }) =~
                "A GitHub project URL or owner/name is required"
     end
+
+    test "GitHub URLs must exist in the provider", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, :no_such_repo}
+      end)
+
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "https://github.com/foo/bar"}
+             }) =~
+               "The project does not exist or is not public, please check the URL for typos"
+    end
+
+    test "owner/name must exist in the provider", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, :no_such_repo}
+      end)
+
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "foo/bar"}
+             }) =~
+               "The project does not exist or is not public, please check the URL for typos"
+    end
+
+    test "provider errors invalidate changeset", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:error, %Tesla.Env{status: 500}}
+      end)
+
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "foo/bar"}
+             }) =~
+               "There was an error trying to validate the project, please try again later"
+    end
+
+    test "projects must not already been registered", %{conn: conn} do
+      project = Factory.insert(:project)
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
+             }) =~
+               "The project has already been registered"
+    end
+
+    test "valid inputs don't show errors and activate register button", %{conn: conn} do
+      project = Factory.provider_project_factory(owner: "registered", name: "project")
+
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, project}
+      end)
+
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      refute render_change(view, :validate, %{
+               "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
+             }) =~ "text-alert"
+    end
   end
 
-  test "GitHub URLs must exist in the provider", %{conn: conn} do
-    Shoutouts.MockProvider
-    |> expect(:client, fn -> Tesla.Client end)
+  describe "register" do
+    test "valid input registers project", %{conn: conn} do
+      project = Factory.provider_project_factory(owner: "registered", name: "project")
 
-    Shoutouts.MockProvider
-    |> expect(:project_info, fn _client, _owner, _name ->
-      {:ok, :no_such_repo}
-    end)
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
 
-    user = Factory.insert(:user)
-    conn = login_user(conn, user)
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, project}
+      end)
 
-    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
 
-    assert view
-           |> render_change(:validate, %{
-             "registration" => %{"url_or_owner_name" => "https://github.com/foo/bar"}
-           }) =~
-             "The project does not exist or is not public, please check the URL for typos"
-  end
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
 
-  test "owner/name must exist in the provider", %{conn: conn} do
-    Shoutouts.MockProvider
-    |> expect(:client, fn -> Tesla.Client end)
+      render_change(view, :register, %{
+        "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
+      })
 
-    Shoutouts.MockProvider
-    |> expect(:project_info, fn _client, _owner, _name ->
-      {:ok, :no_such_repo}
-    end)
+      flash =
+        assert_redirected(
+          view,
+          Routes.project_show_path(conn, :add, project.owner, project.name)
+        )
 
-    user = Factory.insert(:user)
-    conn = login_user(conn, user)
-
-    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
-
-    assert view
-           |> render_change(:validate, %{
-             "registration" => %{"url_or_owner_name" => "foo/bar"}
-           }) =~
-             "The project does not exist or is not public, please check the URL for typos"
-  end
-
-  test "provider errors invalidate changeset", %{conn: conn} do
-    Shoutouts.MockProvider
-    |> expect(:client, fn -> Tesla.Client end)
-
-    Shoutouts.MockProvider
-    |> expect(:project_info, fn _client, _owner, _name ->
-      {:error, %Tesla.Env{status: 500}}
-    end)
-
-    user = Factory.insert(:user)
-    conn = login_user(conn, user)
-
-    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
-
-    assert view
-           |> render_change(:validate, %{
-             "registration" => %{"url_or_owner_name" => "foo/bar"}
-           }) =~
-             "There was an error trying to validate the project, please try again later"
-  end
-
-  test "projects must not already been registered", %{conn: conn} do
-    project = Factory.insert(:project)
-    user = Factory.insert(:user)
-    conn = login_user(conn, user)
-
-    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
-
-    assert view
-           |> render_change(:validate, %{
-             "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
-           }) =~
-             "The project has already been registered"
-  end
-
-  test "valid inputs don't show errors and activate register button", %{conn: conn} do
-    project = Factory.provider_project_factory(owner: "registered", name: "project")
-
-    Shoutouts.MockProvider
-    |> expect(:client, fn -> Tesla.Client end)
-
-    Shoutouts.MockProvider
-    |> expect(:project_info, fn _client, _owner, _name ->
-      {:ok, project}
-    end)
-
-    user = Factory.insert(:user)
-    conn = login_user(conn, user)
-
-    {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
-
-    refute render_change(view, :validate, %{
-             "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
-           }) =~ "text-alert"
+      assert flash["info"] == "Project registered correctly"
+    end
   end
 end

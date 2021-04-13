@@ -15,7 +15,7 @@ defmodule ShoutoutsWeb.SearchLive.SearchComponent do
       |> assign(:results, [])}
   end
 
-  def update(%{terms: "", current_user_id: current_user_id} = assigns, socket) do
+  def update(%{terms: "", current_user_id: current_user_id} = _assigns, socket) do
     socket =
       socket
       |> assign(:current_user_id, current_user_id)
