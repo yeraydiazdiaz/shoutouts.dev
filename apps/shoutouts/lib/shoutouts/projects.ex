@@ -23,10 +23,28 @@ defmodule Shoutouts.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(user, attrs \\ %{}) do
+  def create_project(user, attrs) do
     %Project{}
     |> Project.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a project with no owner.
+
+  ## Examples
+
+      iex> create_project(%{field: value})
+      {:ok, %Project{}}
+
+      iex> create_project(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_project(attrs) do
+    %Project{}
+    |> Project.changeset(attrs)
     |> Repo.insert()
   end
 

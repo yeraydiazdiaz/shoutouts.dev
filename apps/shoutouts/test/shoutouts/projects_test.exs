@@ -52,6 +52,15 @@ defmodule Shoutouts.ProjectsTest do
     assert Projects.name_with_owner(project) == "me/mine"
   end
 
+  test "create_project/0 returns a persisted project" do
+    params = Factory.params_for(:project, owner: "me", name: "mine")
+    {:ok, project} = Projects.create_project(params)
+    assert project.id
+    assert [project] = Projects.list_projects()
+    assert Projects.name_with_owner(project) == "me/mine"
+    assert project.user == nil
+  end
+
   test "update_project/2 with valid data updates the project" do
     project = Factory.insert(:project)
     assert {:ok, %Project{} = project} = Projects.update_project(project, %{pinned_only: true})
