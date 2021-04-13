@@ -40,8 +40,8 @@ defmodule Shoutouts.Factory do
     }
   end
 
-  def provider_project_factory do
-    %Shoutouts.Providers.ProviderProject{
+  def provider_project_factory(params \\ []) do
+    pp = %Shoutouts.Providers.ProviderProject{
       provider_id: sequence(:provider_id, fn x -> x end),
       owner: sequence(:owner, &"owner-#{&1}"),
       name: sequence(:name, &"name-#{&1}"),
@@ -55,6 +55,6 @@ defmodule Shoutouts.Factory do
           "text processing"
         ]),
     }
-    
+    Enum.reduce(params, pp, fn {k, v}, acc -> Map.put(acc, k, v) end) 
   end
 end

@@ -22,23 +22,40 @@ defmodule Shoutouts.Projects.Registration do
       |> validate_format(:url_or_owner_name, @regex,
         message: "A GitHub project URL or owner/name is required"
       )
+
     if changeset.valid? do
       [_, owner, name] = Regex.run(@regex, changeset.changes.url_or_owner_name)
+
       changeset
       |> change(%{owner: owner, name: name})
       |> validate_project()
     else
-      changeset 
-    end 
+      changeset
+    end
   end
 
   defp validate_project(changeset) do
     # TODO: this makes a request for any valid URL or owner/name, we should rate limit
     case Shoutouts.Projects.validate_registration(changeset.changes.owner, changeset.changes.name) do
-      {:ok, project} -> change(changeset, %{provider_project: project})
-      {:error, :no_such_repo} -> add_error(changeset, :url_or_owner_name, "The project does not exist or is not public, please check the URL for typos")
-      {:error, :already_exists} -> add_error(changeset, :url_or_owner_name, "The project has already been registered")
-      {:error, _} -> add_error(changeset, :url_or_owner_name, "There was an error trying to validate the project, please try again later")
+      {:ok, project} ->
+        change(changeset, %{provider_project: project})
+
+      {:error, :no_such_repo} ->
+        add_error(
+          changeset,
+          :url_or_owner_name,
+          "The project does not exist or is not public, please check the URL for typos"
+        )
+
+      {:error, :already_exists} ->
+        add_error(changeset, :url_or_owner_name, "The project has already been registered")
+
+      {:error, _} ->
+        add_error(
+          changeset,
+          :url_or_owner_name,
+          "There was an error trying to validate the project, please try again later"
+        )
     end
   end
 end
