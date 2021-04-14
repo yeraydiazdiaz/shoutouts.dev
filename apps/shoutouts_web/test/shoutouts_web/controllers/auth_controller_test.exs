@@ -51,9 +51,9 @@ defmodule ShoutoutsWeb.AuthControllerTest do
     test "redirects to session redirect_to", %{conn: conn} do
       conn = conn
       |> assign(:ueberauth_auth, @ueberauth_success)
-      |> init_test_session(%{redirect_to: "/some/path"})
+      |> init_test_session(%{redirect_to: "/some/path?q=foobar"})
       conn = get(conn, Routes.auth_path(conn, :callback, :github))
-      assert redirected_to(conn) == "/some/path"
+      assert redirected_to(conn) == "/some/path?q=foobar"
     end
   end
 
