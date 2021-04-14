@@ -18,16 +18,16 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 <div class="bg transform translate-y-8 md:-translate-y-16"></div>
 
 <%= if @live_action == :show do %>
+  <div class="flex flex-row items-center mb-3">
+      <h1 class="font-logo text-2xl sm:text-4xl md:text-5xl mr-4"><%= Projects.name_with_owner(@project) %></h1>
+      <div>
+        <a href="<%= @project.url %>" target="_blank"><i class="fab fa-github fa-lg text-xl sm:text-2xl md:text-4xl"></i></a>
+      </div>
+    </div>
   <div class="flex flex-col lg:flex-row lg:items-center justify-between">
     <%# Project name and description %>
     <div class="md:mb-4 lg:mb-0">
-      <div class="flex flex-row items-center mb-3">
-        <h1 class="font-logo text-2xl sm:text-4xl md:text-5xl mr-4"><%= Projects.name_with_owner(@project) %></h1>
-        <div>
-          <a href="<%= @project.url %>" target="_blank"><i class="fab fa-github fa-lg text-xl sm:text-2xl md:text-4xl"></i></a>
-        </div>
-      </div>
-      <div class="text-lg md:text-xl lg:text-2xl mb-3"><%= render_emojis @project.description %></div>
+        <div class="text-lg md:text-xl lg:text-2xl mb-3"><%= render_emojis @project.description %></div>
       <div class="text-sm">
         <span class="text-dark">Written mostly in:</span>
         <span class="font-bold"><%= @project.primary_language %></span>
