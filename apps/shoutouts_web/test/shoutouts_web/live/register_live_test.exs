@@ -24,13 +24,25 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
     refute has_element?(view, "form input")
   end
 
-  test "renders form with input and buttons", %{conn: conn} do
+  test "renders form with input and buttons and register button is disabled", %{conn: conn} do
     user = Factory.insert(:user)
     conn = login_user(conn, user)
 
     {:ok, view, html} = live(conn, Routes.project_register_path(conn, :index))
     assert html =~ "Register a project"
     assert has_element?(view, "form input")
+    assert has_element?(view, "form a", "Back")
+    assert has_element?(view, "form input")
+    assert element(view, "form button") |> render() =~ "disabled"
+  end
+
+  test "renders form with preloaded input from query arg", %{conn: conn} do
+    user = Factory.insert(:user)
+    conn = login_user(conn, user)
+
+    {:ok, view, html} = live(conn, Routes.project_register_path(conn, :index, q: "foobar"))
+    assert html =~ "Register a project"
+    assert element(view, "form input[type='text']") |> render() =~ "foobar"
     assert has_element?(view, "form button", "Register project")
     assert has_element?(view, "form a", "Back")
   end

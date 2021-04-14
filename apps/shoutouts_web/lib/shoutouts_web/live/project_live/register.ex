@@ -10,8 +10,8 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
   require Logger
 
   @impl true
-  def mount(_params, session, socket) do
-    changeset = Registration.changeset(%Registration{}, %{url_or_owner_name: ""})
+  def mount(params, session, socket) do
+    changeset = Registration.changeset(%Registration{}, %{url_or_owner_name: Map.get(params, "q", "")})
 
     {:ok,
      socket
