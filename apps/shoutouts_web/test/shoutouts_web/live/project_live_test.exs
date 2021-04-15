@@ -149,10 +149,59 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       assert Shoutouts.get_shoutout!(s1.id).pinned
       assert has_element?(view, "button[title=\"Click to unpin this shoutout\"]")
     end
-  end
 
-  # flagging
-  # flagging a shoutout updates it and is hidden, a "show flagged" button is rendered
-  # clicking the show flagged button renders the flagged shoutouts
-  # clicking on the flag shoutout on flagged shoutouts updates and "show flagged" button disappears
+    test "flagging a shoutout updates it and hides it behind a button", %{conn: conn} do
+      p = Factory.insert(:project)
+      s1 = Factory.insert(:shoutout, %{project: p})
+      s2 = Factory.insert(:shoutout, %{project: p})
+      conn = login_user(conn, p.user)
+      {:ok, view, _html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+
+      assert view |> element(".relative:first-of-type") |> render() =~ s2.text
+      assert view |> element(".relative:last-of-type") |> render() =~ s1.text
+      element(view, "##{s1.id} button[title=\"Click to flag this shoutout\"]") |> render_click()
+      render(view)
+
+      assert Shoutouts.get_shoutout!(s1.id).flagged
+      assert view |> element(".relative:first-of-type") |> render() =~ s2.text
+      refute view |> render() =~ s1.text
+      assert has_element?(view, "button", "Show 1 flagged shoutout")
+    end
+
+    test "clicking show flagged shoutouts shows flagged shoutouts", %{conn: conn} do
+      p = Factory.insert(:project)
+      s1 = Factory.insert(:shoutout, %{project: p, flagged: true})
+      s2 = Factory.insert(:shoutout, %{project: p})
+      conn = login_user(conn, p.user)
+      {:ok, view, _html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+
+      assert view |> element(".relative:first-of-type") |> render() =~ s2.text
+      refute view |> render() =~ s1.text
+      element(view, "button", "Show 1 flagged shoutout") |> render_click()
+      render(view)
+
+      assert view |> render() =~ s1.text
+      assert has_element?(view, "button", "Hide 1 flagged shoutout")
+      assert has_element?(view, "button[title=\"Click to unflag this shoutout\"]")
+    end
+
+    test "clicking unflag shoutout updates the shoutout and removes the hide/show button", %{conn: conn} do
+      p = Factory.insert(:project)
+      s1 = Factory.insert(:shoutout, %{project: p, flagged: true})
+      s2 = Factory.insert(:shoutout, %{project: p})
+      conn = login_user(conn, p.user)
+      {:ok, view, _html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+
+      assert view |> element(".relative:first-of-type") |> render() =~ s2.text
+      refute view |> render() =~ s1.text
+      element(view, "button", "Show 1 flagged shoutout") |> render_click()
+      element(view, "button[title=\"Click to unflag this shoutout\"]") |> render_click()
+      render(view)
+
+      refute Shoutouts.get_shoutout!(s1.id).flagged
+      assert view |> element(".relative:first-of-type") |> render() =~ s2.text
+      assert view |> element(".relative:last-of-type") |> render() =~ s1.text
+      refute has_element?(view, "button", "Show 1 flagged shoutout")
+    end
+  end
 end

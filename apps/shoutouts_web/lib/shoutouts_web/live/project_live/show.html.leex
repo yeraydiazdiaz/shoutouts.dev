@@ -130,7 +130,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
   <%= if @user_is_owner and @flagged_shoutouts != [] do %>
     <div class="w-full text-center mt-8">
-      <button class="bg-gray-500 text-dim px-4 py-2 rounded" phx-click="toggle_flagged"><%= if @show_flagged_shoutouts do %>Hide<% else %>Show<% end %> <%= length(@flagged_shoutouts) %> flagged shoutouts</button>
+      <button class="bg-gray-500 text-dim px-4 py-2 rounded" phx-click="toggle_flagged"><%= if @show_flagged_shoutouts do %>Hide<% else %>Show<% end %> <%= length(@flagged_shoutouts) %> flagged shoutout<%= if length(@flagged_shoutouts) > 1 do%>s<% end %></button>
     </div>
     <%= if @show_flagged_shoutouts do %>
       <div class="flex flex-row flex-wrap mt-8">
