@@ -16,7 +16,7 @@ defmodule ShoutoutsWeb.TestHelpers do
         }
       },
       provider: :github,
-      uid: 1234,
+      uid: user.provider_id,
       strategy: Ueberauth.Strategy.Github,
     }
   end
