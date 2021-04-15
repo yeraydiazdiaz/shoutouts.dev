@@ -1,4 +1,4 @@
-<div class="relative flex flex-row pb-8 lg:mr-16">
+<div class="relative flex flex-row pb-8 lg:mr-16" id="<%= @shoutout.id %>">
   <div>
     <div class="shoutout text-2xl md:text-3xl mb-3 pl-4<%= if @shoutout.flagged do %> text-gray-400<% end %>">
       <%= text_to_html(render_emojis(@shoutout.text)) %>

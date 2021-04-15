@@ -228,7 +228,8 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
         {:pin_shoutout, shoutout},
         %{assigns: %{shoutouts: shoutouts}} = socket
       ) do
-    shoutouts = List.delete(shoutouts, shoutout)
+    idx = Enum.find_index(shoutouts, &(&1.id == shoutout.id))
+    shoutouts = List.delete_at(shoutouts, idx)
     {:ok, shoutout} = Shoutouts.pin_shoutout(shoutout)
 
     {:noreply,
@@ -241,7 +242,8 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
         {:unpin_shoutout, shoutout},
         %{assigns: %{shoutouts: shoutouts}} = socket
       ) do
-    shoutouts = List.delete(shoutouts, shoutout)
+    idx = Enum.find_index(shoutouts, &(&1.id == shoutout.id))
+    shoutouts = List.delete_at(shoutouts, idx)
     {:ok, shoutout} = Shoutouts.unpin_shoutout(shoutout)
 
     {:noreply,
