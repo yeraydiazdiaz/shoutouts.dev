@@ -61,24 +61,35 @@ defmodule ShoutoutsWeb.ProjectLive.Register do
   def handle_event(
         "register",
         %{"registration" => params},
-        %{assigns: %{changeset: changeset, user_repositories: user_repositories}} = socket
+        %{assigns: %{changeset: changeset, current_user: current_user}} = socket
       ) do
+    user_repositories =
+      Map.get(socket.assigns, :user_repositories, get_user_repositories(current_user))
+
     changeset = Registration.validate_changeset(changeset.data, params, user_repositories)
 
-    case Projects.create_project(Map.from_struct(changeset.changes.provider_project)) do
-      {:ok, project} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Project registered correctly")
-         |> push_redirect(to: Routes.project_show_path(socket, :add, project.owner, project.name))}
+    if changeset.valid? do
+      case Projects.create_project(Map.from_struct(changeset.changes.provider_project)) do
+        {:ok, project} ->
+          {:noreply,
+           socket
+           |> put_flash(:info, "Project registered correctly")
+           |> push_redirect(
+             to: Routes.project_show_path(socket, :add, project.owner, project.name)
+           )}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        Logger.error("Error on query", changeset.errors)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          Logger.error("Error on query", changeset.errors)
 
-        {:noreply,
-         socket
-         |> assign(:changeset, changeset)
-         |> put_flash(:error, "Error registering project, please try again later")}
+          {:noreply,
+           socket
+           |> assign(:changeset, changeset)
+           |> put_flash(:error, "Error registering project, please try again later")}
+      end
+    else
+      {:noreply,
+       socket
+       |> assign(:changeset, changeset)}
     end
   end
 

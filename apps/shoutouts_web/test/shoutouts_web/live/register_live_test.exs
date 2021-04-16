@@ -16,6 +16,16 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
     |> get(Routes.auth_path(conn, :callback, :github))
   end
 
+  def setup_user_mock() do
+    Shoutouts.MockProvider
+    |> expect(:client, fn -> Tesla.Client end)
+
+    Shoutouts.MockProvider
+    |> expect(:user_repositories, fn _client, _login ->
+      {:ok, []}
+    end)
+  end
+
   test "anonymous users are prompted to log in", %{conn: conn} do
     {:ok, view, html} = live(conn, Routes.project_register_path(conn, :index))
     assert html =~ "Register a project"
@@ -49,6 +59,7 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
 
   describe "validate" do
     test "input with missing /", %{conn: conn} do
+      setup_user_mock()
       user = Factory.insert(:user)
       conn = login_user(conn, user)
 
@@ -62,6 +73,7 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
     end
 
     test "invalid GitHub URL", %{conn: conn} do
+      setup_user_mock()
       user = Factory.insert(:user)
       conn = login_user(conn, user)
 
@@ -76,7 +88,12 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
 
     test "GitHub URLs must exist in the provider", %{conn: conn} do
       Shoutouts.MockProvider
-      |> expect(:client, fn -> Tesla.Client end)
+      |> expect(:client, 2, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, fn _client, _login ->
+        {:ok, []}
+      end)
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
@@ -97,7 +114,12 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
 
     test "owner/name must exist in the provider", %{conn: conn} do
       Shoutouts.MockProvider
-      |> expect(:client, fn -> Tesla.Client end)
+      |> expect(:client, 2, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, fn _client, _login ->
+        {:ok, []}
+      end)
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
@@ -118,7 +140,12 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
 
     test "provider errors invalidate changeset", %{conn: conn} do
       Shoutouts.MockProvider
-      |> expect(:client, fn -> Tesla.Client end)
+      |> expect(:client, 2, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, fn _client, _login ->
+        {:ok, []}
+      end)
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
@@ -138,6 +165,7 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
     end
 
     test "projects must not already been registered", %{conn: conn} do
+      setup_user_mock()
       project = Factory.insert(:project)
       user = Factory.insert(:user)
       conn = login_user(conn, user)
@@ -164,7 +192,6 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
         {:ok, []}
       end)
 
-      IO.inspect("Test calling live")
       {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
 
       assert view
@@ -175,6 +202,7 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
     end
 
     test "valid inputs don't show errors and activate register button", %{conn: conn} do
+      setup_user_mock()
       project = Factory.provider_project_factory(owner: "registered", name: "project")
 
       Shoutouts.MockProvider
@@ -201,7 +229,12 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
       project = Factory.provider_project_factory(owner: "registered", name: "project")
 
       Shoutouts.MockProvider
-      |> expect(:client, fn -> Tesla.Client end)
+      |> expect(:client, 2, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, fn _client, _login ->
+        {:ok, []}
+      end)
 
       Shoutouts.MockProvider
       |> expect(:project_info, fn _client, _owner, _name ->
