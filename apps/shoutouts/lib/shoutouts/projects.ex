@@ -49,7 +49,7 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Gets a single project by owner and name. Unflagged shoutouts are preloaded.
+  Gets a single project by owner and name. User and unflagged shoutouts are preloaded.
 
   Raises `Ecto.NoResultsError` if the Project does not exist.
 
@@ -72,6 +72,7 @@ defmodule Shoutouts.Projects do
     q =
       from(p in Project,
         where: p.owner == ^owner and p.name == ^name,
+        preload: [:user],
         preload: [shoutouts: ^shoutouts_query]
       )
 

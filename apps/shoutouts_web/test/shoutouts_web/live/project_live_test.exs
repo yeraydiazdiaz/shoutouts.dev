@@ -1,11 +1,13 @@
 defmodule ShoutoutsWeb.ProjectLiveTest do
   use ShoutoutsWeb.ConnCase
+  
+  import Mox
+  setup :verify_on_exit!
 
   import Phoenix.LiveViewTest
 
   alias Shoutouts.Accounts.User
   alias Shoutouts.Factory
-  alias Shoutouts.Shoutouts
   alias ShoutoutsWeb.TestHelpers
 
   def login_user(conn, %User{} = user) do
@@ -41,8 +43,19 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
              Routes.auth_path(conn, :request, :github)
   end
 
+  def setup_mock(user_repositories \\ []) do
+    Shoutouts.MockProvider
+    |> expect(:client, 2, fn -> Tesla.Client end)
+
+    Shoutouts.MockProvider
+    |> expect(:user_repositories, 2, fn _client, _login ->
+      {:ok, user_repositories}
+    end)
+  end
+
   describe "logged in users" do
     test "are prompted to leave the first shoutout", %{conn: conn} do
+      setup_mock()
       u = Factory.insert(:user)
       conn = login_user(conn, u)
       p = Factory.insert(:project)
@@ -53,6 +66,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     end
 
     test "are prompted to leave a shoutout", %{conn: conn} do
+      setup_mock()
       p = Factory.insert(:project)
       Factory.insert(:shoutout, %{project: p})
       u = Factory.insert(:user)
@@ -65,6 +79,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
 
     test "that have already left a shoutout are not prompted to leave another",
          %{conn: conn} do
+      setup_mock()
       owner = Factory.insert(:user, %{name: "owner"})
       p = Factory.insert(:project, %{user: owner})
       s = Factory.insert(:shoutout, %{project: p})
@@ -78,6 +93,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
 
     test "whose provider account is too young are not prompted to leave another",
          %{conn: conn} do
+      setup_mock()
       owner = Factory.insert(:user, %{name: "owner"})
       p = Factory.insert(:project, %{user: owner})
       u = Factory.insert(:user, %{provider_joined_at: DateTime.utc_now()})
@@ -90,6 +106,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
 
     test "that have left a flagged shoutout on another of the user's projects are not prompted to leave another",
          %{conn: conn} do
+      setup_mock()
       owner = Factory.insert(:user, %{name: "owner"})
       other_project = Factory.insert(:project, %{user: owner})
       p = Factory.insert(:project, %{user: owner})
@@ -104,6 +121,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
 
     test "that have left a flagged shoutouts on more than 2 other projects are not prompted to leave a shoutout",
          %{conn: conn} do
+      setup_mock()
       u = Factory.insert(:user)
       1..3  # > @owner_flagged_threshold in show.ex
       |> Enum.each(fn _i ->
@@ -117,10 +135,24 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       refute html =~ "Add your shoutout"
       assert html =~ "Several owners have flagged your shoutouts"
     end
+
+    test "owners of unclaimed projects are prompted to register them in accounts settings", %{conn: conn} do
+      owner = Factory.insert(:user, %{username: "owner"})
+      p = Factory.insert(:project, user: nil)
+      setup_mock(["#{p.owner}/#{p.name}"])
+      Factory.insert(:shoutout, %{project: p})
+      conn = login_user(conn, owner)
+      {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+
+      assert html =~ "Add your shoutout"
+      assert html =~ "It looks like you are one of the owners of this project"
+      assert html =~ Routes.user_index_path(conn, :add)
+    end
   end
 
   describe "project owners" do
     test "pin and flag buttons are rendered on each shoutout", %{conn: conn} do
+      setup_mock()
       p = Factory.insert(:project)
       Factory.insert(:shoutout, %{project: p})
       conn = login_user(conn, p.user)
@@ -133,6 +165,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     end
 
     test "pinning a shoutout updates it and renders it at the top", %{conn: conn} do
+      setup_mock()
       p = Factory.insert(:project)
       s1 = Factory.insert(:shoutout, %{project: p})
       s2 = Factory.insert(:shoutout, %{project: p})
@@ -146,11 +179,12 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
 
       assert view |> element(".relative:first-of-type") |> render() =~ s1.text
       assert view |> element(".relative:last-of-type") |> render() =~ s2.text
-      assert Shoutouts.get_shoutout!(s1.id).pinned
+      assert Shoutouts.Shoutouts.get_shoutout!(s1.id).pinned
       assert has_element?(view, "button[title=\"Click to unpin this shoutout\"]")
     end
 
     test "flagging a shoutout updates it and hides it behind a button", %{conn: conn} do
+      setup_mock()
       p = Factory.insert(:project)
       s1 = Factory.insert(:shoutout, %{project: p})
       s2 = Factory.insert(:shoutout, %{project: p})
@@ -162,13 +196,14 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       element(view, "##{s1.id} button[title=\"Click to flag this shoutout\"]") |> render_click()
       render(view)
 
-      assert Shoutouts.get_shoutout!(s1.id).flagged
+      assert Shoutouts.Shoutouts.get_shoutout!(s1.id).flagged
       assert view |> element(".relative:first-of-type") |> render() =~ s2.text
       refute view |> render() =~ s1.text
       assert has_element?(view, "button", "Show 1 flagged shoutout")
     end
 
     test "clicking show flagged shoutouts shows flagged shoutouts", %{conn: conn} do
+      setup_mock()
       p = Factory.insert(:project)
       s1 = Factory.insert(:shoutout, %{project: p, flagged: true})
       s2 = Factory.insert(:shoutout, %{project: p})
@@ -186,6 +221,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     end
 
     test "clicking unflag shoutout updates the shoutout and removes the hide/show button", %{conn: conn} do
+      setup_mock()
       p = Factory.insert(:project)
       s1 = Factory.insert(:shoutout, %{project: p, flagged: true})
       s2 = Factory.insert(:shoutout, %{project: p})
@@ -198,7 +234,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       element(view, "button[title=\"Click to unflag this shoutout\"]") |> render_click()
       render(view)
 
-      refute Shoutouts.get_shoutout!(s1.id).flagged
+      refute Shoutouts.Shoutouts.get_shoutout!(s1.id).flagged
       assert view |> element(".relative:first-of-type") |> render() =~ s2.text
       assert view |> element(".relative:last-of-type") |> render() =~ s1.text
       refute has_element?(view, "button", "Show 1 flagged shoutout")
