@@ -29,6 +29,11 @@ defmodule Shoutouts.Provider do
   """
   @callback user_repositories(
               client :: TeslaClient.t(),
+              login :: binary()
+            ) :: {:ok, [binary()]} | {:error, response :: Tesla.Env.t()}
+
+  @callback user_repositories(
+              client :: TeslaClient.t(),
               login :: binary(),
               cursor :: integer()
             ) :: {:ok, [binary()]} | {:error, response :: Tesla.Env.t()}

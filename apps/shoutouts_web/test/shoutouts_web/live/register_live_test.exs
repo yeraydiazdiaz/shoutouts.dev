@@ -151,6 +151,29 @@ defmodule ShoutoutsWeb.RegisterLiveTest do
                "The project has already been registered"
     end
 
+    test "the user must not be an owner of the project", %{conn: conn} do
+      project = Factory.insert(:project)
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, fn _client, _login ->
+        {:ok, []}
+      end)
+
+      IO.inspect("Test calling live")
+      {:ok, view, _html} = live(conn, Routes.project_register_path(conn, :index))
+
+      assert view
+             |> render_change(:validate, %{
+               "registration" => %{"url_or_owner_name" => "#{project.owner}/#{project.name}"}
+             }) =~
+               "The project has already been registered"
+    end
+
     test "valid inputs don't show errors and activate register button", %{conn: conn} do
       project = Factory.provider_project_factory(owner: "registered", name: "project")
 

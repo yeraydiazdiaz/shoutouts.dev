@@ -387,6 +387,13 @@ defmodule Shoutouts.Projects do
     end
   end
 
+  @doc """
+  Validates the registration of a project based on owner and name.
+
+  The project must:
+  1. Not already exist in the DB,
+  2. Exist and be public in the provider (based on the providers API response)
+  """
   def validate_registration(owner, name, provider \\ nil) do
     provider =
       if provider == nil,
