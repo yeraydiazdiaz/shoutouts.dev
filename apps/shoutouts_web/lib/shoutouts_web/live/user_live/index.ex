@@ -188,7 +188,9 @@ defmodule ShoutoutsWeb.UserLive.Index do
       Task.async(fn -> Projects.project_info(current_user, owner, name) end)
     end)
     |> Stream.map(&Task.await/1)
-    |> Stream.map(fn {:ok, attrs} -> Projects.create_project(current_user, attrs) end)
+    |> Stream.map(fn {:ok, project_info} ->
+      Projects.create_project(current_user, Map.from_struct(project_info))
+    end)
     |> Enum.reduce(
       {:ok, []},
       fn {result, project}, {end_result, projects} ->
