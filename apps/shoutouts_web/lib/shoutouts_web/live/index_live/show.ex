@@ -21,7 +21,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
 
     shoutouts =
       case Shoutouts.shoutouts_for_top_projects() do
-        [] -> [default_shoutout()]
+        [] -> [default_shoutout(socket)]
         stp -> stp
       end
 
@@ -64,17 +64,15 @@ defmodule ShoutoutsWeb.IndexLive.Show do
     {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
 
-  defp default_shoutout() do
+  defp default_shoutout(socket) do
     %Shoutouts.Shoutout{
       text: "Your project is amazing!\nThanks for everything you do!",
       user: %Accounts.User{
         name: "Amy Grateful",
-        signature: "Prolific Open Source contributor"
+        signature: "Prolific Open Source contributor",
+        avatar_url: Routes.static_path(socket, "/images/sample_avatar.png")
       },
-      project: %Projects.Project{
-        owner: "yeraydiazdiaz",
-        name: "shoutouts.dev"
-      }
+      project: nil,
     }
   end
 end
