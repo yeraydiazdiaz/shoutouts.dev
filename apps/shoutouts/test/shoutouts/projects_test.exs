@@ -377,4 +377,13 @@ defmodule Shoutouts.ProjectsTest do
       assert pi == provider_project
     end
   end
+
+  describe "claim project" do
+    test "updates the project's user_id" do
+      u = Factory.insert(:user)
+      p = Factory.insert(:project, user: nil) 
+      {:ok, updated_project} = Projects.claim_project(p, u)
+      assert updated_project.user_id == u.id
+    end
+  end
 end

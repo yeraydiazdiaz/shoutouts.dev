@@ -410,4 +410,11 @@ defmodule Shoutouts.Projects do
       end
     end
   end
+
+  def claim_project(%Project{user_id: nil} = project, user) do
+    project
+    |> Project.changeset(%{})
+    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.update()
+  end
 end
