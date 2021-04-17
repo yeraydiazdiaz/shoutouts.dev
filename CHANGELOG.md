@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Added ability for any user to register a project, once registered the project
+is "unclaimed". Users will be able to add shoutouts to an unclaimed project and
+owners can log in and claim them to manage its shoutouts.
+
 ## [21.1.9] - 2021-04-08
 
 - Added buttons to shoutout carrousel in home page.
