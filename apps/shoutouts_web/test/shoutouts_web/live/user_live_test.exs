@@ -101,5 +101,26 @@ defmodule ShoutoutsWeb.UserLiveTest do
       assert flash["info"] == "1 project(s) added successfully"
       assert Projects.project_exists?(project.owner, project.name)
     end
+
+    test "claiming repos adds user ID to them", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, 2, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, 2, fn _client, _login ->
+        {:ok, ["owner/unclaimed1", "owner/unclaimed2"]}
+      end)
+
+      owner = Factory.insert(:user)
+      Factory.insert(:project, owner: "owner", name: "unclaimed1", user: nil)
+      project = Factory.insert(:project, owner: "owner", name: "unclaimed2", user: nil)
+      conn = login_user(conn, owner)
+      {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :add))
+      view |> form("#claim", %{"projects[owner/unclaimed2]" => ""}) |> render_submit()
+      refute view |> has_element?("label", "owner/unclaimed2")
+      assert view |> render() =~ "1 project(s) claimed successfully"
+      assert view |> render() =~ Routes.project_show_path(conn, :show, project.owner, project.name)
+      assert Projects.get_project_by_owner_and_name!(project.owner, project.name).user_id == owner.id
+    end
   end
 end

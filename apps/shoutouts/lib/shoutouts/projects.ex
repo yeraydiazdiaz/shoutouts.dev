@@ -413,6 +413,7 @@ defmodule Shoutouts.Projects do
 
   def claim_project(%Project{user_id: nil} = project, user) do
     project
+    |> Repo.preload(:user)  # this is necessary for put_assoc
     |> Project.changeset(%{})
     |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.update()
