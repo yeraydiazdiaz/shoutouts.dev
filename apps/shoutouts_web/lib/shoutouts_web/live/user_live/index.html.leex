@@ -99,7 +99,7 @@
     <form action="#" class="w-full mt-8" id="form" method="post" phx-submit="submit">
       <div class="w-full flex flex-row flex-wrap mb-8">
         <%= for repo <- @repos do %>
-          <div class="flex flex-row items-center h-8 w-full lg:w-1/2">
+          <div class="flex flex-row items-center h-8 w-full lg:w-1/2 lg:pr-2">
             <label for="<%= "repos[#{repo}]" %>" class="mr-2 leading-none cursor-pointer"><%= repo %></label>
             <input type="checkbox" id="<%= "repos[#{repo}]" %>" name="<%= "repos[#{repo}]" %>" class="checkbox" />
           </div>

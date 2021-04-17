@@ -74,9 +74,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
     Logger.debug("Add projects for logged in user")
     %{assigns: %{current_user: user}} = socket = get_user(socket, current_user_id)
 
-    possible_repos = Projects.user_repositories(user)
-
-    case possible_repos do
+    case Projects.user_repositories(user) do
       {:ok, possible_repos} ->
         existing_repos =
           possible_repos
