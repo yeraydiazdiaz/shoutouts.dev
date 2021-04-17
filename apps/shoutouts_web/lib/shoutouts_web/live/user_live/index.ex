@@ -76,21 +76,28 @@ defmodule ShoutoutsWeb.UserLive.Index do
 
     case Projects.user_repositories(user) do
       {:ok, possible_repos} ->
-        existing_repos =
+        {existing_projects, claimable_projects} =
           possible_repos
           |> Enum.map(&String.split(&1, "/"))
           |> Projects.list_with_owners_and_names()
+          |> Enum.reduce({[], []}, fn p, {e, c} ->
+            if p.user_id != nil, do: {[p | e], c}, else: {e, [p | c]}
+          end)
+
+        existing_project_names = Enum.map(existing_projects, &Projects.name_with_owner/1)
+        claimable_project_names = Enum.map(claimable_projects, &Projects.name_with_owner/1)
 
         repos_to_be_added =
           Enum.filter(possible_repos, fn repo ->
-            repo not in Enum.map(existing_repos, &Projects.name_with_owner/1)
+            repo not in existing_project_names and repo not in claimable_project_names
           end)
 
         {:ok,
          socket
          |> assign(:current_user, user)
          |> assign(:repos, repos_to_be_added)
-         |> assign(:existing_repos, existing_repos)}
+         |> assign(:existing_projects, existing_projects)
+         |> assign(:claimable_projects, claimable_projects)}
 
       {:error, error} ->
         Logger.error("Could not retrieve user repos", error)

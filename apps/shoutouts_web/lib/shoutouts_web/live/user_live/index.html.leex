@@ -94,6 +94,25 @@
     <div class="mb-8 flex flex-row justify-between">
       <h1 class="font-logo text-4xl text-dark">Add projects</h1>
     </div>
+    <%= if length(@claimable_projects) > 0 do %>
+
+    <p class="text-primary text-xl">The following projects have been registered by users, <strong>claim</strong> them and manage their shoutouts:</p>
+
+    <form action="#" class="w-full mt-8" id="form" method="post" phx-submit="claim">
+      <div class="w-full flex flex-row flex-wrap mb-4">
+        <%= for project <- @claimable_projects do %>
+          <div class="flex flex-row items-center h-8 w-full lg:w-1/2 lg:pr-2">
+            <label for="<%= "projects[#{project.owner}/#{project.name}]" %>" class="mr-2 leading-none cursor-pointer"><%= project.owner %>/<%= project.name %></label>
+            <input type="checkbox" id="<%= "projects[#{project.owner}/#{project.name}]" %>" name="<%= "projects[#{project.owner}/#{project.name}" %>" class="checkbox" />
+          </div>
+        <% end %>
+      </div>
+      <%# This should disable itself, phx_disable_with but with the same text would be nice %>
+      <%= submit "Claim projects", class: "text-dim bg-primary font-bold px-6 py-3 mb-12 rounded-md leading-4" %>
+    </form>
+
+    <% end %>
+
     <p class="text-primary text-xl">Select one or more repositories to add, only repositories you <strong>own</strong> are eligible:</p>
 
     <form action="#" class="w-full mt-8" id="form" method="post" phx-submit="submit">
@@ -109,10 +128,10 @@
       <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4" %>
     </form>
 
-    <%= if length(@existing_repos) > 0 do %>
+    <%= if length(@existing_projects) > 0 do %>
       <p class="mt-8 text-primary text-md mb-4">Can't find a project? The following have been already registered by you our another owner:</p>
       <div class="w-full flex flex-row flex-wrap justify-between mb-8">
-      <%= for repo <- @existing_repos do %>
+      <%= for repo <- @existing_projects do %>
         <div><a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, repo.owner, repo.name) %>" class="link"><%= repo.owner %>/<%= repo.name %></a></div>
       <% end %>
       </div>
