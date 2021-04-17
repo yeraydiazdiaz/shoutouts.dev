@@ -8,6 +8,7 @@ defmodule ShoutoutsWeb.UserLiveTest do
 
   alias Shoutouts.Accounts.User
   alias Shoutouts.Factory
+  alias Shoutouts.Projects
   alias ShoutoutsWeb.TestHelpers
 
   def login_user(conn, %User{} = user) do
@@ -47,7 +48,7 @@ defmodule ShoutoutsWeb.UserLiveTest do
       assert redirect.to == "/"
     end
 
-    test "renders user's repos checkboxes and an add projects button ", %{conn: conn} do
+    test "renders user's repos checkboxes and an add projects button", %{conn: conn} do
       setup_mock(["owner/project1", "owner/project2"])
       project = Factory.insert(:project)
       conn = login_user(conn, project.user)
@@ -76,6 +77,29 @@ defmodule ShoutoutsWeb.UserLiveTest do
       assert {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :add))
       assert view |> has_element?("label", "owner/project1")
       assert view |> has_element?("label", "owner/unclaimed")
+    end
+
+    test "submitting repos add projects", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, 3, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, 2, fn _client, _login ->
+        {:ok, ["owner/project1", "owner/project2"]}
+      end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok, Factory.provider_project_factory(owner: "owner", name: "project1")}
+      end)
+
+      project = Factory.insert(:project)
+      conn = login_user(conn, project.user)
+      {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :add))
+      view |> form("#add", %{"repos[owner/project1]" => ""}) |> render_submit()
+      flash = assert_redirect(view, Routes.user_index_path(conn, :projects))
+      assert flash["info"] == "1 project(s) added successfully"
+      assert Projects.project_exists?(project.owner, project.name)
     end
   end
 end
