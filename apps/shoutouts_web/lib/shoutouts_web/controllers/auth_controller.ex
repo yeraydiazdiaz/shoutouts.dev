@@ -113,7 +113,7 @@ defmodule ShoutoutsWeb.AuthController do
       r ->
         delete_session(conn, :redirect_to)
         parsed = URI.parse(r)
-        path = if parsed.query != "", do: "#{parsed.path}?#{parsed.query}", else: parsed.path
+        path = if parsed.query != nil, do: "#{parsed.path}?#{parsed.query}", else: parsed.path
         if path == "/", do: default_path, else: path
     end
   end
