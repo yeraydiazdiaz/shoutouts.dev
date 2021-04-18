@@ -45,7 +45,7 @@
                 <input type="text" name="q" placeholder="Search projects" class="ml-2 text-gray-800 appearance-none outline-none bg-transparent" />
               </form>
             </div>
-            <%= if assigns[:current_user_id] do %>
+            <%= if Map.get(assigns, :current_user) != nil do %>
               <a class="inline-block font-bold hover:underline text-center mr-8" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
               <a class="inline-block font-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
             <% else %>
@@ -57,7 +57,7 @@
           <div id="nav-bars" class="lg:hidden text-lg cursor-pointer"><i class="fas fa-bars"></i></div>
           <div id="nav-menu" class="hidden absolute top-0 right-0 mt-14 flex flex-col bg-dimmer text-secondary border border-secondary">
             <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.search_show_path(@conn, :index) %>">Search</a>
-            <%= if assigns[:current_user_id] do %>
+            <%= if Map.get(assigns, :current_user) != nil do %>
               <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
               <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
             <% else %>

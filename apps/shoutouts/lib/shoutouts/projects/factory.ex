@@ -8,7 +8,7 @@ defmodule Shoutouts.Factory do
       email: sequence(:email, &"email-#{&1}@example.com"),
       avatar_url: sequence(:avatar_url, &"https://example.org/avatar/#{&1}"),
       provider: :github,
-      provider_id: sequence(:provider_id, &"#{&1}"),
+      provider_id: sequence(:provider_id, &(&1)),
       signature: sequence(:username, &"Signature no. #{&1}"),
       provider_joined_at: ~U[2014-02-20T16:58:32Z]
     }
@@ -38,5 +38,23 @@ defmodule Shoutouts.Factory do
       user: build(:user),
       project: build(:project)
     }
+  end
+
+  def provider_project_factory(params \\ []) do
+    pp = %Shoutouts.Providers.ProviderProject{
+      provider_id: sequence(:provider_id, fn x -> x end),
+      owner: sequence(:owner, &"owner-#{&1}"),
+      name: sequence(:name, &"name-#{&1}"),
+      primary_language: sequence(:primary_language, ["python", "elixir", "rust", "javascript"]),
+      url: sequence(:url, &"https://github.com/owner-#{&1}/name-#{&1}"),
+      description:
+        sequence(:description, [
+          "http client",
+          "web framework",
+          "machine learning",
+          "text processing"
+        ]),
+    }
+    Enum.reduce(params, pp, fn {k, v}, acc -> Map.put(acc, k, v) end) 
   end
 end

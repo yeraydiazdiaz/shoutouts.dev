@@ -17,14 +17,15 @@ defmodule ShoutoutsWeb.AuthController do
   the user is redirected to the page they were in.
 
   Note the redirect URL is set on the GitHub app configuration, so when testing
-  on a different env, e.g. VirtualBox logging in will not work unless amended.
+  on a different env, e.g. VirtualBox, logging in will not work unless changed
+  in the GitHub app.
   """
   def request(
         %{assigns: %{current_user_id: nil}} = conn,
         %{"provider" => provider_name} = _params
       ) do
     conn
-    |> put_session(:redirect_to, get_referer(conn))
+    |> put_session(:redirect_to, redirect_target(conn))
     |> Ueberauth.run_request(provider_name, get_provider_config())
   end
 
@@ -38,19 +39,19 @@ defmodule ShoutoutsWeb.AuthController do
     conn
     |> ShoutoutsWeb.Auth.login(user)
     |> put_flash(:info, "Successfully authenticated.")
-    |> redirect(to: get_redirect_to(conn))
+    |> redirect(to: redirect_to(conn))
   end
 
   # OAuth failure callback, can't do a lot just log and flash.
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
-    Logger.debug("Authentication failure")
+    Logger.error("Authentication failure")
 
     conn
     |> put_flash(
       :error,
       "Sorry, something went wrong with the authentication. We'll look into it but please try again later."
     )
-    |> redirect(to: get_redirect_to(conn))
+    |> redirect(to: redirect_to(conn))
   end
 
   # OAuth callback with no assigns, i.e. not yet processed by Ueberauth.
@@ -88,14 +89,21 @@ defmodule ShoutoutsWeb.AuthController do
     end
   end
 
-  defp get_referer(conn) do
+  def redirect_target(conn) do
+    case fetch_query_params(conn).query_params do
+      %{"next" => next_path} -> next_path
+      _ -> referer_from_headers(conn)
+    end
+  end
+
+  defp referer_from_headers(conn) do
     case Enum.find(conn.req_headers, fn {header, _value} -> header == "referer" end) do
       {"referer", referer} -> referer
       nil -> nil
     end
   end
 
-  defp get_redirect_to(conn) do
+  defp redirect_to(conn) do
     default_path = Router.Helpers.user_index_path(conn, :projects)
 
     case get_session(conn, :redirect_to) do
@@ -104,7 +112,8 @@ defmodule ShoutoutsWeb.AuthController do
 
       r ->
         delete_session(conn, :redirect_to)
-        path = URI.parse(r).path
+        parsed = URI.parse(r)
+        path = if parsed.query != nil, do: "#{parsed.path}?#{parsed.query}", else: parsed.path
         if path == "/", do: default_path, else: path
     end
   end

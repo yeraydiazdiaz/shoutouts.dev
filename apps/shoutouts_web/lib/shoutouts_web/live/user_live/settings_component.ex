@@ -46,7 +46,6 @@ defmodule ShoutoutsWeb.UserLive.SettingsComponent do
       # Including the flash markup in the component renders the form incorrectly for some reason
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset.errors)
         Logger.error("Error on query", changeset.errors)
 
         {:noreply,

@@ -29,6 +29,7 @@ defmodule ShoutoutsWeb.Router do
     live "/account/projects/:id/delete", UserLive.Index, :delete
     live "/account/shoutouts", UserLive.Index, :shoutouts
 
+    live "/projects/register", ProjectLive.Register, :index
     live "/projects/:owner/:name", ProjectLive.Show, :show
     live "/projects/:owner/:name/add", ProjectLive.Show, :add
     get "/projects/:owner/:name/badge", ProjectController, :badge

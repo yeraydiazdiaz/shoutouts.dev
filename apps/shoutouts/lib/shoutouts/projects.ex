@@ -12,7 +12,26 @@ defmodule Shoutouts.Projects do
   @default_order [desc: :inserted_at]
 
   @doc """
-  Creates a project.
+  Creates a project with an owner.
+
+  ## Examples
+
+      iex> create_project(%User{}, %{field: value})
+      {:ok, %Project{}}
+
+      iex> create_project(%User{}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_project(user, attrs) do
+    %Project{}
+    |> Project.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a project with no owner.
 
   ## Examples
 
@@ -23,24 +42,23 @@ defmodule Shoutouts.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(user, attrs \\ %{}) do
+  def create_project(attrs) do
     %Project{}
     |> Project.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
   @doc """
-  Gets a single project by owner and name.
+  Gets a single project by owner and name. User and unflagged shoutouts are preloaded.
 
   Raises `Ecto.NoResultsError` if the Project does not exist.
 
   ## Examples
 
-      iex> get_project_by_owner_and_name("me", "mine")
+      iex> get_project_by_owner_and_name!("me", "mine")
       %Project{}
 
-      iex> get_project_by_owner_and_name("me", "nope")
+      iex> get_project_by_owner_and_name!("me", "nope")
       ** (Ecto.NoResultsError)
 
   """
@@ -54,10 +72,31 @@ defmodule Shoutouts.Projects do
     q =
       from(p in Project,
         where: p.owner == ^owner and p.name == ^name,
+        preload: [:user],
         preload: [shoutouts: ^shoutouts_query]
       )
 
     Repo.one!(q)
+  end
+
+  @doc """
+  Returns whether a project by owner and name.
+
+  ## Examples
+
+      iex> project_exists?("me", "mine")
+      {:ok, %Project{}}
+
+      iex> get_project_by_owner_and_name("me", "nope")
+      ** (Ecto.NoResultsError)
+
+  """
+  def project_exists?(owner, name, provider \\ :github) do
+    Repo.exists?(
+      from(p in Project,
+        where: p.owner == ^owner and p.name == ^name and p.provider == ^provider
+      )
+    )
   end
 
   @doc """
@@ -276,16 +315,17 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Returns the provider module for a specific user.
+  Returns the provider module for a specific user, defaulting to the provider
+  set in the application env's :default_provider.
   """
   def provider_for_user(_user) do
-    # TOOD: Returns the provider for a particular user
+    # TODO: Returns the provider for a particular user
     # Would it be possible for a single user to have more than one provider?
     Application.get_env(:shoutouts, :default_provider, Shoutouts.Providers.GitHub)
   end
 
   @doc """
-  Returns the user's repositories on the speficied provider.
+  Returns the user's repositories on their provider.
   """
   def user_repositories(user) do
     provider_for_user(user)
@@ -293,7 +333,7 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Returns a project's information user's repositories on the speficied provider.
+  Returns a project's information using a user provider given a owner and name strings.
   """
   def project_info(user, owner, name) do
     provider_for_user(user)
@@ -338,11 +378,44 @@ defmodule Shoutouts.Projects do
   end
 
   def refresh_project(project) do
+    # TODO: refresh project should use the project's ID to protect us from projects
+    # moving organizations
     with {:ok, project_info} <-
            provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
       update_project(project, Map.from_struct(project_info))
     else
       {:error, response} -> {:error, response}
     end
+  end
+
+  @doc """
+  Validates the registration of a project based on owner and name.
+
+  The project must:
+  1. Not already exist in the DB,
+  2. Exist and be public in the provider (based on the providers API response)
+  """
+  def validate_registration(owner, name, provider \\ nil) do
+    provider =
+      if provider == nil,
+        do: Application.get_env(:shoutouts, :default_provider, Shoutouts.Providers.GitHub)
+
+    if project_exists?(owner, name) do
+      {:error, :already_exists}
+    else
+      case Provider.project_info(provider, owner, name) do
+        {:ok, :no_such_repo} -> {:error, :no_such_repo}
+        {:ok, provider_project} -> {:ok, provider_project}
+        {:error, _} -> {:error, :provider_error}
+      end
+    end
+  end
+
+  def claim_project(%Project{user_id: nil} = project, user) do
+    project
+    |> Repo.preload(:user)  # this is necessary for put_assoc
+    |> Project.changeset(%{})
+    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.update()
   end
 end

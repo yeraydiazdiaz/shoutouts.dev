@@ -30,13 +30,13 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
     current_user = Accounts.get_user!(current_user_id)
     user_is_owner = current_user_id == project.user_id
     shoutouts = Repo.preload(project.shoutouts, :user)
+    user_repositories = get_user_repositories(current_user)
 
     {num_shoutouts, badge} = get_num_shoutouts_and_badge(project, shoutouts)
 
     flagged_shoutouts = Shoutouts.list_flagged_shoutouts_for_project(owner, name)
 
-    user_shoutout =
-      user_already_created_shoutout(shoutouts ++ flagged_shoutouts, current_user_id)
+    user_shoutout = user_already_created_shoutout(shoutouts ++ flagged_shoutouts, current_user_id)
 
     user_is_banned_for_owner =
       not user_is_owner and
@@ -67,6 +67,10 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
      |> assign(:user_is_banned_for_owner, user_is_banned_for_owner)
      |> assign(:user_is_banned_globally, user_is_banned_globally)
      |> assign(:user_account_too_young, user_account_too_young)
+     |> assign(
+       :user_can_claim_project,
+       project.user == nil and "#{project.owner}/#{project.name}" in user_repositories
+     )
      |> assign(
        :disable_cta,
        user_account_too_young or user_is_banned_globally or user_is_banned_globally
@@ -228,7 +232,8 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
         {:pin_shoutout, shoutout},
         %{assigns: %{shoutouts: shoutouts}} = socket
       ) do
-    shoutouts = List.delete(shoutouts, shoutout)
+    idx = Enum.find_index(shoutouts, &(&1.id == shoutout.id))
+    shoutouts = List.delete_at(shoutouts, idx)
     {:ok, shoutout} = Shoutouts.pin_shoutout(shoutout)
 
     {:noreply,
@@ -241,7 +246,8 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
         {:unpin_shoutout, shoutout},
         %{assigns: %{shoutouts: shoutouts}} = socket
       ) do
-    shoutouts = List.delete(shoutouts, shoutout)
+    idx = Enum.find_index(shoutouts, &(&1.id == shoutout.id))
+    shoutouts = List.delete_at(shoutouts, idx)
     {:ok, shoutout} = Shoutouts.unpin_shoutout(shoutout)
 
     {:noreply,
@@ -256,5 +262,16 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
       end)
 
     {num_shoutouts, Shoutouts.render_badge(num_shoutouts, 1.5)}
+  end
+
+  defp get_user_repositories(current_user) do
+    case Projects.user_repositories(current_user) do
+      {:ok, user_repositories} ->
+        user_repositories
+
+      {:error, _} ->
+        Logger.error("Could not retrieve user repositories")
+        []
+    end
   end
 end

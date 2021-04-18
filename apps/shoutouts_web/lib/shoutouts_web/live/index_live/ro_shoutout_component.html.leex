@@ -1,5 +1,5 @@
 <div class="absolute inset-0 flex flex-row justify-center transition duration-500 ease-out transition-opacity <%= if @visible do %>opacity-100 z-10 pointer-events-auto<% else %>opacity-0 pointer-events-none<% end %>">
-  <a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @shoutout.project.owner, @shoutout.project.name) %>">
+  <a data-phx-link="redirect" data-phx-link-state="push" href="<%= if @shoutout.project != nil, do: Routes.project_show_path(@socket, :show, @shoutout.project.owner, @shoutout.project.name), else: "#" %>">
   <div>
     <div class="shoutout text-xl md:text-2xl mb-3 pl-4">
       <%= text_to_html(render_emojis(@shoutout.text)) %>
