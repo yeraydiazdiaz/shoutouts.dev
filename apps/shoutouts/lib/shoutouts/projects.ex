@@ -319,7 +319,7 @@ defmodule Shoutouts.Projects do
   set in the application env's :default_provider.
   """
   def provider_for_user(_user) do
-    # TOOD: Returns the provider for a particular user
+    # TODO: Returns the provider for a particular user
     # Would it be possible for a single user to have more than one provider?
     Application.get_env(:shoutouts, :default_provider, Shoutouts.Providers.GitHub)
   end
