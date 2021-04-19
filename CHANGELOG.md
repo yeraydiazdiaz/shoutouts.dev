@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.2.0] - 2021-04-19
 
 - Added ability for any user to register a project, once registered the project
 is "unclaimed". Users will be able to add shoutouts to an unclaimed project and
