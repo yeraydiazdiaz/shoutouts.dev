@@ -1,7 +1,6 @@
 defmodule ShoutoutsWeb.IndexLive.Show do
   use ShoutoutsWeb, :live_view
   alias Shoutouts.Accounts
-  alias Shoutouts.Projects
   alias Shoutouts.Shoutouts
 
   require Logger
