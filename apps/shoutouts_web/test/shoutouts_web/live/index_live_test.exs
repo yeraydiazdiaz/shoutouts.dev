@@ -18,6 +18,7 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     assert html =~ Routes.search_show_path(conn, :index)
     assert html =~ Routes.auth_path(conn, :request, :github)
     assert html =~ Routes.faq_show_path(conn, :index)
+    assert html =~ Routes.sponsors_show_path(conn, :index)
   end
 
   test "renders links and register projects CTA for logged in users", %{conn: conn} do
