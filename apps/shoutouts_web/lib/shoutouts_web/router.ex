@@ -20,7 +20,8 @@ defmodule ShoutoutsWeb.Router do
 
     live "/", IndexLive.Show, :show
     live "/search", SearchLive.Show, :index
-    live "/faq", FaqLive.Show, :index
+    get "/faq", FaqController, :show
+    get "/sponsors", SponsorsController, :show
 
     live "/account", UserLive.Index, :show
     live "/account/projects", UserLive.Index, :projects

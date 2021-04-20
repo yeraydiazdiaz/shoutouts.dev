@@ -17,7 +17,8 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     {:ok, _view, html} = live(conn, Routes.index_show_path(conn, :show))
     assert html =~ Routes.search_show_path(conn, :index)
     assert html =~ Routes.auth_path(conn, :request, :github)
-    assert html =~ Routes.faq_show_path(conn, :index)
+    assert html =~ Routes.faq_path(conn, :show)
+    assert html =~ Routes.sponsors_path(conn, :show)
   end
 
   test "renders links and register projects CTA for logged in users", %{conn: conn} do
@@ -25,8 +26,8 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     conn = login_user(conn, user)
     {:ok, _view, html} = live(conn, Routes.index_show_path(conn, :show))
     assert html =~ Routes.search_show_path(conn, :index)
-    assert html =~ Routes.user_index_path(conn, :add)
-    assert html =~ Routes.faq_show_path(conn, :index)
+    assert html =~ Routes.faq_path(conn, :show)
+    assert html =~ Routes.sponsors_path(conn, :show)
   end
 
   test "renders existing shoutouts", %{conn: conn} do

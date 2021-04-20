@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add Sponsors page
+
 ## [21.2.0] - 2021-04-19
 
 - Added ability for any user to register a project, once registered the project
