@@ -21,7 +21,7 @@ defmodule ShoutoutsWeb.Router do
     live "/", IndexLive.Show, :show
     live "/search", SearchLive.Show, :index
     get "/faq", FaqController, :show
-    live "/sponsors", SponsorsLive.Show, :index
+    get "/sponsors", SponsorsController, :show
 
     live "/account", UserLive.Index, :show
     live "/account/projects", UserLive.Index, :projects
