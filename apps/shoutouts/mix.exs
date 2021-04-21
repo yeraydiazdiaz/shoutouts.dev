@@ -48,6 +48,7 @@ defmodule Shoutouts.MixProject do
       {:exmoji, "~> 0.3.0"},  # might fit better on _web but it depends on jason
       {:appsignal, "~> 2.0"},
       {:quantum, "~> 3.0"},
+      {:bamboo, "~> 2.1.0"},
       {:mox, "~> 1.0", only: :test}
     ]
   end

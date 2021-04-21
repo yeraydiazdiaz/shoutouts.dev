@@ -149,7 +149,19 @@ defmodule Shoutouts.AccountsTest do
   end
 
   test "first_name/1 returns the guessed first name" do
-    user = Factory.insert(:user, name: "Yeray Diaz Diaz") 
+    user = Factory.insert(:user, name: "Yeray Diaz Diaz")
     assert Accounts.first_name(user) == "Yeray"
+  end
+
+  describe "Email" do
+    test "shoutout_digest" do
+      user = Factory.insert(:user, name: "Yeray Diaz Diaz")
+      email = Accounts.Email.shoutout_digest(user)
+      IO.inspect(email)
+      assert email.to == user.email
+      assert email.from == "no-reply@shoutouts.dev"
+      assert email.subject == "New shoutouts for your projects"
+      assert email.text_body =~ "Hi Yeray"
+    end
   end
 end
