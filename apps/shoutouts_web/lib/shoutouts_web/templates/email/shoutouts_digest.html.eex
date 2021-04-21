@@ -1,0 +1,12 @@
+<p>Hi <%= @first_name %>,</p>
+<p>
+Alice A, Bob B, and X other people have left shoutouts for your projects. 
+Check them out in <a href="<%= Routes.user_index_path(%Plug.Conn{}, :projects) %>">projects page</a>.
+</p>
+<p>
+Remember you can pin or flag shoutouts to curate the project's page, and get
+a neat little badge for your README.
+</p>
+
+<p>Have a great day!<br />The shoutouts.dev team</p>
+<p>If you do not want to recieve any emails from use click here.</p>

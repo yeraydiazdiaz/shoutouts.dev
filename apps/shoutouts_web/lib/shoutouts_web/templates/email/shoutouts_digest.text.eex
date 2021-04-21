@@ -1,4 +1,4 @@
-Hi <%= first_name %>,
+Hi <%= @first_name %>,
 
 Alice A, Bob B, and X other people have left shoutouts for your projects. 
 Check them out https://shoutouts.dev/account/projects.

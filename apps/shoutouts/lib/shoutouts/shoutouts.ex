@@ -418,4 +418,17 @@ defmodule Shoutouts.Shoutouts do
       )
     )
   end
+
+  @doc """
+  Returns shoutouts that have not been notfied to a user.
+  """
+  def unnotified_shoutouts() do
+    Repo.all(
+      from(
+        s in Shoutout,
+        join: p in assoc(s, :project),
+        where: is_nil(s.notififed_at)
+      )
+    )
+  end
 end
