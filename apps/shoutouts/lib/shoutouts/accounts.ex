@@ -202,4 +202,8 @@ defmodule Shoutouts.Accounts do
   def seconds_since_provider_joined(%User{} = user) do
     DateTime.diff(DateTime.truncate(DateTime.utc_now(), :second), user.provider_joined_at)
   end
+
+  def first_name(%User{} = user) do
+    user.name |> String.split() |> List.first()
+  end
 end
