@@ -203,6 +203,19 @@ defmodule Shoutouts.Accounts do
     DateTime.diff(DateTime.truncate(DateTime.utc_now(), :second), user.provider_joined_at)
   end
 
+  @doc """
+  Return the first name inferred from the full name of a user.
+
+  TODO: We assume most people 
+
+  ## Examples:
+
+    iex> first_name(%User{name: "Yeray Diaz"})
+    "Yeray"
+
+    iex> first_name(%User{name: "Whoneedssunames"})
+    "Whoneedssunames"
+  """
   def first_name(%User{} = user) do
     user.name |> String.split() |> List.first()
   end

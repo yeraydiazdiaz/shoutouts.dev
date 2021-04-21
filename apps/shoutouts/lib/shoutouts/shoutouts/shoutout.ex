@@ -11,6 +11,7 @@ defmodule Shoutouts.Shoutouts.Shoutout do
     field :text, :string
     field :pinned, :boolean, default: false  # pinned by the owner
     field :flagged, :boolean, default: false  # flagged by the owner
+    field :notified_at, :utc_datetime
 
     belongs_to :user, Shoutouts.Accounts.User
     belongs_to :project, Shoutouts.Projects.Project
