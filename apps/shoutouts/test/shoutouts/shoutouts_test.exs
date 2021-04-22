@@ -339,4 +339,15 @@ defmodule Shoutouts.ShoutoutsTest do
       assert p2_shoutout.id == s2.id
     end
   end
+
+  describe "unnotified_shoutouts/1" do
+    test "returns shoutouts with projects and users with notified_at == nil" do
+      Factory.insert(:shoutout, notified_at: DateTime.utc_now())
+      s1 = Factory.insert(:shoutout)
+      [shoutout] = Shoutouts.unnotified_shoutouts()
+      assert shoutout.text == s1.text
+      assert shoutout.user == s1.user
+      assert shoutout.project.name == s1.project.name  # the factory will preload user
+    end
+  end
 end
