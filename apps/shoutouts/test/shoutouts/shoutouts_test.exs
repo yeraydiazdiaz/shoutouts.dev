@@ -347,7 +347,7 @@ defmodule Shoutouts.ShoutoutsTest do
       [shoutout] = Shoutouts.unnotified_shoutouts()
       assert shoutout.text == s1.text
       assert shoutout.user == s1.user
-      assert shoutout.project.name == s1.project.name  # the factory will preload user
+      assert shoutout.project == s1.project
     end
   end
 end
