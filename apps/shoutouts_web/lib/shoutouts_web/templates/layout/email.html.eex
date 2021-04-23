@@ -1,8 +1,12 @@
 <html>
   <head>
-    <link rel="stylesheet" href="<%= Routes.static_url(ShoutoutsWeb.Endpoint, "/css/app.css") %>">
+    <style type="text/css">
+      body {
+        font: Arial, Helvetica, sans-serif;
+      }
+    </style>
   </head>
   <body>
-    <%= render @view_module, @view_template, assigns %>
+    <%= @inner_content %>
   </body>
 </html>

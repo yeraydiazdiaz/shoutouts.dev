@@ -1,12 +1,25 @@
 <p>Hi <%= @first_name %>,</p>
 <p>
-Alice A, Bob B, and X other people have left shoutouts for your projects. 
-Check them out in <a href="<%= Routes.user_index_path(%Plug.Conn{}, :projects) %>">projects page</a>.
+<%= if length(@user_names) == 1 do %>
+<%= List.first(@user_names) %> has 
+<% end %>
+<%= if length(@user_names) == 2 do %>
+<%= List.first(@user_names) %> and <%= Enum.at(@user_names, 2) %> have 
+<% end %>
+<%= if length(@user_names) > 2 do %>
+<%= @user_names |> Enum.take_random(2) |> Enum.join(", ") %>, and <%= length(@user_names) - 2 %> other people have 
+<% end %> left shoutouts on your projects. Check them out on your project pages:
+</p>
+<ul>
+<%= for {owner, name} <- @project_owner_names do %>
+<li><a href="<%= Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, owner, name) %>"><%= owner %>/<%= name %></a></li>
+<% end %>
+</ul>
 </p>
 <p>
 Remember you can pin or flag shoutouts to curate the project's page, and get
 a neat little badge for your README.
 </p>
 
-<p>Have a great day!<br />The shoutouts.dev team</p>
-<p>If you do not want to recieve any emails from use click here.</p>
+<p>Thanks for contributing to Open Source!<br />The shoutouts.dev team</p>
+<p>P.S. If you want more or less of these emails, change your email <a href="<%= Routes.user_index_url(ShoutoutsWeb.Endpoint, :show) %>">notification preferences</a></p>
