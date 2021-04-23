@@ -6,7 +6,8 @@ defmodule ShoutoutsWeb.UserLiveTest do
 
   import Phoenix.LiveViewTest
 
-  alias Shoutouts.Accounts.User
+  alias Shoutouts.Accounts
+  alias Accounts.User
   alias Shoutouts.Factory
   alias Shoutouts.Projects
   alias ShoutoutsWeb.TestHelpers
@@ -33,12 +34,29 @@ defmodule ShoutoutsWeb.UserLiveTest do
       assert redirect.to == "/"
     end
 
-    test ":show renders account settings", %{conn: conn} do
+    test "renders account settings", %{conn: conn} do
       project = Factory.insert(:project)
       conn = login_user(conn, project.user)
-      assert {:ok, _view, html} = live(conn, Routes.user_index_path(conn, :show))
+      assert {:ok, view, html} = live(conn, Routes.user_index_path(conn, :show))
 
       assert html =~ project.user.name
+      assert view |> element("#account-settings-form_name") |> render() =~ project.user.name
+      assert view |> element("#account-settings-form_signature")
+      options = view |> element("#account-settings-form_notify_when") |> render()
+      assert options =~ "Disabled"
+      assert options =~ "Weekly"
+    end
+
+    test "submitting changes updates user", %{conn: conn} do
+      project = Factory.insert(:project)
+      conn = login_user(conn, project.user)
+      assert {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :show))
+
+      view |> form("#add", %{"user" => %{signature: "New signature", notify_when: "disabled"}}) |> render_submit()
+
+      user = Accounts.get_user(project.user.id)
+      assert user.signature == "New signature"
+      assert user.notify_when == "disabled"
     end
   end
 

@@ -44,7 +44,8 @@ defmodule Shoutouts.Accounts.User do
       :role,
       :provider,
       :provider_id,
-      :provider_joined_at
+      :provider_joined_at,
+      :notify_when
     ])
     |> validate_required([:name, :username, :email, :avatar_url, :provider, :provider_id])
     |> validate_format(:email, ~r/^[\w.!#$%&’*+\-\/=?\^`{|}~]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/)

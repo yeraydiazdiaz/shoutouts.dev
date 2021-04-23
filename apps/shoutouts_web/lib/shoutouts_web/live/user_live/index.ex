@@ -213,6 +213,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
      |> redirect(to: Routes.user_index_path(socket, :projects))}
   end
 
+  # Fetches and assigns the current user to the socket if necessary
   defp get_user(socket, current_user_id) do
     case socket.assigns[:current_user] do
       nil ->
