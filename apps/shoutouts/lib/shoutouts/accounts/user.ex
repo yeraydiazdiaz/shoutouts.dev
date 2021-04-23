@@ -23,6 +23,8 @@ defmodule Shoutouts.Accounts.User do
     field :provider_id, :integer
     # date the user created their account on the provider
     field :provider_joined_at, :utc_datetime
+    # notifications preference
+    field :notify_when, Ecto.Enum, values: [:disabled, :weekly], default: :weekly
 
     has_many :projects, Shoutouts.Projects.Project
     has_many :shoutouts, Shoutouts.Shoutouts.Shoutout
