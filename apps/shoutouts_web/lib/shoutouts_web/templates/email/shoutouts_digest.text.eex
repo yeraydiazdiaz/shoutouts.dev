@@ -3,7 +3,7 @@ Hi <%= @first_name %>,
 <%= List.first(@user_names) %> has 
 <% end %>
 <%= if length(@user_names) == 2 do %>
-<%= List.first(@user_names) %> and <%= Enum.at(@user_names, 2) %> have 
+<%= List.first(@user_names) %> and <%= Enum.at(@user_names, 1) %> have 
 <% end %>
 <%= if length(@user_names) > 2 do %>
 <%= @user_names |> Enum.take_random(2) |> Enum.join(", ") %>, and <%= length(@user_names) - 2 %> other people have <% end %> left shoutouts on your projects. Check them out on your project pages:
