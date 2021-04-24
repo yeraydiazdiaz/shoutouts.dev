@@ -43,6 +43,7 @@ defmodule ShoutoutsWeb.UserLive.SettingsComponent do
          |> push_redirect(to: Routes.user_index_path(socket, :show))}
       # NOTE: ^^^^^^^^^^^ the redirect above is to render the flash
       # Including the flash markup in the component renders the form incorrectly for some reason
+      # TODO: I think this may be because this is a component, try lifting the logic to the parent
 
       {:error, %Ecto.Changeset{} = changeset} ->
         Logger.error("Error on query", changeset.errors)
