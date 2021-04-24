@@ -427,7 +427,8 @@ defmodule Shoutouts.Shoutouts do
       from(
         s in Shoutout,
         join: p in assoc(s, :project),
-        where: is_nil(s.notified_at),
+        join: u in assoc(p, :user),
+        where: u.notify_when != :disabled and is_nil(s.notified_at),
         preload: [:user, project: :user]
       )
     )

@@ -349,5 +349,12 @@ defmodule Shoutouts.ShoutoutsTest do
       assert shoutout.user == s1.user
       assert shoutout.project == s1.project
     end
+
+    test "does not return shoutouts for projects whose owner has disabled notifications" do
+      user = Factory.insert(:user, notify_when: :disabled)
+      project = Factory.insert(:project, user: user)
+      Factory.insert(:shoutout, project: project)
+      assert [] = Shoutouts.unnotified_shoutouts()
+    end
   end
 end
