@@ -41,6 +41,13 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
     ]
   ]
 
+config :shoutouts_web, ShoutoutsWeb.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1)
+  ],
+  sandbox: true
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

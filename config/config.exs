@@ -26,6 +26,9 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
   live_view: [signing_salt: "Fj7EyCQMfehidQBD"],
   signing_salt: "Bgpmwm3j"
 
+config :shoutouts_web, ShoutoutsWeb.Mailer,
+  adapter: Bamboo.LocalAdapter
+
 config :logger,
   backends: [:console, Sentry.LoggerBackend],
   format: "$time $metadata[$level] $message\n",

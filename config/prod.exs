@@ -28,6 +28,12 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
   # cache bust on upgrades
   version: Application.spec(:shoutouts_web, :vsn)
 
+config :shoutouts_web, ShoutoutsWeb.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1)
+  ]
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

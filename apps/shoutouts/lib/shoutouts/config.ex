@@ -21,7 +21,8 @@ defmodule Shoutouts.Config do
       {:secret_key_base, "SECRET_KEY_BASE"},
       {:sentry_dsn, "SENTRY_DSN"},
       {:dashboard_user, "DASHBOARD_USER"},
-      {:dashboard_pass, "DASHBOARD_PASS"}
+      {:dashboard_pass, "DASHBOARD_PASS"},
+      {:sendgrid_api_key, "SENDGRID_API_KEY"}
     ]
 
     providers = [
