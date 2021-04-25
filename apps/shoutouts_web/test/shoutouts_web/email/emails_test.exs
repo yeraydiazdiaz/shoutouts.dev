@@ -1,18 +1,19 @@
-defmodule ShoutoutsWeb.EmailTest do
+defmodule ShoutoutsWeb.EmailsTest do
   use ShoutoutsWeb.ConnCase
 
   alias Shoutouts.Factory
+  alias ShoutoutsWeb.Email.Emails
 
   describe "shoutout_digest" do
     test "no shoutouts, no emails" do
-      assert [] = ShoutoutsWeb.Email.shoutout_digest()
+      assert [] = Emails.shoutout_digest()
     end
 
     test "single project, > 2 shoutouts" do
       user = Factory.insert(:user, name: "Yeray Diaz Diaz")
       project = Factory.insert(:project, user: user)
       shoutouts = for _ <- 1..3, do: Factory.insert(:shoutout, project: project)
-      [{email, _}] = ShoutoutsWeb.Email.shoutout_digest()
+      [{email, _}] = Emails.shoutout_digest()
 
       assert email.to == user.email
       assert email.from == "no-reply@shoutouts.dev"
@@ -39,7 +40,7 @@ defmodule ShoutoutsWeb.EmailTest do
       shoutout2a = Factory.insert(:shoutout, project: project2)
       shoutout2b = Factory.insert(:shoutout, project: project2)
 
-      emails_and_shoutouts = ShoutoutsWeb.Email.shoutout_digest()
+      emails_and_shoutouts = Emails.shoutout_digest()
 
       assert length(emails_and_shoutouts) == 2
       emails = Enum.map(emails_and_shoutouts, fn {email, _} -> email end)

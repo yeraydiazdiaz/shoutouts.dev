@@ -1,4 +1,4 @@
-defmodule ShoutoutsWeb.Email do
+defmodule ShoutoutsWeb.Email.Emails do
   use Bamboo.Phoenix, view: ShoutoutsWeb.EmailView
 
   @default_sender "no-reply@shoutouts.dev"
