@@ -356,5 +356,11 @@ defmodule Shoutouts.ShoutoutsTest do
       Factory.insert(:shoutout, project: project)
       assert [] = Shoutouts.unnotified_shoutouts()
     end
+
+    test "does not return shoutouts for unclaimed projects" do
+      project = Factory.insert(:project, user: nil)
+      Factory.insert(:shoutout, project: project)
+      assert [] = Shoutouts.unnotified_shoutouts()
+    end
   end
 end
