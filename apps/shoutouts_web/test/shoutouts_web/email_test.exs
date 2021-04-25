@@ -12,7 +12,7 @@ defmodule ShoutoutsWeb.EmailTest do
       user = Factory.insert(:user, name: "Yeray Diaz Diaz")
       project = Factory.insert(:project, user: user)
       shoutouts = for _ <- 1..3, do: Factory.insert(:shoutout, project: project)
-      [email] = ShoutoutsWeb.Email.shoutout_digest()
+      [{email, _}] = ShoutoutsWeb.Email.shoutout_digest()
 
       assert email.to == user.email
       assert email.from == "no-reply@shoutouts.dev"
@@ -39,9 +39,10 @@ defmodule ShoutoutsWeb.EmailTest do
       shoutout2a = Factory.insert(:shoutout, project: project2)
       shoutout2b = Factory.insert(:shoutout, project: project2)
 
-      emails = ShoutoutsWeb.Email.shoutout_digest()
+      emails_and_shoutouts = ShoutoutsWeb.Email.shoutout_digest()
 
-      assert length(emails) == 2
+      assert length(emails_and_shoutouts) == 2
+      emails = Enum.map(emails_and_shoutouts, fn {email, _} -> email end)
       assert Enum.all?(emails, &(&1.from == "no-reply@shoutouts.dev"))
       assert Enum.all?(emails, &(&1.subject == "New shoutouts for your projects"))
       # Match emails to users, since the query is not ordered
