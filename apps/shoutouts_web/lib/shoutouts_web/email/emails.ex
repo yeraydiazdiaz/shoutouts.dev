@@ -1,6 +1,10 @@
 defmodule ShoutoutsWeb.Email.Emails do
   use Bamboo.Phoenix, view: ShoutoutsWeb.EmailView
 
+  require Logger
+
+  alias ShoutoutsWeb.Email
+
   @default_sender "no-reply@shoutouts.dev"
 
   def shoutout_digest() do
@@ -27,5 +31,30 @@ defmodule ShoutoutsWeb.Email.Emails do
     |> assign(:user_names, user_names)
     |> assign(:project_owner_names, project_owner_names)
     |> render(:shoutouts_digest)
+  end
+
+  @doc """
+  Sends an email and, if successful, updates the associated shoutouts's notified_at.
+
+  Returns {:ok, response from the adapter} or {:error, error}.
+
+  NOTE: we do not use deliver_later for now because we will be running this
+  as part of our Quantum cron job weekly for now.
+  """
+  def send_and_update_shoutouts(email, shoutouts) do
+    case Email.Mailer.deliver_now(email, response: true) do
+      {:error, error} ->
+        Logger.error("Error sending email")  # TODO: retry?
+        {:error, error}
+      {:ok, _email, response} ->
+        Logger.info("Email sent successfully")
+        shoutouts
+        |> Enum.each(
+          fn shoutout ->
+            {:ok, _} = Shoutouts.Shoutouts.update_shoutout(shoutout, %{notified_at: DateTime.utc_now()})
+          end)
+        # TODO: we may want to wrap the above in a transaction
+        {:ok, response}
+    end
   end
 end

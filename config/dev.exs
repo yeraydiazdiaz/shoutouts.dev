@@ -41,12 +41,13 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
     ]
   ]
 
-config :shoutouts_web, ShoutoutsWeb.Mailer,
-  adapter: Bamboo.SendGridAdapter,
-  hackney_opts: [
-    recv_timeout: :timer.minutes(1)
-  ],
-  sandbox: true
+config :shoutouts_web, ShoutoutsWeb.Email.Mailer,
+  adapter: Bamboo.LocalAdapter
+  # adapter: Bamboo.SendGridAdapter,
+  # hackney_opts: [
+  #   recv_timeout: :timer.minutes(1)
+  # ],
+  # sandbox: true
 
 # ## SSL Support
 #

@@ -30,6 +30,7 @@ defmodule Shoutouts.Shoutouts.Shoutout do
       :flagged,
       :user_id,
       :project_id,
+      :notified_at
     ])
     |> validate_required([:text, :user_id, :project_id], message: "Must not be empty")
     |> validate_length(:text, min: 10, max: 250)

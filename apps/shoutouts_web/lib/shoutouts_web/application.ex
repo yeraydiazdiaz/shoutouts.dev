@@ -49,10 +49,10 @@ defmodule ShoutoutsWeb.Application do
       password: config.dashboard_pass
     )
 
-    mailer_opts = Application.get_env(:shoutouts_web, ShoutoutsWeb.Mailer)
+    mailer_opts = Application.get_env(:shoutouts_web, ShoutoutsWeb.Email.Mailer)
     Application.put_env(
       :shoutouts_web,
-      ShoutoutsWeb.Mailer,
+      ShoutoutsWeb.Email.Mailer,
       mailer_opts ++ [api_key: config.sendgrid_api_key]
     )
   end

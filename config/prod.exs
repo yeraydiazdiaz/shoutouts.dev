@@ -28,7 +28,7 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
   # cache bust on upgrades
   version: Application.spec(:shoutouts_web, :vsn)
 
-config :shoutouts_web, ShoutoutsWeb.Mailer,
+config :shoutouts_web, ShoutoutsWeb.Email.Mailer,
   adapter: Bamboo.SendGridAdapter,
   hackney_opts: [
     recv_timeout: :timer.minutes(1)

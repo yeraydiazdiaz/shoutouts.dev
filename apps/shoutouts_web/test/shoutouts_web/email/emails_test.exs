@@ -1,5 +1,6 @@
 defmodule ShoutoutsWeb.EmailsTest do
   use ShoutoutsWeb.ConnCase
+  use Bamboo.Test
 
   alias Shoutouts.Factory
   alias ShoutoutsWeb.Email.Emails
@@ -58,6 +59,21 @@ defmodule ShoutoutsWeb.EmailsTest do
       assert email2.html_body =~ Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project2.owner, project2.name)
       assert email2.html_body =~ shoutout2a.user.name
       assert email2.html_body =~ shoutout2b.user.name
+    end
+  end
+
+  describe "send_and_update_shoutouts" do
+    test "no errors" do
+      user = Factory.insert(:user, name: "Yeray Diaz Diaz")
+      project = Factory.insert(:project, user: user)
+      shoutouts = for _ <- 1..3, do: Factory.insert(:shoutout, project: project)
+      [{email, _shoutouts}] = Emails.shoutout_digest()
+      
+      {:ok, _response} = Emails.send_and_update_shoutouts(email, shoutouts)
+
+      assert_delivered_email email
+      updated_shoutouts = Enum.map(shoutouts, &Shoutouts.Shoutouts.get_shoutout!(&1.id))
+      assert Enum.all?(updated_shoutouts, &(&1.notified_at != nil))
     end
   end
 end
