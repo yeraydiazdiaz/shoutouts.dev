@@ -7,6 +7,16 @@ defmodule ShoutoutsWeb.Email.Emails do
 
   @default_sender "no-reply@shoutouts.dev"
 
+  def send_shoutouts_digest() do
+    shoutout_digest()
+    |> Enum.each(
+      fn {email, shoutouts} -> send_and_update_shoutouts(email, shoutouts) end)
+  end
+
+  @doc """
+  Fetches shoutouts that need to be notified and returns a tuple with the
+  email and the shoutouts that it covers and should be updated.
+  """
   def shoutout_digest() do
     Shoutouts.Shoutouts.unnotified_shoutouts()
     |> Enum.group_by(&(&1.project.user))
@@ -15,6 +25,9 @@ defmodule ShoutoutsWeb.Email.Emails do
     end)
   end
 
+  @doc """
+  Takes an owner and the shoutouts that need notifying and returns the email.
+  """
   def shoutout_digest_for_user(%Shoutouts.Accounts.User{} = user, shoutouts) do
     user_names = (
       for s <- shoutouts, into: MapSet.new(), do: s.user.name)
