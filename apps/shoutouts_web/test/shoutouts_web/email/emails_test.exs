@@ -75,5 +75,13 @@ defmodule ShoutoutsWeb.EmailsTest do
       updated_shoutouts = Enum.map(shoutouts, &Shoutouts.Shoutouts.get_shoutout!(&1.id))
       assert Enum.all?(updated_shoutouts, &(&1.notified_at != nil))
     end
+
+    test "successive calls do not yield shoutouts" do
+      project = Factory.insert(:project)
+      for _ <- 1..3, do: Factory.insert(:shoutout, project: project)
+      [{email, shoutouts}] = Emails.shoutout_digest()
+      {:ok, _response} = Emails.send_and_update_shoutouts(email, shoutouts)
+      assert [] = Emails.shoutout_digest()
+    end
   end
 end
