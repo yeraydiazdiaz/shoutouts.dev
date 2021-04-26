@@ -17,8 +17,8 @@
 </ul>
 <p>
 Remember you can pin or flag shoutouts to curate the project's page, and get
-a neat little badge for your README.
+<a href="<%= Routes.faq_url(ShoutoutsWeb.Endpoint, :show) %>#badge">a neat little badge</a> for your project's README.
 </p>
 
-<p>Thanks for contributing to Open Source!<br />The <a href="https://shoutouts.dev">shoutouts.dev</a> team.</p>
-<p>P.S. If you want more or less of these emails, change your <a href="<%= Routes.user_index_url(ShoutoutsWeb.Endpoint, :show) %>">notification preferences</a>.</p>
+<p>Thanks for contributing to Open Source!<br />The <a href="<%= Routes.index_show_url(ShoutoutsWeb.Endpoint, :show) %>">shoutouts.dev</a> team.</p>
+<p>P.S. If you want to disable these emails, change your <a href="<%= Routes.user_index_url(ShoutoutsWeb.Endpoint, :show) %>">notification preferences</a>.</p>

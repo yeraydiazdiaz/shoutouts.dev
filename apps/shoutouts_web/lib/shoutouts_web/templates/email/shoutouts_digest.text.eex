@@ -18,4 +18,4 @@ Thanks for contributing to Open Source!
 
 The shoutouts.dev team
 
-P.S. If you want more or less of these emails, change your email notification preferences at <%= Routes.user_index_url(ShoutoutsWeb.Endpoint, :show) %>
+P.S. If you want to disable these emails, change your notification preferences at <%= Routes.user_index_url(ShoutoutsWeb.Endpoint, :show) %>.
