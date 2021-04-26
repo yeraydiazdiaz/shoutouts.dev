@@ -52,11 +52,11 @@ defmodule ShoutoutsWeb.UserLiveTest do
       conn = login_user(conn, project.user)
       assert {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :show))
 
-      view |> form("#add", %{"user" => %{signature: "New signature", notify_when: "disabled"}}) |> render_submit()
+      view |> form("#account-settings-form", %{"user" => %{signature: "New signature", notify_when: "disabled"}}) |> render_submit()
 
       user = Accounts.get_user(project.user.id)
       assert user.signature == "New signature"
-      assert user.notify_when == "disabled"
+      assert user.notify_when == :disabled
     end
   end
 
