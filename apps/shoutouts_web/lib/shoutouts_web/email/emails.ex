@@ -32,8 +32,7 @@ defmodule ShoutoutsWeb.Email.Emails do
     user_names = (
       for s <- shoutouts, into: MapSet.new(), do: s.user.name)
       |> MapSet.to_list
-    project_owner_names = shoutouts
-      |> Enum.map(fn s -> {s.project.owner, s.project.name} end)
+    project_owner_names = for s <- shoutouts, into: MapSet.new, do: {s.project.owner, s.project.name}
     new_email(
       to: user.email,
       from: @default_sender,

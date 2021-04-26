@@ -61,6 +61,8 @@ defmodule ShoutoutsWeb.Router do
   import Phoenix.LiveDashboard.Router
 
   if Mix.env() == :dev do
+    forward "/email/sent", Bamboo.SentEmailViewerPlug
+
     pipeline :dashboard do
       plug :dashboard_auth
     end

@@ -20,7 +20,8 @@ defmodule ShoutoutsWeb.EmailsTest do
       assert email.from == "no-reply@shoutouts.dev"
       assert email.subject == "New shoutouts for your projects"
 
-      assert email.html_body =~ Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project.owner, project.name)
+      project_url = Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project.owner, project.name)
+      assert [_] = Floki.find(email.html_body, "a[href=\"#{project_url}\"]")
       combinations = for x <- shoutouts,
         y <- shoutouts, x.user.name != y.user.name,
         do: "#{x.user.name}, #{y.user.name}"
