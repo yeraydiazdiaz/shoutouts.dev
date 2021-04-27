@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.2.1] - 2021-04-27
 
 - Add weekly task to email project owners notifying them of new shoutouts.
 - Add Sponsors page.
