@@ -3,7 +3,7 @@ defmodule Shoutouts.Repo.Migrations.AddShoutoutsNotifiedAt do
 
   def change do
     alter table(:shoutouts) do
-     add(:notified_at, :utc_datetime, null: true)
+      add(:notified_at, :utc_datetime, null: true)
     end
   end
 end

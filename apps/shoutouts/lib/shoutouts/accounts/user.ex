@@ -6,28 +6,28 @@ defmodule Shoutouts.Accounts.User do
   @timestamps_opts [type: :utc_datetime]
   schema "users" do
     # full name
-    field :name, :string
+    field(:name, :string)
     # for notification in the future, defaults to provider's
-    field :email, :string
+    field(:email, :string)
     # in the provider
-    field :username, :string
+    field(:username, :string)
     # TODO: use a default
-    field :avatar_url, :string
+    field(:avatar_url, :string)
     # the signature to include in the shoutouts
-    field :signature, :string
+    field(:signature, :string)
     # admin or user, the migration default must be a string
-    field :role, Ecto.Enum, values: [:admin, :user], default: :user
+    field(:role, Ecto.Enum, values: [:admin, :user], default: :user)
     # lowercase, i.e. github, gitlab, bitbucket...
-    field :provider, Ecto.Enum, values: [:github], default: :github
+    field(:provider, Ecto.Enum, values: [:github], default: :github)
     # identifier on the provider
-    field :provider_id, :integer
+    field(:provider_id, :integer)
     # date the user created their account on the provider
-    field :provider_joined_at, :utc_datetime
+    field(:provider_joined_at, :utc_datetime)
     # notifications preference
-    field :notify_when, Ecto.Enum, values: [:disabled, :weekly], default: :weekly
+    field(:notify_when, Ecto.Enum, values: [:disabled, :weekly], default: :weekly)
 
-    has_many :projects, Shoutouts.Projects.Project
-    has_many :shoutouts, Shoutouts.Shoutouts.Shoutout
+    has_many(:projects, Shoutouts.Projects.Project)
+    has_many(:shoutouts, Shoutouts.Shoutouts.Shoutout)
 
     timestamps()
   end

@@ -393,19 +393,28 @@ defmodule Shoutouts.Shoutouts do
   Returns the latest pinned shoutouts for the projects with more shoutouts.
   """
   def shoutouts_for_top_projects(top_n \\ 5) do
-    top_projects = from(
-      p in Project,
-      left_join: s in assoc(p, :shoutouts),
-      group_by: [p.id],
-      order_by: [desc: count(s.id)],
-      select: %{id: p.id, count: count(s.id)},
-      limit: ^top_n
-    )
-    first_shoutouts = from(
-      s in Shoutout,
-      select: %{id: s.id, row_number: over(row_number(), :project_partition)},
-      windows: [project_partition: [partition_by: :project_id, order_by: [desc: :pinned, desc: :inserted_at]]]
-    )
+    top_projects =
+      from(
+        p in Project,
+        left_join: s in assoc(p, :shoutouts),
+        group_by: [p.id],
+        order_by: [desc: count(s.id)],
+        select: %{id: p.id, count: count(s.id)},
+        limit: ^top_n
+      )
+
+    first_shoutouts =
+      from(
+        s in Shoutout,
+        select: %{id: s.id, row_number: over(row_number(), :project_partition)},
+        windows: [
+          project_partition: [
+            partition_by: :project_id,
+            order_by: [desc: :pinned, desc: :inserted_at]
+          ]
+        ]
+      )
+
     Repo.all(
       from(
         s in Shoutout,

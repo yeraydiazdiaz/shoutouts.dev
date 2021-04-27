@@ -52,7 +52,11 @@ defmodule ShoutoutsWeb.UserLiveTest do
       conn = login_user(conn, project.user)
       assert {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :show))
 
-      view |> form("#account-settings-form", %{"user" => %{signature: "New signature", notify_when: "disabled"}}) |> render_submit()
+      view
+      |> form("#account-settings-form", %{
+        "user" => %{signature: "New signature", notify_when: "disabled"}
+      })
+      |> render_submit()
 
       user = Accounts.get_user(project.user.id)
       assert user.signature == "New signature"
@@ -137,8 +141,12 @@ defmodule ShoutoutsWeb.UserLiveTest do
       view |> form("#claim", %{"projects[owner/unclaimed2]" => ""}) |> render_submit()
       refute view |> has_element?("label", "owner/unclaimed2")
       assert view |> render() =~ "1 project(s) claimed successfully"
-      assert view |> render() =~ Routes.project_show_path(conn, :show, project.owner, project.name)
-      assert Projects.get_project_by_owner_and_name!(project.owner, project.name).user_id == owner.id
+
+      assert view |> render() =~
+               Routes.project_show_path(conn, :show, project.owner, project.name)
+
+      assert Projects.get_project_by_owner_and_name!(project.owner, project.name).user_id ==
+               owner.id
     end
   end
 end

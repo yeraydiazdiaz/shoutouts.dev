@@ -23,8 +23,10 @@ defmodule ShoutoutsWeb.Auth do
   If present and invalid, logout.
   """
   def call(conn, _opts) do
-    current_user_id = get_session(conn, :current_user_id)  # potentially nil
+    # potentially nil
+    current_user_id = get_session(conn, :current_user_id)
     conn = assign(conn, :current_user_id, current_user_id)
+
     if current_user_id do
       get_user_if_exists(conn, current_user_id)
     else
@@ -46,9 +48,12 @@ defmodule ShoutoutsWeb.Auth do
   """
   def login(conn, user) do
     conn
-    |> assign(:current_user, user)  # set the user in assigns
-    |> put_session(:current_user_id, user.id)  # put the user ID in the session
-    |> configure_session(renew: true)  # ensure the session is renewed with a different identifier
+    # set the user in assigns
+    |> assign(:current_user, user)
+    # put the user ID in the session
+    |> put_session(:current_user_id, user.id)
+    # ensure the session is renewed with a different identifier
+    |> configure_session(renew: true)
   end
 
   @doc """

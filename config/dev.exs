@@ -42,13 +42,12 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
     ]
   ]
 
-config :shoutouts_web, ShoutoutsWeb.Email.Mailer,
-  adapter: Bamboo.LocalAdapter
-  # adapter: Bamboo.SendGridAdapter,
-  # hackney_opts: [
-  #   recv_timeout: :timer.minutes(1)
-  # ],
-  # sandbox: true
+config :shoutouts_web, ShoutoutsWeb.Email.Mailer, adapter: Bamboo.LocalAdapter
+# adapter: Bamboo.SendGridAdapter,
+# hackney_opts: [
+#   recv_timeout: :timer.minutes(1)
+# ],
+# sandbox: true
 
 # ## SSL Support
 #
@@ -92,8 +91,7 @@ config :plug_content_security_policy,
     img_src: ~w('self' data: https://*.githubusercontent.com),
     style_src: ~w('self' 'unsafe-inline'),
     script_src: ~w('self' https://plausible.io),
-    connect_src: ~w('self' ws: https://plausible.io),
+    connect_src: ~w('self' ws: https://plausible.io)
   }
 
-config :appsignal, :config,
-  active: false
+config :appsignal, :config, active: false

@@ -58,7 +58,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
   end
 
   def handle_info(:carrousel_timeout, %{assigns: %{should_switch: true}} = socket) do
-    Process.send_after(self(), :carrousel_timeout, @carrousel_timeout) 
+    Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
     next_idx = rem(socket.assigns[:shoutout_idx] + 1, length(socket.assigns[:shoutouts]))
     {:noreply, assign(socket, :shoutout_idx, next_idx)}
   end
@@ -71,7 +71,7 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         signature: "Prolific Open Source contributor",
         avatar_url: Routes.static_path(socket, "/images/sample_avatar.png")
       },
-      project: nil,
+      project: nil
     }
   end
 end

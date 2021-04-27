@@ -20,15 +20,23 @@ defmodule ShoutoutsWeb.EmailsTest do
       assert email.from == "no-reply@shoutouts.dev"
       assert email.subject == "New shoutouts for your projects"
 
-      project_url = Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project.owner, project.name)
+      project_url =
+        Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project.owner, project.name)
+
       assert [_] = Floki.find(email.html_body, "a[href=\"#{project_url}\"]")
-      combinations = for x <- shoutouts,
-        y <- shoutouts, x.user.name != y.user.name,
-        do: "#{x.user.name}, #{y.user.name}"
+
+      combinations =
+        for x <- shoutouts,
+            y <- shoutouts,
+            x.user.name != y.user.name,
+            do: "#{x.user.name}, #{y.user.name}"
+
       assert Enum.any?(combinations, fn combination -> email.html_body =~ combination end)
       assert email.html_body =~ "and 1 other people"
 
-      assert email.text_body =~ Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project.owner, project.name)
+      assert email.text_body =~
+               Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project.owner, project.name)
+
       assert Enum.any?(combinations, fn combination -> email.text_body =~ combination end)
       assert email.text_body =~ "and 1 other people"
     end
@@ -53,11 +61,27 @@ defmodule ShoutoutsWeb.EmailsTest do
       assert email2 = Enum.find(emails, &(&1.to == user2.email))
 
       assert email1.html_body =~ "Hi Yeray"
-      assert email1.html_body =~ Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project1.owner, project1.name)
+
+      assert email1.html_body =~
+               Routes.project_show_url(
+                 ShoutoutsWeb.Endpoint,
+                 :show,
+                 project1.owner,
+                 project1.name
+               )
+
       assert email1.html_body =~ shoutout1.user.name
 
       assert email2.html_body =~ "Hi Phil"
-      assert email2.html_body =~ Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, project2.owner, project2.name)
+
+      assert email2.html_body =~
+               Routes.project_show_url(
+                 ShoutoutsWeb.Endpoint,
+                 :show,
+                 project2.owner,
+                 project2.name
+               )
+
       assert email2.html_body =~ shoutout2a.user.name
       assert email2.html_body =~ shoutout2b.user.name
     end
@@ -69,10 +93,10 @@ defmodule ShoutoutsWeb.EmailsTest do
       project = Factory.insert(:project, user: user)
       shoutouts = for _ <- 1..3, do: Factory.insert(:shoutout, project: project)
       [{email, _shoutouts}] = Emails.shoutout_digest()
-      
+
       {:ok, _response} = Emails.send_and_update_shoutouts(email, shoutouts)
 
-      assert_delivered_email email
+      assert_delivered_email(email)
       updated_shoutouts = Enum.map(shoutouts, &Shoutouts.Shoutouts.get_shoutout!(&1.id))
       assert Enum.all?(updated_shoutouts, &(&1.notified_at != nil))
     end

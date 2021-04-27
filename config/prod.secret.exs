@@ -8,7 +8,7 @@ config :appsignal, :config,
   otp_app: :shoutouts,
   name: "shoutouts.dev",
   push_api_key: System.get_env("APPSIGNAL_PUSH_API_KEY"),
-  env: Mix.env,
+  env: Mix.env(),
   active: true
 
 # ## Using releases (Elixir v1.9+)

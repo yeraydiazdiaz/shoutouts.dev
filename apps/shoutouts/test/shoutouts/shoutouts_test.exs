@@ -323,7 +323,6 @@ defmodule Shoutouts.ShoutoutsTest do
       1..3
       |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p2}) end)
 
-
       p3 = Factory.insert(:project, %{primary_language: "Python", owner: "very", name: "popular"})
 
       1..4

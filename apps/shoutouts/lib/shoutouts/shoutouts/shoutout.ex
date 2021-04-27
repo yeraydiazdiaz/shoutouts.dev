@@ -8,15 +8,17 @@ defmodule Shoutouts.Shoutouts.Shoutout do
   @foreign_key_type :binary_id
   @timestamps_opts [type: :utc_datetime]
   schema "shoutouts" do
-    field :text, :string
-    field :pinned, :boolean, default: false  # pinned by the owner
-    field :flagged, :boolean, default: false  # flagged by the owner
-    field :notified_at, :utc_datetime
+    field(:text, :string)
+    # pinned by the owner
+    field(:pinned, :boolean, default: false)
+    # flagged by the owner
+    field(:flagged, :boolean, default: false)
+    field(:notified_at, :utc_datetime)
 
-    belongs_to :user, Shoutouts.Accounts.User
-    belongs_to :project, Shoutouts.Projects.Project
+    belongs_to(:user, Shoutouts.Accounts.User)
+    belongs_to(:project, Shoutouts.Projects.Project)
 
-    has_many :votes, Shoutouts.Shoutouts.Vote
+    has_many(:votes, Shoutouts.Shoutouts.Vote)
 
     timestamps()
   end

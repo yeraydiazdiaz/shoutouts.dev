@@ -41,6 +41,7 @@ defmodule ShoutoutsWeb.UserLive.SettingsComponent do
          socket
          |> put_flash(:info, "Settings updated successfully")
          |> push_redirect(to: Routes.user_index_path(socket, :show))}
+
       # NOTE: ^^^^^^^^^^^ the redirect above is to render the flash
       # Including the flash markup in the component renders the form incorrectly for some reason
       # TODO: I think this may be because this is a component, try lifting the logic to the parent

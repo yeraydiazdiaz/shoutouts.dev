@@ -8,13 +8,13 @@ defmodule Shoutouts.Application do
   def start(_type, _args) do
     unless Application.get_env(:shoutouts, :env) == :test do
       Shoutouts.Config.load_config!()
-        |> apply_config
+      |> apply_config
     end
 
     children = [
       Shoutouts.ProcessRegistry,
       Shoutouts.Repo,
-      Shoutouts.Scheduler,
+      Shoutouts.Scheduler
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Shoutouts.Supervisor)

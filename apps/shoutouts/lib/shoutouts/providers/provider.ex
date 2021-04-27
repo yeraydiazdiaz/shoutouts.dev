@@ -57,7 +57,6 @@ defmodule Shoutouts.Provider do
               repo_with_owner :: binary()
             ) :: {:ok, Shoutouts.Providers.ProviderProject} | {:error, response :: Tesla.Env.t()}
 
-
   @doc """
   Returns project information given a owner and repo strings.
 

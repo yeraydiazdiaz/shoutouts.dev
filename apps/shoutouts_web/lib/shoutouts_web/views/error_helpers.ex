@@ -11,6 +11,7 @@ defmodule ShoutoutsWeb.ErrorHelpers do
   def error_tag(form, field) do
     # Workaround the project form not having errors while the changeset does
     errors = get_errors_from_form(form)
+
     Enum.map(Keyword.get_values(errors, field), fn error ->
       content_tag(:span, translate_error(error),
         class: "text-alert text-sm",

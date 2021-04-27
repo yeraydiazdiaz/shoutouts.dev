@@ -50,6 +50,7 @@ defmodule ShoutoutsWeb.Application do
     )
 
     mailer_opts = Application.get_env(:shoutouts_web, ShoutoutsWeb.Email.Mailer)
+
     Application.put_env(
       :shoutouts_web,
       ShoutoutsWeb.Email.Mailer,

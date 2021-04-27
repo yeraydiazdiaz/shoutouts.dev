@@ -5,7 +5,7 @@ config :shoutouts, :env, :prod
 config :shoutouts, Shoutouts.Scheduler,
   jobs: [
     # 01:39 on every 3rd day-of-month
-    {"39 1 */3 * *", {Shoutouts.Projects, :refresh_projects, [7]}}
+    {"39 1 */3 * *", {Shoutouts.Projects, :refresh_projects, [7]}},
     # 7:42 on Sunday
     {"42 7 * * 0", {ShoutoutsWeb.Email.Emails, :send_shoutouts_digest, []}}
   ]
@@ -83,7 +83,7 @@ config :plug_content_security_policy,
     img_src: ~w('self' data: https://*.githubusercontent.com),
     style_src: ~w('self' 'unsafe-inline'),
     script_src: ~w('self' https://plausible.io),
-    connect_src: ~w('self' wss: https://plausible.io),
+    connect_src: ~w('self' wss: https://plausible.io)
   }
 
 # Finally import the config/prod.secret.exs which loads secrets
