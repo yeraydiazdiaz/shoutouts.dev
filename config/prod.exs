@@ -4,7 +4,10 @@ config :shoutouts, :env, :prod
 
 config :shoutouts, Shoutouts.Scheduler,
   jobs: [
-    {"39 1 */3 * *", {Shoutouts.Projects, :refresh_projects, [7]}}
+    # 01:39 on every 3rd day-of-month
+    {"39 1 */3 * *", {Shoutouts.Projects, :refresh_projects, [7]}},
+    # 7:42 on Sunday
+    {"42 7 * * 0", {ShoutoutsWeb.Email.Emails, :send_shoutouts_digest, []}}
   ]
 
 # For production, don't forget to configure the url host
@@ -27,6 +30,12 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
   root: ".",
   # cache bust on upgrades
   version: Application.spec(:shoutouts_web, :vsn)
+
+config :shoutouts_web, ShoutoutsWeb.Email.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1)
+  ]
 
 # ## SSL Support
 #
@@ -74,7 +83,7 @@ config :plug_content_security_policy,
     img_src: ~w('self' data: https://*.githubusercontent.com),
     style_src: ~w('self' 'unsafe-inline'),
     script_src: ~w('self' https://plausible.io),
-    connect_src: ~w('self' wss: https://plausible.io),
+    connect_src: ~w('self' wss: https://plausible.io)
   }
 
 # Finally import the config/prod.secret.exs which loads secrets

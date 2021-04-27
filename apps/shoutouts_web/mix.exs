@@ -56,6 +56,8 @@ defmodule ShoutoutsWeb.MixProject do
       {:ueberauth_github, "~> 0.8"},
       {:sentry, "~> 8.0"},
       {:plug_content_security_policy, "~> 0.2"},
+      {:bamboo, "~> 2.1.0"},
+      {:bamboo_phoenix, "~> 1.0.0"},
       {:appsignal_phoenix, "~> 2.0"}
     ]
   end

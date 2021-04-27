@@ -5,7 +5,7 @@ defmodule Shoutouts.Providers.ProviderProject do
     :name,
     :url,
     :description,
-    :primary_language,
+    :primary_language
   ]
   defstruct [
     :provider_id,
@@ -19,7 +19,7 @@ defmodule Shoutouts.Providers.ProviderProject do
     homepage_url: "",
     languages: [],
     stars: 0,
-    forks: 0,
+    forks: 0
   ]
 
   @type t :: %Shoutouts.Providers.ProviderProject{

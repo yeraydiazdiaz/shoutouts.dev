@@ -323,7 +323,6 @@ defmodule Shoutouts.ShoutoutsTest do
       1..3
       |> Enum.map(fn _ -> Factory.insert(:shoutout, %{project: p2}) end)
 
-
       p3 = Factory.insert(:project, %{primary_language: "Python", owner: "very", name: "popular"})
 
       1..4
@@ -337,6 +336,30 @@ defmodule Shoutouts.ShoutoutsTest do
       [s1, s2] = Shoutouts.shoutouts_for_top_projects(2)
       assert p3_shoutout.id == s1.id
       assert p2_shoutout.id == s2.id
+    end
+  end
+
+  describe "unnotified_shoutouts/1" do
+    test "returns shoutouts with projects and users with notified_at == nil" do
+      Factory.insert(:shoutout, notified_at: DateTime.utc_now())
+      s1 = Factory.insert(:shoutout)
+      [shoutout] = Shoutouts.unnotified_shoutouts()
+      assert shoutout.text == s1.text
+      assert shoutout.user == s1.user
+      assert shoutout.project == s1.project
+    end
+
+    test "does not return shoutouts for projects whose owner has disabled notifications" do
+      user = Factory.insert(:user, notify_when: :disabled)
+      project = Factory.insert(:project, user: user)
+      Factory.insert(:shoutout, project: project)
+      assert [] = Shoutouts.unnotified_shoutouts()
+    end
+
+    test "does not return shoutouts for unclaimed projects" do
+      project = Factory.insert(:project, user: nil)
+      Factory.insert(:shoutout, project: project)
+      assert [] = Shoutouts.unnotified_shoutouts()
     end
   end
 end

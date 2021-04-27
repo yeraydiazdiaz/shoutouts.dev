@@ -1,6 +1,6 @@
 defmodule ShoutoutsWeb.ProjectLiveTest do
   use ShoutoutsWeb.ConnCase
-  
+
   import Mox
   setup :verify_on_exit!
 
@@ -101,7 +101,9 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
 
       refute html =~ "Add your shoutout"
-      assert html =~ "Sorry, only users with a provider account older than 2 years are allowed to add shoutouts"
+
+      assert html =~
+               "Sorry, only users with a provider account older than 2 years are allowed to add shoutouts"
     end
 
     test "that have left a flagged shoutout on another of the user's projects are not prompted to leave another",
@@ -116,18 +118,22 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
 
       refute html =~ "Add your shoutout"
-      assert html =~ "The owner of this project has flagged a shoutout on another one of their projects"
+
+      assert html =~
+               "The owner of this project has flagged a shoutout on another one of their projects"
     end
 
     test "that have left a flagged shoutouts on more than 2 other projects are not prompted to leave a shoutout",
          %{conn: conn} do
       setup_mock()
       u = Factory.insert(:user)
-      1..3  # > @owner_flagged_threshold in show.ex
+      # > @owner_flagged_threshold in show.ex
+      1..3
       |> Enum.each(fn _i ->
         p = Factory.insert(:project)
         Factory.insert(:shoutout, %{project: p, user: u, flagged: true})
       end)
+
       p = Factory.insert(:project)
       conn = login_user(conn, u)
       {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
@@ -136,7 +142,9 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       assert html =~ "Several owners have flagged your shoutouts"
     end
 
-    test "owners of unclaimed projects are prompted to register them in accounts settings", %{conn: conn} do
+    test "owners of unclaimed projects are prompted to register them in accounts settings", %{
+      conn: conn
+    } do
       owner = Factory.insert(:user, %{username: "owner"})
       p = Factory.insert(:project, user: nil)
       setup_mock(["#{p.owner}/#{p.name}"])
@@ -220,7 +228,9 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       assert has_element?(view, "button[title=\"Click to unflag this shoutout\"]")
     end
 
-    test "clicking unflag shoutout updates the shoutout and removes the hide/show button", %{conn: conn} do
+    test "clicking unflag shoutout updates the shoutout and removes the hide/show button", %{
+      conn: conn
+    } do
       setup_mock()
       p = Factory.insert(:project)
       s1 = Factory.insert(:shoutout, %{project: p, flagged: true})

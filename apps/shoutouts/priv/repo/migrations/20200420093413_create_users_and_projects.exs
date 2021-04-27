@@ -2,7 +2,7 @@ defmodule Shoutouts.Repo.Migrations.Initial do
   use Ecto.Migration
 
   def change do
-    execute "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+    execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
 
     # Users
     create table(:users, primary_key: false) do
@@ -52,7 +52,11 @@ defmodule Shoutouts.Repo.Migrations.Initial do
     create(index(:projects, [:name], using: "btree"))
     # TODO: GIN does not seem to work for our use case, still a win over seq scan
     [:owner, :name, :primary_language]
-    |> Enum.each(fn col -> execute "CREATE INDEX projects_#{col}_trgm_index ON projects USING GIST (#{col} gist_trgm_ops)" end)
+    |> Enum.each(fn col ->
+      execute(
+        "CREATE INDEX projects_#{col}_trgm_index ON projects USING GIST (#{col} gist_trgm_ops)"
+      )
+    end)
 
     # Shoutouts
     create table(:shoutouts, primary_key: false) do
@@ -61,7 +65,11 @@ defmodule Shoutouts.Repo.Migrations.Initial do
       add(:pinned, :boolean, default: false)
       add(:flagged, :boolean, default: false)
       add(:user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false)
-      add(:project_id, references(:projects, type: :binary_id, on_delete: :delete_all), null: false)
+
+      add(:project_id, references(:projects, type: :binary_id, on_delete: :delete_all),
+        null: false
+      )
+
       timestamps(type: :utc_datetime)
     end
 
@@ -71,7 +79,11 @@ defmodule Shoutouts.Repo.Migrations.Initial do
     create table(:votes, primary_key: false) do
       add(:type, :string, null: false)
       add(:id, :binary_id, primary_key: true)
-      add(:shoutout_id, references(:shoutouts, type: :binary_id, on_delete: :delete_all), null: false)
+
+      add(:shoutout_id, references(:shoutouts, type: :binary_id, on_delete: :delete_all),
+        null: false
+      )
+
       add(:user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false)
       timestamps(type: :utc_datetime)
     end

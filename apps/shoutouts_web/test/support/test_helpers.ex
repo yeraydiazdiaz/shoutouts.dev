@@ -1,12 +1,11 @@
 defmodule ShoutoutsWeb.TestHelpers do
-
   def auth_for_user(user) do
     %Ueberauth.Auth{
       info: %Ueberauth.Auth.Info{
         email: user.email,
         name: user.name,
         nickname: user.username,
-        image: "https://example.org/avatar/#{user.username}",
+        image: "https://example.org/avatar/#{user.username}"
       },
       extra: %{
         raw_info: %{
@@ -17,7 +16,7 @@ defmodule ShoutoutsWeb.TestHelpers do
       },
       provider: :github,
       uid: user.provider_id,
-      strategy: Ueberauth.Strategy.Github,
+      strategy: Ueberauth.Strategy.Github
     }
   end
 end

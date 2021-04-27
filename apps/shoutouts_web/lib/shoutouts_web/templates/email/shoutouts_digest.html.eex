@@ -1,0 +1,24 @@
+<p>Hi <%= @first_name %>,</p>
+<p>
+<%= if length(@user_names) == 1 do %>
+<%= List.first(@user_names) %> has 
+<% end %>
+<%= if length(@user_names) == 2 do %>
+<%= List.first(@user_names) %> and <%= Enum.at(@user_names, 1) %> have 
+<% end %>
+<%= if length(@user_names) > 2 do %>
+<%= @user_names |> Enum.take_random(2) |> Enum.join(", ") %>, and <%= length(@user_names) - 2 %> other people have 
+<% end %> left shoutouts on your projects. Check them out on your project pages:
+</p>
+<ul>
+<%= for {owner, name} <- @project_owner_names do %>
+<li><a href="<%= Routes.project_show_url(ShoutoutsWeb.Endpoint, :show, owner, name) %>"><%= owner %>/<%= name %></a></li>
+<% end %>
+</ul>
+<p>
+Remember you can pin or flag shoutouts to curate the project's page, and get
+<a href="<%= Routes.faq_url(ShoutoutsWeb.Endpoint, :show) %>#badge">a neat little badge</a> for your project's README.
+</p>
+
+<p>Thanks for contributing to Open Source!<br />The <a href="<%= Routes.index_show_url(ShoutoutsWeb.Endpoint, :show) %>">shoutouts.dev</a> team.</p>
+<p>P.S. If you want to disable these emails, change your <a href="<%= Routes.user_index_url(ShoutoutsWeb.Endpoint, :show) %>">notification preferences</a>.</p>

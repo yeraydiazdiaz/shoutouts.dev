@@ -6,9 +6,9 @@ defmodule Shoutouts.Shoutouts.Vote do
   @foreign_key_type :binary_id
   @timestamps_opts [type: :utc_datetime]
   schema "votes" do
-    field :type, Ecto.Enum, values: [:up, :down, :flag]
-    belongs_to :shoutout, Shoutouts.Shoutouts.Shoutout
-    belongs_to :user, Shoutouts.Accounts.User
+    field(:type, Ecto.Enum, values: [:up, :down, :flag])
+    belongs_to(:shoutout, Shoutouts.Shoutouts.Shoutout)
+    belongs_to(:user, Shoutouts.Accounts.User)
 
     timestamps()
   end

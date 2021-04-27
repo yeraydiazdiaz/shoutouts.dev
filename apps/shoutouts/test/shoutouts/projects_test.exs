@@ -343,8 +343,7 @@ defmodule Shoutouts.ProjectsTest do
         {:ok, :no_such_repo}
       end)
 
-      {:error, :no_such_repo} =
-        Projects.validate_registration("doesnot", "exist")
+      {:error, :no_such_repo} = Projects.validate_registration("doesnot", "exist")
     end
 
     test "returns error for error fetching project information" do
@@ -356,8 +355,7 @@ defmodule Shoutouts.ProjectsTest do
         {:error, %Tesla.Env{status: 500}}
       end)
 
-      {:error, :provider_error} =
-        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev")
+      {:error, :provider_error} = Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev")
     end
 
     test "returns {:ok, provider_project} for projects that are not yet registered and exist in the provider" do
@@ -371,8 +369,7 @@ defmodule Shoutouts.ProjectsTest do
         {:ok, provider_project}
       end)
 
-      {:ok, pi} =
-        Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev")
+      {:ok, pi} = Projects.validate_registration("yeraydiazdiaz", "shoutouts.dev")
 
       assert pi == provider_project
     end
@@ -381,7 +378,7 @@ defmodule Shoutouts.ProjectsTest do
   describe "claim project" do
     test "updates the project's user_id" do
       u = Factory.insert(:user)
-      p = Factory.insert(:project, user: nil) 
+      p = Factory.insert(:project, user: nil)
       {:ok, updated_project} = Projects.claim_project(p, u)
       assert updated_project.user_id == u.id
     end

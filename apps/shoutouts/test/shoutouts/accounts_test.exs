@@ -147,4 +147,9 @@ defmodule Shoutouts.AccountsTest do
     assert {:ok, %User{}} = Accounts.delete_user(user)
     assert_raise Ecto.NoResultsError, fn -> Accounts.get_user!(user.id) end
   end
+
+  test "first_name/1 returns the guessed first name" do
+    user = Factory.insert(:user, name: "Yeray Diaz Diaz")
+    assert Accounts.first_name(user) == "Yeray"
+  end
 end

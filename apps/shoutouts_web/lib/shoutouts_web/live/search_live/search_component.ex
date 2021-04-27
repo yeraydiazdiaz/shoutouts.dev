@@ -9,10 +9,10 @@ defmodule ShoutoutsWeb.SearchLive.SearchComponent do
 
   def mount(socket) do
     {:ok,
-      socket
-      |> assign(:current_user_id, nil)
-      |> assign(:terms, "")
-      |> assign(:results, [])}
+     socket
+     |> assign(:current_user_id, nil)
+     |> assign(:terms, "")
+     |> assign(:results, [])}
   end
 
   def update(%{terms: "", current_user_id: current_user_id} = _assigns, socket) do

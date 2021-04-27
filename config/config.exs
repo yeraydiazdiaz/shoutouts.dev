@@ -26,6 +26,8 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
   live_view: [signing_salt: "Fj7EyCQMfehidQBD"],
   signing_salt: "Bgpmwm3j"
 
+config :shoutouts_web, ShoutoutsWeb.Email.Mailer, adapter: Bamboo.LocalAdapter
+
 config :logger,
   backends: [:console, Sentry.LoggerBackend],
   format: "$time $metadata[$level] $message\n",
@@ -42,7 +44,7 @@ config :ueberauth, Ueberauth,
     github:
       {Ueberauth.Strategy.Github,
        [
-         default_scope: "user,public_repo,notifications",
+         default_scope: "user,public_repo,notifications"
        ]}
   ]
 
@@ -69,9 +71,8 @@ config :appsignal, :config,
   otp_app: :shoutouts,
   name: "shoutouts.dev",
   push_api_key: System.get_env("APPSIGNAL_PUSH_API_KEY"),
-  env: Mix.env,
+  env: Mix.env(),
   active: false
-
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

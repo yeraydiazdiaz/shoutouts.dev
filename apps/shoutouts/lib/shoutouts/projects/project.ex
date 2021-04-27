@@ -8,24 +8,24 @@ defmodule Shoutouts.Projects.Project do
   @foreign_key_type :binary_id
   @timestamps_opts [type: :utc_datetime]
   schema "projects" do
-    field :pinned_only, :boolean, default: false
-    field :provider, Ecto.Enum, values: [:github], default: :github
-    field :provider_id, :integer
-    field :owner, :string
-    field :name, :string
-    field :repo_created_at, :utc_datetime
-    field :repo_updated_at, :utc_datetime
-    field :url, :string
-    field :description, :string
-    field :homepage_url, :string
-    field :primary_language, :string
-    field :languages, {:array, :string}
-    field :stars, :integer
-    field :forks, :integer
+    field(:pinned_only, :boolean, default: false)
+    field(:provider, Ecto.Enum, values: [:github], default: :github)
+    field(:provider_id, :integer)
+    field(:owner, :string)
+    field(:name, :string)
+    field(:repo_created_at, :utc_datetime)
+    field(:repo_updated_at, :utc_datetime)
+    field(:url, :string)
+    field(:description, :string)
+    field(:homepage_url, :string)
+    field(:primary_language, :string)
+    field(:languages, {:array, :string})
+    field(:stars, :integer)
+    field(:forks, :integer)
 
-    belongs_to :user, Shoutouts.Accounts.User
+    belongs_to(:user, Shoutouts.Accounts.User)
 
-    has_many :shoutouts, Shoutouts.Shoutouts.Shoutout
+    has_many(:shoutouts, Shoutouts.Shoutouts.Shoutout)
 
     timestamps()
   end

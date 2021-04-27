@@ -393,19 +393,28 @@ defmodule Shoutouts.Shoutouts do
   Returns the latest pinned shoutouts for the projects with more shoutouts.
   """
   def shoutouts_for_top_projects(top_n \\ 5) do
-    top_projects = from(
-      p in Project,
-      left_join: s in assoc(p, :shoutouts),
-      group_by: [p.id],
-      order_by: [desc: count(s.id)],
-      select: %{id: p.id, count: count(s.id)},
-      limit: ^top_n
-    )
-    first_shoutouts = from(
-      s in Shoutout,
-      select: %{id: s.id, row_number: over(row_number(), :project_partition)},
-      windows: [project_partition: [partition_by: :project_id, order_by: [desc: :pinned, desc: :inserted_at]]]
-    )
+    top_projects =
+      from(
+        p in Project,
+        left_join: s in assoc(p, :shoutouts),
+        group_by: [p.id],
+        order_by: [desc: count(s.id)],
+        select: %{id: p.id, count: count(s.id)},
+        limit: ^top_n
+      )
+
+    first_shoutouts =
+      from(
+        s in Shoutout,
+        select: %{id: s.id, row_number: over(row_number(), :project_partition)},
+        windows: [
+          project_partition: [
+            partition_by: :project_id,
+            order_by: [desc: :pinned, desc: :inserted_at]
+          ]
+        ]
+      )
+
     Repo.all(
       from(
         s in Shoutout,
@@ -415,6 +424,21 @@ defmodule Shoutouts.Shoutouts do
         on: s.id == fs.id and fs.row_number == 1,
         order_by: [desc: tp.count],
         preload: [:user, :project]
+      )
+    )
+  end
+
+  @doc """
+  Returns shoutouts that have not been notfied to a user.
+  """
+  def unnotified_shoutouts() do
+    Repo.all(
+      from(
+        s in Shoutout,
+        join: p in assoc(s, :project),
+        join: u in assoc(p, :user),
+        where: u.notify_when != :disabled and is_nil(s.notified_at),
+        preload: [:user, project: :user]
       )
     )
   end

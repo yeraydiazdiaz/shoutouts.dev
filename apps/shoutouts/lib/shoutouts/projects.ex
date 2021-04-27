@@ -341,13 +341,12 @@ defmodule Shoutouts.Projects do
   end
 
   def refresh_projects(days_since_last_update, limit \\ 0) do
-    update_at_threshold = DateTime.add(DateTime.utc_now(), -days_since_last_update * 60 * 3600)
+    update_at_threshold = DateTime.add(DateTime.utc_now(), -days_since_last_update * 24 * 3600)
 
     base_query =
       from(p in Project,
-        where:
-          (not is_nil(p.updated_at) and p.updated_at <= ^update_at_threshold) or
-            p.inserted_at <= ^update_at_threshold,
+        where: is_nil(p.updated_at) and p.inserted_at <= ^update_at_threshold,
+        or_where: p.updated_at <= ^update_at_threshold,
         order_by: ^@default_order
       )
 
@@ -382,6 +381,8 @@ defmodule Shoutouts.Projects do
     # moving organizations
     with {:ok, project_info} <-
            provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
+      # TODO: if the project's info has not changed the below will _not_ change
+      # update_at, which means the project will be picked up again in the next run
       update_project(project, Map.from_struct(project_info))
     else
       {:error, response} -> {:error, response}
@@ -413,7 +414,8 @@ defmodule Shoutouts.Projects do
 
   def claim_project(%Project{user_id: nil} = project, user) do
     project
-    |> Repo.preload(:user)  # this is necessary for put_assoc
+    # this is necessary for put_assoc
+    |> Repo.preload(:user)
     |> Project.changeset(%{})
     |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.update()

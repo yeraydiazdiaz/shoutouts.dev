@@ -23,8 +23,9 @@ config :shoutouts_web, ShoutoutsWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :shoutouts_web, ShoutoutsWeb.Email.Mailer, adapter: Bamboo.TestAdapter
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-config :appsignal, :config,
-  active: false
+config :appsignal, :config, active: false

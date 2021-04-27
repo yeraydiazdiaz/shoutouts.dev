@@ -26,17 +26,21 @@ defmodule ShoutoutsWeb.SearchLiveTest do
   test "renders projects matching the input in the form", %{conn: conn} do
     s = Factory.insert(:shoutout)
     {:ok, view, _html} = live(conn, Routes.search_show_path(conn, :index))
+
     assert view
-    |> element("form")
-    |> render_change(%{q: s.project.owner}) =~ "#{s.project.owner}/#{s.project.name}"
+           |> element("form")
+           |> render_change(%{q: s.project.owner}) =~ "#{s.project.owner}/#{s.project.name}"
   end
 
   test "renders project by language summary when input in the form is deleted", %{conn: conn} do
     s = Factory.insert(:shoutout)
     {:ok, view, _html} = live(conn, Routes.search_show_path(conn, :index, %{q: s.project.owner}))
-    html = view
-    |> element("form")
-    |> render_change(%{q: ""})
+
+    html =
+      view
+      |> element("form")
+      |> render_change(%{q: ""})
+
     assert html =~ "Top projects by language"
     refute html =~ "Sorry, no projects match your query"
   end
