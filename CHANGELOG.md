@@ -2,8 +2,8 @@
 
 ## Unreleased
 
-- Add Sponsors page
 - Add weekly task to email project owners notifying them of new shoutouts.
+- Add Sponsors page.
 
 ## [21.2.0] - 2021-04-19
 
