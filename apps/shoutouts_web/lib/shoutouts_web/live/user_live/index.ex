@@ -16,7 +16,9 @@ defmodule ShoutoutsWeb.UserLive.Index do
         %{"current_user_id" => current_user_id},
         %{assigns: %{live_action: :show}} = socket
       ) do
-    {:ok, get_user(socket, current_user_id)}
+    {:ok,
+      get_user(socket, current_user_id)
+      |> assign(:page_title, "Account settings")}
   end
 
   # Entry point for project list.
@@ -30,10 +32,11 @@ defmodule ShoutoutsWeb.UserLive.Index do
 
     {:ok,
      socket
+     |> assign(:page_title, "Your projects")
      |> assign(:projects, Projects.project_summary_for_username(user.username))}
   end
 
-  # Entry point for project list.
+  # Entry point for shoutouts list.
   @impl true
   def mount(
         _params,
@@ -44,6 +47,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
 
     {:ok,
      socket
+     |> assign(:page_title, "Your shoutouts")
      |> assign(:shoutouts, Shoutouts.list_shoutouts_for_user(user.username))}
   end
 
@@ -58,6 +62,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
 
     {:ok,
      socket
+     |> assign(:page_title, "Edit project")
      |> assign(:project, Projects.get_project!(project_id))}
   end
 
@@ -105,7 +110,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
     end
   end
 
-  # Entry point for project edit.
+  # Entry point for project delete.
   @impl true
   def mount(
         %{"id" => project_id},
@@ -116,6 +121,7 @@ defmodule ShoutoutsWeb.UserLive.Index do
 
     {:ok,
      socket
+     |> assign(:page_title, "Delete project")
      |> assign(:project, Projects.get_project!(project_id))}
   end
 
