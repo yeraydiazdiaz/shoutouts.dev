@@ -12,6 +12,7 @@ defmodule ShoutoutsWeb.SearchLive.Show do
 
     {:ok,
      socket
+     |> assign(:page_title, "Search")
      |> assign(:current_user_id, Map.get(session, "current_user_id"))
      |> assign(:terms, terms)
      |> assign(:summary, summary)}
@@ -23,6 +24,7 @@ defmodule ShoutoutsWeb.SearchLive.Show do
 
     {:ok,
      socket
+     |> assign(:page_title, "Search")
      |> assign(:current_user_id, Map.get(session, "current_user_id"))
      |> assign(:terms, "")
      |> assign(:summary, summary)}
