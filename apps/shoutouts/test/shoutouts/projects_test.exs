@@ -217,6 +217,7 @@ defmodule Shoutouts.ProjectsTest do
          %Shoutouts.Providers.ProviderProject{
            description: "New description",
            provider_id: project.provider_id,
+           provider_node_id: "#{project.provider_id}",
            owner: project.owner,
            name: project.name,
            url: project.url,
@@ -258,6 +259,7 @@ defmodule Shoutouts.ProjectsTest do
          %Shoutouts.Providers.ProviderProject{
            description: "New description",
            provider_id: project.provider_id,
+           provider_node_id: "#{project.provider_id}",
            owner: project.owner,
            name: project.name,
            url: project.url,
@@ -301,6 +303,7 @@ defmodule Shoutouts.ProjectsTest do
          %Shoutouts.Providers.ProviderProject{
            description: "New description",
            provider_id: project_to_update.provider_id,
+           provider_node_id: "#{project_to_update.provider_id}",
            owner: project_to_update.owner,
            name: project_to_update.name,
            url: project_to_update.url,
