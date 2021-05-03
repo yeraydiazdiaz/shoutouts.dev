@@ -17,8 +17,8 @@ defmodule ShoutoutsWeb.UserLive.Index do
         %{assigns: %{live_action: :show}} = socket
       ) do
     {:ok,
-      get_user(socket, current_user_id)
-      |> assign(:page_title, "Account settings")}
+     get_user(socket, current_user_id)
+     |> assign(:page_title, "Account settings")}
   end
 
   # Entry point for project list.
@@ -105,8 +105,12 @@ defmodule ShoutoutsWeb.UserLive.Index do
          |> assign(:claimable_projects, claimable_projects)}
 
       {:error, error} ->
-        Logger.error("Could not retrieve user repos", error)
-        {:ok, socket |> put_flash(:error, "Could not retrieve user repositories")}
+        Logger.error("Could not retrieve user repos", error: error)
+
+        {:ok,
+         socket
+         |> put_flash(:error, "Could not retrieve your repositories, please try again later")
+         |> redirect(to: Routes.user_index_path(socket, :projects))}
     end
   end
 

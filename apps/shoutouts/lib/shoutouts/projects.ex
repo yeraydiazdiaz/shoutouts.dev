@@ -326,9 +326,21 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
-  Returns the user's repositories on their provider.
+  Returns an error tuple with user's repositories on their provider.
+
+  ## Examples:
+
+    iex> user_repositories("yeraydiazdiaz")
+    {:ok, ["yeraydiazdiaz/shoutouts.dev"]}
+
+    iex> user_repositories("gotnorepos")
+    {:ok, []}
+
+    iex> user_repositories("gotnointernet")
+    {:error, :nxdomain}
   """
   def user_repositories(user) do
+    Logger.debug("Getting repos")
     provider_for_user(user)
     |> Provider.user_repositories(user.username)
   end
