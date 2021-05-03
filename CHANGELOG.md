@@ -1,5 +1,9 @@
 # Changelog
 
+## [21.2.3] - 2021-05-03
+
+- Fix selecting null project language on project summary.
+
 ## [21.2.2] - 2021-05-03
 
 - Fix title tags not updating across live views.

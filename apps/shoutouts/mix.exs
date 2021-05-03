@@ -4,7 +4,7 @@ defmodule Shoutouts.MixProject do
   def project do
     [
       app: :shoutouts,
-      version: "21.2.2",
+      version: "21.2.3",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
