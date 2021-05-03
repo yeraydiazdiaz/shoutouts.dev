@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix badge endpoint returning 404 if project has no shoutouts.
+
 ## [21.2.3] - 2021-05-03
 
 - Fix selecting null project language on project summary.
