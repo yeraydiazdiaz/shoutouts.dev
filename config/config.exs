@@ -44,7 +44,7 @@ config :ueberauth, Ueberauth,
     github:
       {Ueberauth.Strategy.Github,
        [
-         default_scope: "user,public_repo,notifications"
+         default_scope: "read:user,user:email"
        ]}
   ]
 
