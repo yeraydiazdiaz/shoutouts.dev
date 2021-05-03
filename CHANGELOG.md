@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.2.4] - 2021-05-03
 
 - Fix badge endpoint returning 404 if project has no shoutouts.
 - Reduce OAuth scopes to just user name and email.
