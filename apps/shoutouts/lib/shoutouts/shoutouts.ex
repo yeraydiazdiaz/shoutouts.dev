@@ -347,12 +347,8 @@ defmodule Shoutouts.Shoutouts do
 
   """
   def badge_for_project(owner, name) do
-    # TODO: write number_of_shoutouts function
-    case list_shoutouts_for_project(owner, name) do
-      # TODO: why nil? we should return a badge with 0
-      [] -> nil
-      shoutouts -> render_badge(length(shoutouts))
-    end
+    shoutout_count_for_project(owner, name)
+    |> render_badge()
   end
 
   @doc """

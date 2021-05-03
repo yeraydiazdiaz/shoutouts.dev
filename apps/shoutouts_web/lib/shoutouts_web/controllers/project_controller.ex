@@ -4,6 +4,7 @@ defmodule ShoutoutsWeb.ProjectController do
   """
   require Logger
   use ShoutoutsWeb, :controller
+  alias Shoutouts.Projects
   alias Shoutouts.Shoutouts
 
   @doc """
@@ -14,14 +15,15 @@ defmodule ShoutoutsWeb.ProjectController do
   def badge(conn, %{"owner" => owner, "name" => name} = _params) do
     Logger.debug("Badge for project #{owner}/#{name}")
 
-    case Shoutouts.badge_for_project(owner, name) do
-      nil ->
-        raise ShoutoutsWeb.NotFoundError, "Not found"
+    case Projects.project_exists?(owner, name) do
+      false ->
+        conn
+        |> put_status(404)
 
-      badge ->
+      true ->
         conn
         |> put_resp_content_type("image/svg+xml")
-        |> text(badge)
+        |> text(Shoutouts.badge_for_project(owner, name))
     end
   end
 end
