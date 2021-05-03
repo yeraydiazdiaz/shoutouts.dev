@@ -1,5 +1,9 @@
 # Changelog
 
+## [21.2.2] - 2021-05-03
+
+- Fix title tags not updating across live views.
+
 ## [21.2.1] - 2021-04-27
 
 - Add weekly task to email project owners notifying them of new shoutouts.
