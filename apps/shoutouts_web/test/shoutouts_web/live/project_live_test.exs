@@ -21,6 +21,16 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
     assert html =~ "#{p.owner}/#{p.name}"
     assert html =~ p.description
+    assert html =~ p.primary_language
+    assert html =~ "No shoutouts yet"
+  end
+
+  test "does not render primary language if nil", %{conn: conn} do
+    p = Factory.insert(:project, primary_language: nil)
+    {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+    assert html =~ "#{p.owner}/#{p.name}"
+    assert html =~ p.description
+    refute html =~ "Written mostly in:"
     assert html =~ "No shoutouts yet"
   end
 
