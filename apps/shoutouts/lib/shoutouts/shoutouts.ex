@@ -99,6 +99,30 @@ defmodule Shoutouts.Shoutouts do
   end
 
   @doc """
+  Returns the number of shoutouts for a project identified by owner/name.
+
+  ## Examples
+
+      iex> shoutout_count_for_project("yeray", "mine")
+      1
+
+      iex> shoutout_count_for_project("yeray", "nope")
+      nil
+
+  """
+  def shoutout_count_for_project(owner, name) do
+    Repo.one(
+      from(s in Shoutout,
+        join: p in assoc(s, :project),
+        where: p.owner == ^owner,
+        where: p.name == ^name,
+        where: s.flagged == false,
+        select: count()
+      )
+    )
+  end
+
+  @doc """
   Returns the flagged shoutouts for a project identified by owner/name.
 
   ## Examples
@@ -323,12 +347,8 @@ defmodule Shoutouts.Shoutouts do
 
   """
   def badge_for_project(owner, name) do
-    # TODO: write number_of_shoutouts function
-    case list_shoutouts_for_project(owner, name) do
-      # TODO: why nil? we should return a badge with 0
-      [] -> nil
-      shoutouts -> render_badge(length(shoutouts))
-    end
+    shoutout_count_for_project(owner, name)
+    |> render_badge()
   end
 
   @doc """
