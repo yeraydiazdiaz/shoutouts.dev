@@ -185,6 +185,7 @@ defmodule Shoutouts.Projects do
         p in Project,
         group_by: p.primary_language,
         select: [p.primary_language, count(p.id)],
+        where: not is_nil(p.primary_language),
         order_by: [desc: count(p.id)],
         limit: ^top_n
       )

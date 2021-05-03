@@ -15,7 +15,7 @@
     <div class="text-2xl text-center text-gray-600 font-sans mb-8">Top projects by language</div>
     <div class="flex flex-row flex-wrap items-top justify-around">
       <%= for [lang, project_count, projects] <- @summary do %>
-        <div class="w-80 mb-8 mx-4 lg:mb-0">
+        <div class="w-80 mb-8 mx-4 lg:mb-4">
           <div class="text-xl flex flex-row items-center justify-between text-primary mb-2">
             <a href="<%= Routes.search_show_path(%Plug.Conn{}, :index, %{"q" => lang}) %>" data-phx-link="redirect" data-phx-link-state="push" class="font-bold text-primary underline"><%= lang %></a>
             <span class="text-sm"><%= project_count %> projects</span>
