@@ -9,7 +9,8 @@ defmodule Shoutouts.Providers.GitHub do
 
   @base_middlewares [
     {Tesla.Middleware.BaseUrl, "https://api.github.com/"},
-    Tesla.Middleware.JSON
+    Tesla.Middleware.JSON,
+    {Tesla.Middleware.Timeout, timeout: 3_000}
   ]
 
   @impl true
@@ -95,7 +96,7 @@ defmodule Shoutouts.Providers.GitHub do
           {:ok, repos ++ more_repos}
       end
     else
-      response -> {:error, response}
+      {:error, error} -> {:error, error}
     end
   end
 

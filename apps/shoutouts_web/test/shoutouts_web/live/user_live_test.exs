@@ -101,6 +101,23 @@ defmodule ShoutoutsWeb.UserLiveTest do
       assert view |> has_element?("label", "owner/unclaimed")
     end
 
+    test "flashes error and redirects if unable to retrieve user repos", %{conn: conn} do
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:user_repositories, fn _client, _login ->
+        {:error, :nx_domain}
+      end)
+
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+
+      path = Routes.user_index_path(conn, :projects)
+
+      assert {:error, {:redirect, %{to: ^path}}} = live(conn, Routes.user_index_path(conn, :add))
+    end
+
     test "submitting repos add projects", %{conn: conn} do
       Shoutouts.MockProvider
       |> expect(:client, 3, fn -> Tesla.Client end)

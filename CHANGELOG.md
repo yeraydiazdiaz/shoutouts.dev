@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Improve error handling in GH client.
+- Add 3 second timeout to Tesla client.
+
 ## [21.2.4] - 2021-05-03
 
 - Fix badge endpoint returning 404 if project has no shoutouts.
