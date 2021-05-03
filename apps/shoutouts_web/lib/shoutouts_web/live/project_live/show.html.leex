@@ -27,12 +27,13 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
   <div class="flex flex-col lg:flex-row lg:items-top justify-between">
     <%# Project name and description %>
     <div class="md:mb-4 lg:mb-0">
-        <div class="text-lg md:text-xl lg:text-2xl mb-3"><%= render_emojis @project.description %></div>
+      <div class="text-lg md:text-xl lg:text-2xl mb-3"><%= render_emojis @project.description %></div>
+      <%= if @project.primary_language != nil do %>
       <div class="text-sm">
         <span class="text-dark">Written mostly in:</span>
         <span class="font-bold"><%= @project.primary_language %></span>
       </div>
-
+      <% end %>
       <%# Shoutout count %>
       <div class="mt-4">
         <%= if @num_shoutouts == 0 do %>
