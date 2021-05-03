@@ -362,4 +362,13 @@ defmodule Shoutouts.ShoutoutsTest do
       assert [] = Shoutouts.unnotified_shoutouts()
     end
   end
+
+  describe "shoutout_count_for_project" do
+    test "returns the number of non-flagged shoutouts" do
+      project = Factory.insert(:project)
+      Factory.insert(:shoutout, project: project)
+      Factory.insert(:shoutout, project: project, flagged: true)
+      assert Shoutouts.shoutout_count_for_project(project.owner, project.name) == 1
+    end 
+  end
 end

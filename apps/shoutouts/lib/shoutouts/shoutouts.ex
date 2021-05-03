@@ -99,6 +99,30 @@ defmodule Shoutouts.Shoutouts do
   end
 
   @doc """
+  Returns the number of shoutouts for a project identified by owner/name.
+
+  ## Examples
+
+      iex> shoutout_count_for_project("yeray", "mine")
+      1
+
+      iex> shoutout_count_for_project("yeray", "nope")
+      nil
+
+  """
+  def shoutout_count_for_project(owner, name) do
+    Repo.one(
+      from(s in Shoutout,
+        join: p in assoc(s, :project),
+        where: p.owner == ^owner,
+        where: p.name == ^name,
+        where: s.flagged == false,
+        select: count()
+      )
+    )
+  end
+
+  @doc """
   Returns the flagged shoutouts for a project identified by owner/name.
 
   ## Examples
