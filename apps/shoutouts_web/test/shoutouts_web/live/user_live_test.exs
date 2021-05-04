@@ -141,6 +141,14 @@ defmodule ShoutoutsWeb.UserLiveTest do
       assert Projects.project_exists?(project.owner, project.name)
     end
 
+    test "selecting no repos shows errors", %{conn: conn} do
+      setup_mock(["owner/project1", "owner/project2"])
+      user = Factory.insert(:user)
+      conn = login_user(conn, user)
+      {:ok, view, _html} = live(conn, Routes.user_index_path(conn, :add))
+      assert view |> form("#add", %{}) |> render_submit() =~ "Please select one or more projects"
+    end
+
     test "claiming repos adds user ID to them", %{conn: conn} do
       Shoutouts.MockProvider
       |> expect(:client, 2, fn -> Tesla.Client end)

@@ -72,8 +72,8 @@
     <main role="main" class="flex-grow m-auto p-4 md:p-8 w-full max-w-6xl">
       <%= @inner_content %>
     </main>
-    <footer class="flex-none text-gray-600 text-sm h-8 p-6 mt-4 flex items-center justify-around border-t border-dim">
-      <div>Crafted with 💙 by <a class="hover:underline" href="https://yeray.dev">Yeray Díaz</a> <a class="hover:underline ml-1" href="https://github.com/yeraydiazdiaz"><i class="fab fa-github"></i></a> <a class="hover:underline ml-1" href="https://twitter.com/yera_ee/"><i class="fab fa-twitter"></i></a></div>
+    <footer class="flex flex-col md:flex-row text-gray-600 text-sm p-6 mt-4 flex items-center justify-around border-t border-dim">
+      <div class="mb-2 md:mb-0">Crafted with 💙 by <a class="hover:underline" href="https://yeray.dev">Yeray Díaz</a> <a class="hover:underline ml-1" href="https://github.com/yeraydiazdiaz"><i class="fab fa-github"></i></a> <a class="hover:underline ml-1" href="https://twitter.com/yera_ee/"><i class="fab fa-twitter"></i></a></div>
       <div>
         <a href="<%= Routes.sponsors_path(@conn, :show) %>" class="mr-4">Sponsors</a>
         <a href="<%= Routes.faq_path(@conn, :show) %>">FAQ</a>

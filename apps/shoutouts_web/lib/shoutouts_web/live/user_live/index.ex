@@ -152,7 +152,6 @@ defmodule ShoutoutsWeb.UserLive.Index do
   @impl true
   def handle_event(
         "submit",
-        # TODO: this can be %{} if the user does not select any projects
         %{"repos" => repos},
         %{assigns: %{current_user: current_user}} = socket
       ) do
@@ -168,6 +167,11 @@ defmodule ShoutoutsWeb.UserLive.Index do
          |> put_flash(:info, "#{length(projects)} project(s) added successfully")
          |> redirect(to: Routes.user_index_path(socket, :projects))}
     end
+  end
+
+  @impl true
+  def handle_event("submit", %{}, socket) do
+    {:noreply, socket |> assign(:error, "Please select one or more projects")}
   end
 
   # Claim projects form submit entry point.
