@@ -141,8 +141,8 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
           </div>
         <% end %>
       </div>
-      <%# This should disable itself, phx_disable_with but with the same text would be nice %>
-      <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4" %>
+      <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4", phx_disable_with: "Adding projects..." %>
+      <%= if assigns[:error] do %><p class="text-alert mt-2"><%= @error %><% end %>
     </form>
 
     <%= if length(@existing_projects) > 0 do %>
