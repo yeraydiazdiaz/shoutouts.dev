@@ -59,7 +59,7 @@ The webpack configuration is modified from the default Phoenix includes:
 used in the templates. **This means changing classes in the web inspector may
 not work as expected as the new class may have been purged**. If you're
 experiencing issues when making CSS changes it's worth commenting out the
-PurgeCSS section in `webpack.config.js` until you're happy with the result.
+PurgeCSS section in `postcss.config.js` until you're happy with the result.
 - Fonts found in CSS are copied directly to /fonts/ and SVGs are included as
 URLs so they will need to be used in CSS classes.
 

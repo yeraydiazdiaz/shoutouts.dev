@@ -9,7 +9,6 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const purgecss = require('@fullhuman/postcss-purgecss')
 
 module.exports = (env, args) => {
   const config = {
@@ -34,23 +33,7 @@ module.exports = (env, args) => {
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: [
-                  require('tailwindcss'),
-                  require('autoprefixer'),
-                  purgecss({
-                    content: [
-                      '../lib/shoutouts_web/templates/**/*.html.eex',
-                      '../lib/shoutouts_web/live/**/*.html.leex',
-                    ],
-                    defaultExtractor: content => content.match(/[A-Za-z0-9\-_:\/]+/g) || []
-                  })
-                ],
-              },
-            },
+            'postcss-loader',  // see postcss.config.js
           ]
         },
         {
