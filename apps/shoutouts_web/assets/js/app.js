@@ -34,12 +34,6 @@ dom.watch()
 import "phoenix_html"
 import { Socket } from "phoenix"
 import LiveSocket from "phoenix_live_view"
-import { Application } from "stimulus"
-import { definitionsFromContext } from "stimulus/webpack-helpers"
-
-const application = Application.start()
-const context = require.context("./controllers", true, /\.js$/)
-application.load(definitionsFromContext(context))
 
 const hooks = {
   shoutoutInit: {
@@ -68,7 +62,9 @@ let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("
 let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: hooks })
 liveSocket.connect()
 
-// Nav menu
+/**
+ *  Nav menu
+ */
 
 const bars = document.getElementById("nav-bars");
 const menu = document.getElementById("nav-menu");
@@ -103,9 +99,12 @@ function resetBackgroundTop(bg) {
   bg.target.style.setProperty('top', `${newTop}px`);
 }
 
+/**
+ * Stimulus configuration
+ */
+import { Application } from "stimulus"
+import { definitionsFromContext } from "stimulus/webpack-helpers"
 
-/* Add projects */
-
-window.selectAllProjects = function () {
-  console.log("Hello!") 
-}
+const application = Application.start()
+const context = require.context("./controllers", true, /\.js$/)
+application.load(definitionsFromContext(context))

@@ -132,14 +132,20 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
     <p class="text-primary text-xl">Select one or more repositories to add, only repositories you <strong>own</strong> are eligible:</p>
 
-    <form action="#" class="w-full mt-8" id="add" method="post" phx-submit="submit">
-      <div class="w-full flex flex-row flex-wrap mb-8">
-        <%= for repo <- @repos do %>
-          <div class="flex flex-row items-center h-8 w-full lg:w-1/2 lg:pr-2">
-            <label for="<%= "repos[#{repo}]" %>" class="mr-2 leading-none cursor-pointer"><%= repo %></label>
-            <input type="checkbox" id="<%= "repos[#{repo}]" %>" name="<%= "repos[#{repo}]" %>" class="checkbox" />
-          </div>
-        <% end %>
+    <form action="#" class="w-full mt-8" id="add" method="post" phx-submit="submit" data-controller="project-select">
+      <div class="mb-4">
+        <div class="w-full flex flex-row flex-wrap mb-2">
+          <%= for repo <- @repos do %>
+            <div class="flex flex-row items-center justify-between h-8 w-full lg:w-1/2 lg:pr-4">
+              <label for="<%= "repos[#{repo}]" %>" class="mr-2 leading-none cursor-pointer"><%= repo %></label>
+              <input type="checkbox" id="<%= "repos[#{repo}]" %>" name="<%= "repos[#{repo}]" %>" class="checkbox" data-project-select-target="repo" />
+            </div>
+          <% end %>
+        </div>
+        <div class="flex flex-row-reverse">
+          <div class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md ml-4" data-action="click->project-select#none">Select none</div>
+          <div class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md" data-action="click->project-select#all" data-project-select-target="">Select all</div>
+        </div>
       </div>
       <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4", phx_disable_with: "Adding projects..." %>
       <%= if assigns[:error] do %><p class="text-alert mt-2"><%= @error %><% end %>
@@ -147,9 +153,9 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
     <%= if length(@existing_projects) > 0 do %>
       <p class="mt-8 text-primary text-md mb-4">Can't find a project? The following have been already registered by you our another owner:</p>
-      <div class="w-full flex flex-row flex-wrap justify-between mb-8">
+      <div class="w-full flex flex-row flex-wrap mb-8">
       <%= for repo <- @existing_projects do %>
-        <div><a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, repo.owner, repo.name) %>" class="link"><%= repo.owner %>/<%= repo.name %></a></div>
+        <div class="mr-4"><a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, repo.owner, repo.name) %>" class="link"><%= repo.owner %>/<%= repo.name %></a></div>
       <% end %>
       </div>
     <% end %>
