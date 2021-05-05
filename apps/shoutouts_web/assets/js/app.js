@@ -62,49 +62,15 @@ let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("
 let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: hooks })
 liveSocket.connect()
 
-// Nav menu
+/**
+ *  Nav menu
+ */
 
 const bars = document.getElementById("nav-bars");
 const menu = document.getElementById("nav-menu");
 bars.onclick = function () {
   menu.classList.toggle("hidden")
 };
-
-/**
- * Copy to clipboard using Clipboard API
- * Expects a data-clipboard-text attribute and child with id "feedback"
- * Usage:
- * <div onclick="copyToClipboard(this)" data-clipboard-text="hello!">
- *   <span id="feedback" class="hidden"></span>
- * </div>
- */
-window.copyToClipboard = function (element) {
-  const text = element.getAttribute("data-clipboard-text");
-  const feedback = element.children.namedItem("feedback");
-
-  if (!text) {
-    console.error("Element missing data-clipboard-text attribute");
-  } else if (!feedback) {
-    console.error("Missing feedback element");
-  } else if (!navigator.clipboard) {
-    setTimeout(function () { feedback.classList.add("hidden") }, 1500);
-    feedback.classList.remove("hidden")
-    feedback.textContent = "Unsupported browser :(";
-  } else {
-    setTimeout(function () { feedback.classList.add("hidden") }, 1500);
-    navigator.clipboard.writeText(text).then(
-      function () {
-        feedback.classList.remove("hidden")
-        feedback.textContent = "Copied!";
-      },
-      function (err) {
-        console.error('Could not copy text: ', err);
-        feedback.classList.remove("hidden")
-        feedback.textContent = "Error :(";
-      }
-    );
-  }
-}
 
 /**
  * Background image ResizeObserver, resets the `top` property to keep the image in place.
@@ -132,3 +98,13 @@ function resetBackgroundTop(bg) {
   newTop = newTop > intTop ? intTop : newTop;
   bg.target.style.setProperty('top', `${newTop}px`);
 }
+
+/**
+ * Stimulus configuration
+ */
+import { Application } from "stimulus"
+import { definitionsFromContext } from "stimulus/webpack-helpers"
+
+const application = Application.start()
+const context = require.context("./controllers", true, /\.js$/)
+application.load(definitionsFromContext(context))

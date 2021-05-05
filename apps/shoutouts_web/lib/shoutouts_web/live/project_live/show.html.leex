@@ -67,9 +67,9 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
             <a href="<%= Routes.project_url(@socket, :badge, @project.owner, @project.name) %>">
               <%= raw @badge %>
             </a>
-            <div class="ml-4 text-xl text-secondary cursor-pointer" onclick="copyToClipboard(this)" data-clipboard-text="<%= Routes.project_url(@socket, :badge, @project.owner, @project.name) %>" title="Click to copy badge URL to clipboard">
+            <div class="ml-4 text-xl text-secondary cursor-pointer" data-controller="clipboard" data-action="click->clipboard#copy" data-clipboard-text-value="<%= Routes.project_url(@socket, :badge, @project.owner, @project.name) %>" title="Click to copy badge URL to clipboard">
               <i class="far fa-copy"></i>
-              <span id="feedback" class="hidden text-base text-secondary"></span>
+              <span data-clipboard-target="feedback" class="hidden text-base text-secondary"></span>
             </div>
             <% else %>
             <%= raw @badge %>

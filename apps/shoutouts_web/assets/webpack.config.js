@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = (env, args) => {
+module.exports = (_env, args) => {
   const config = {
     entry: {
       './js/app.js': './js/app.js'
@@ -25,7 +25,10 @@ module.exports = (env, args) => {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader'
+            loader: 'babel-loader',
+            options: {
+              "presets": [["@babel/preset-env", { "shippedProposals": true }]]
+            }
           }
         },
         {
