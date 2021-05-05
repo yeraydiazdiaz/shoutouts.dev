@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.2.5] - 2021-05-05
 
 - Add Select All/None to add projects.
 - Show error when attempting to add projects without selecting any.
