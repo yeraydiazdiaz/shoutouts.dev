@@ -26,7 +26,11 @@ RUN \
     dpkg -i erlang-solutions_2.0_all.deb && \
     rm erlang-solutions_2.0_all.deb && \
     apt-get update -y && \
-    apt-get install -y erlang elixir npm build-essential ca-certificates curl
+    apt-get install -y erlang elixir build-essential ca-certificates curl
+
+# Install nodejs 14, 20.04 is at 10
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 # Install updated versions of hex/rebar
 RUN mix local.rebar --force
