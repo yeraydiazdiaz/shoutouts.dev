@@ -143,8 +143,8 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
           <% end %>
         </div>
         <div class="flex flex-row-reverse">
-          <div class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md ml-4" data-action="click->project-select#none">Select none</div>
-          <div class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md" data-action="click->project-select#all" data-project-select-target="">Select all</div>
+          <button class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md ml-4" data-action="click->project-select#none">Select none</button>
+          <button class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md" data-action="click->project-select#all" data-project-select-target="">Select all</button>
         </div>
       </div>
       <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4", phx_disable_with: "Adding projects..." %>
