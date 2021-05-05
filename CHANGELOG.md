@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add Select All/None to add projects.
 - Show error when attempting to add projects without selecting any.
 - Improve error handling in GH client.
 - Add 3 second timeout to Tesla client.
