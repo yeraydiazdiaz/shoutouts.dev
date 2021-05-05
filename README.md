@@ -50,7 +50,9 @@ Vapor will read from `config.yaml` placed in the project root, copy the
 
 ### Frontend
 
-We use Tailwind CSS and some vanilla JS in conjunction with Phoenix's JS library.
+We use [Tailwind CSS](https://tailwindcss.com/docs) and
+[Stimulus](https://stimulus.hotwire.dev/) in conjunction with
+[Phoenix's JS library](https://hexdocs.pm/phoenix/js/index.html).
 
 The webpack configuration is modified from the default Phoenix includes:
 

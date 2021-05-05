@@ -34,8 +34,7 @@
 
   <a href="#tech"><h2 class="text-primary text-3xl font-bold mb-4" id="tech">What did you use to build shoutouts.dev?</h2>
   <div class="text-gray-900 text-xl mb-8">
-    <p class="mb-4">The site is written in <a class="link" href="https://elixir-lang.org/">Elixir</a> using the <a class="link" href="https://phoenixframework.org/">Phoenix Framework</a>, <a class="link" href="https://tailwindcss.com/">Tailwind CSS</a> and vanilla JavaScript on top of Phoenix's JS library.</p>
-    <p>When I say "vanilla" I mean I'm not using a JavaScript framework, the interactivity you see/feel comes from using Phoenix LiveView.</p>
+    <p class="mb-4">The site is written in <a class="link" href="https://elixir-lang.org/">Elixir</a> using the <a class="link" href="https://phoenixframework.org/">Phoenix Framework</a>. The frontend is built with <a class="link" href="https://tailwindcss.com/">Tailwind CSS</a> and <a class="link" href="https://stimulus.hotwire.dev/">Stimulus</a> but most interactivity comes from <a class="link" href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html">Phoenix LiveView</a>.</p>
   </div>
 
  <a href="#help"> <h2 class="text-primary text-3xl font-bold mb-4" id="help">Neat! How can I help?</h2></a>
