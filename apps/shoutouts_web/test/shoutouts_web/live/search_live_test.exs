@@ -14,7 +14,7 @@ defmodule ShoutoutsWeb.SearchLiveTest do
 
   test "renders no projects if not match on query arg term", %{conn: conn} do
     {:ok, _view, html} = live(conn, Routes.search_show_path(conn, :index, %{q: "foo"}))
-    assert html =~ "Sorry, no projects match your query"
+    assert html =~ "Sorry, no projects match &quot;foo&quot;"
   end
 
   test "renders projects matching the query arg term", %{conn: conn} do

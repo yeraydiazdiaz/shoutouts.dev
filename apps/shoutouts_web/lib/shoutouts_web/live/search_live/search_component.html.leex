@@ -3,7 +3,7 @@
   </form>
 
   <%= if @terms != "" and length(@results) == 0 do %>
-    <div class="text-2xl text-center text-gray-800 font-sans mb-8">Sorry, no projects match your query</div>
+    <div class="text-2xl text-center text-gray-800 font-sans mb-8">Sorry, no projects match "<%= @terms %>"</div>
     <div class="text-xl text-center text-primary font-sans mb-4">Would you like to register the project and leave a shoutout?</div>
     <div class="text-center">
     <%= if @current_user_id == nil do %>
