@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.2.6] - 2021-05-07
 
 - Update 'no results' message on search with terms and update the `q` query
 argument with the new terms.
