@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Update 'no results' message on search with terms and update the `q` query
+argument with the new terms.
 - Reduce required account longevity to 3 months.
 
 ## [21.2.5] - 2021-05-05

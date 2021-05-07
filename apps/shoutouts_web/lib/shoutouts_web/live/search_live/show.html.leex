@@ -9,7 +9,7 @@
     </h2>
   </div>
 
-  <%= live_component @socket, ShoutoutsWeb.SearchLive.SearchComponent, terms: @terms, id: :search, current_user_id: @current_user_id %>
+  <%= live_component @socket, ShoutoutsWeb.SearchLive.SearchComponent, terms: @terms, results: @results, id: :search, current_user_id: @current_user_id %>
 
   <%= if @terms == "" do %> 
   <div>
