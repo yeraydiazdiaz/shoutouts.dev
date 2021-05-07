@@ -113,7 +113,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       refute html =~ "Add your shoutout"
 
       assert html =~
-               "Sorry, only users with a provider account older than 2 years are allowed to add shoutouts"
+               "Sorry, only users with a provider account older than 3 months are allowed to add shoutouts"
     end
 
     test "that have left a flagged shoutout on another of the user's projects are not prompted to leave another",

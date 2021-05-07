@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Reduce required account longevity to 3 months.
+
 ## [21.2.5] - 2021-05-05
 
 - Add Select All/None to add projects.

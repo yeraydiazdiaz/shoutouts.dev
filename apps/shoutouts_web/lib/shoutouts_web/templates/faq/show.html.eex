@@ -14,7 +14,7 @@
     <div class="text-gray-900 text-xl">
     <p class="mb-4">Any time you have users posting about other users there's a risk of abuse. It's not an easy problem to solve but shoutouts.dev has some strict rules and practices in place that I hope will prevent it, and it all starts with accountability.</p>
     <ol>
-    <li class="mb-4">1. Only users whose provider (GitHub for now) account is older than 2 years are allowed to post shoutouts.</li>
+    <li class="mb-4">1. Only users whose provider (GitHub for now) account is older than 3 months are allowed to post shoutouts.</li>
     <li class="mb-4">2. Owners of projects can flag shoutouts. One flagged shoutout will prevent the user from posting more shoutouts to any of the owner's other projects.</li>
     <li class="mb-4">3. If more than three owners flag shoutouts from the same user, they will be banned from ever posting more shoutouts.</li>
     </ol>

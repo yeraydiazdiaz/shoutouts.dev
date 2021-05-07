@@ -9,8 +9,8 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
 
   require Logger
 
-  # ~2 years
-  @required_user_longevity 60 * 60 * 24 * 365 * 2
+  # ~3 months
+  @required_user_longevity 60 * 60 * 24 * 30 * 3
   @owner_flagged_threshold 2
 
   @doc """

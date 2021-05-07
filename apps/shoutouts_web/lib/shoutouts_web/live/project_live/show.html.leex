@@ -48,7 +48,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
               </div>
               <div class="w-full md:w-3/4 lg:w-1/2">
                 <%= if @user_account_too_young do %>
-                  <p class="text-sm pl-8">Sorry, only users with a provider account older than 2 years are allowed to add shoutouts.</p>
+                  <p class="text-sm pl-8">Sorry, only users with a provider account older than 3 months are allowed to add shoutouts.</p>
                 <% end %>
                 <%= if @user_is_banned_for_owner do %>
                   <p class="font-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
