@@ -137,12 +137,14 @@ defmodule Shoutouts.Projects do
       )
 
     owner_name = "#{owner}/#{name}"
+
     direct_match_query =
       from(p in Project,
         where: p.owner == ^owner and p.name == ^name,
         preload: [:user],
         preload: [shoutouts: ^shoutouts_query]
       )
+
     previous_match_query =
       from(p in Project,
         where: ^owner_name in p.previous_owner_names,
@@ -150,11 +152,10 @@ defmodule Shoutouts.Projects do
         preload: [shoutouts: ^shoutouts_query]
       )
 
-    case Repo.one(direct_match_query) do
-      nil -> case Repo.one(previous_match_query) do
-        nil -> {:error, :no_such_project}
-        project -> {:ok, project}
-      end
+    with nil <- Repo.one(direct_match_query),
+         nil <- Repo.one(previous_match_query) do
+      {:error, :no_such_project}
+    else
       project -> {:ok, project}
     end
   end
@@ -421,6 +422,7 @@ defmodule Shoutouts.Projects do
   """
   def user_repositories(user) do
     Logger.debug("Getting repos")
+
     provider_for_user(user)
     |> Provider.user_repositories(user.username)
   end
@@ -477,8 +479,12 @@ defmodule Shoutouts.Projects do
       # TODO: if the project's info has not changed the below will _not_ change
       # update_at, which means the project will be picked up again in the next run
       if project_info.owner != project.owner or project_info.name != project.name do
-        params = Map.from_struct(project_info)
-          |> Map.put(:previous_owner_names, ["#{project.owner}/#{project.name}" | project.previous_owner_names])
+        params =
+          Map.from_struct(project_info)
+          |> Map.put(:previous_owner_names, [
+            "#{project.owner}/#{project.name}" | project.previous_owner_names
+          ])
+
         update_project(project, params)
       else
         update_project(project, Map.from_struct(project_info))
