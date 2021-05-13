@@ -396,7 +396,13 @@ defmodule Shoutouts.Projects do
            provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
       # TODO: if the project's info has not changed the below will _not_ change
       # update_at, which means the project will be picked up again in the next run
-      update_project(project, Map.from_struct(project_info))
+      if project_info.owner != project.owner or project_info.name != project.name do
+        params = Map.from_struct(project_info)
+          |> Map.put(:previous_owner_names, ["#{project.owner}/#{project.name}" | project.previous_owner_names])
+        update_project(project, params)
+      else
+        update_project(project, Map.from_struct(project_info))
+      end
     else
       {:error, response} -> {:error, response}
     end

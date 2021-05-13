@@ -229,6 +229,35 @@ defmodule Shoutouts.ProjectsTest do
 
       assert updated_project.description == "New description"
     end
+    
+    test "updates project owner and/or name placing old ones in previous_owner_names" do
+      project = Factory.insert(:project, previous_owner_names: ["oldorg/oldname"])
+      new_name = "renamed"
+      new_owner = "someorg"
+
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok,
+         %Shoutouts.Providers.ProviderProject{
+           description: "New description",
+           provider_id: project.provider_id,
+           provider_node_id: "#{project.provider_id}",
+           owner: new_owner,
+           name: new_name,
+           url: project.url,
+           primary_language: project.primary_language
+         }}
+      end)
+
+      {:ok, updated_project} = Projects.refresh_project(project)
+
+      assert updated_project.owner == new_owner
+      assert updated_project.name == new_name
+      assert updated_project.previous_owner_names == ["#{project.owner}/#{project.name}", "oldorg/oldname"]
+    end
 
     test "does not update project on error" do
       project = Factory.insert(:project, description: "Old description")

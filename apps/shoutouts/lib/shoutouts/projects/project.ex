@@ -23,6 +23,8 @@ defmodule Shoutouts.Projects.Project do
     field(:languages, {:array, :string})
     field(:stars, :integer)
     field(:forks, :integer)
+    # a list of "prev_org/prev_name" strings
+    field(:previous_owner_names, {:array, :string})
 
     belongs_to(:user, Shoutouts.Accounts.User)
 
@@ -48,7 +50,8 @@ defmodule Shoutouts.Projects.Project do
       :primary_language,
       :languages,
       :stars,
-      :forks
+      :forks,
+      :previous_owner_names
     ])
     # TODO: add provider_node_id once projects have been updated
     |> validate_required([:provider_id,:pinned_only, :owner, :name, :description],

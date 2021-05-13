@@ -29,7 +29,8 @@ defmodule Shoutouts.Factory do
           "machine learning",
           "text processing"
         ]),
-      user: build(:user)
+      user: build(:user),
+      previous_owner_names: []
     }
   end
 
