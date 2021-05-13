@@ -110,6 +110,61 @@ defmodule Shoutouts.ProjectsTest do
     end
   end
 
+  describe "get_project_by_owner_and_name" do
+    test "returns error tuple if project does not exist" do
+      assert {:error, :no_such_project} = Projects.get_project_by_owner_and_name("does not", "exist")
+    end
+
+    test "returns projects with shoutouts with correct order" do
+      project = Factory.insert(:project)
+
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user)})
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user), pinned: true})
+
+      {:ok, project} = Projects.get_project_by_owner_and_name(project.owner, project.name)
+
+      [first, _] = project.shoutouts
+      assert first.pinned
+    end
+  end
+
+  describe "resolve_project_by_owner_and_name" do
+    test "returns error tuple if project does not exist" do
+      assert {:error, :no_such_project} = Projects.resolve_project_by_owner_and_name("does not", "exist")
+    end
+
+    test "returns project with shoutouts with correct order" do
+      project = Factory.insert(:project)
+
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user)})
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user), pinned: true})
+
+      {:ok, project} = Projects.resolve_project_by_owner_and_name(project.owner, project.name)
+
+      [first, _] = project.shoutouts
+      assert first.pinned
+    end
+
+    test "returns project with matching previous owner/name" do
+      p = Factory.insert(:project, previous_owner_names: ["oldorg/oldname"])
+
+      {:ok, project} = Projects.resolve_project_by_owner_and_name("oldorg", "oldname")
+
+      assert project.owner == p.owner
+      assert project.name == p.name
+    end
+
+    test "returns project with matching owner/name over ones with previous owner/name" do
+      p = Factory.insert(:project)
+      Factory.insert(:project, previous_owner_names: ["#{p.owner}/#{p.name}"])
+
+      {:ok, project} = Projects.resolve_project_by_owner_and_name(p.owner, p.name)
+
+      assert project.owner == p.owner
+      assert project.name == p.name
+    end
+  end
+
   test "project_summary_for_username" do
     project = Factory.insert(:project)
 

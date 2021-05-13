@@ -80,6 +80,86 @@ defmodule Shoutouts.Projects do
   end
 
   @doc """
+  Gets a single project by owner and name. User and unflagged shoutouts are preloaded.
+
+  Returns {:ok, project} or {:error, :no_such_repo}
+
+  ## Examples
+
+      iex> get_project_by_owner_and_name("me", "mine")
+      {:ok, %Project{}}
+
+      iex> get_project_by_owner_and_name("me", "nope")
+      {:error, :no_such_project}
+
+  """
+  def get_project_by_owner_and_name(owner, name) do
+    shoutouts_query =
+      from(t in Shoutout,
+        where: t.flagged == false,
+        order_by: [desc: t.pinned, desc: t.inserted_at]
+      )
+
+    q =
+      from(p in Project,
+        where: p.owner == ^owner and p.name == ^name,
+        preload: [:user],
+        preload: [shoutouts: ^shoutouts_query]
+      )
+
+    case Repo.one(q) do
+      nil -> {:error, :no_such_project}
+      project -> {:ok, project}
+    end
+  end
+
+  @doc """
+  Resolves a single project by owner and name including any previous owner/names.
+
+  User and unflagged shoutouts are preloaded.
+
+  Returns {:ok, project} or {:error, :no_such_repo}
+
+  ## Examples
+
+      iex> resolve_project_by_owner_and_name("me", "mine")
+      {:ok, %Project{}}
+
+      iex> resolve_project_by_owner_and_name("me", "nope")
+      {:error, :no_such_project}
+
+  """
+  def resolve_project_by_owner_and_name(owner, name) do
+    shoutouts_query =
+      from(t in Shoutout,
+        where: t.flagged == false,
+        order_by: [desc: t.pinned, desc: t.inserted_at]
+      )
+
+    owner_name = "#{owner}/#{name}"
+    direct_match_query =
+      from(p in Project,
+        where: p.owner == ^owner and p.name == ^name,
+        preload: [:user],
+        preload: [shoutouts: ^shoutouts_query]
+      )
+    previous_match_query =
+      from(p in Project,
+        where: ^owner_name in p.previous_owner_names,
+        preload: [:user],
+        preload: [shoutouts: ^shoutouts_query]
+      )
+
+    case Repo.one(direct_match_query) do
+      nil -> case Repo.one(previous_match_query) do
+        nil -> {:error, :no_such_project}
+        project -> {:ok, project}
+      end
+      project -> {:ok, project}
+    end
+  end
+
+  @doc """
   Returns whether a project by owner and name.
 
   ## Examples
