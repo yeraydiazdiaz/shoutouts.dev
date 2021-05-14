@@ -472,8 +472,8 @@ defmodule Shoutouts.Projects do
   end
 
   def refresh_project(project) do
-    # TODO: refresh project should use the project's ID to protect us from projects
-    # moving organizations
+    # TODO: Although GitHub does automatic redirection and the API will return the new
+    # information if you provide an older owner/name we should still use the node ID
     with {:ok, project_info} <-
            provider_for_user(project.user) |> Provider.project_info(project.owner, project.name) do
       # TODO: if the project's info has not changed the below will _not_ change
