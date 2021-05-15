@@ -1,5 +1,10 @@
 defmodule ShoutoutsWeb.ResolveProject do
   @moduledoc """
+  Plug to resolve a project from the passed owner/name parameters.
+
+  If a project matches the owner/name we assign it to the connection,
+  if a project's previous owner/names match we redirect and halt,
+  otherwise we return 404 and halt.
   """
   import Plug.Conn
 
