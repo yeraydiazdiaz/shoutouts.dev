@@ -26,9 +26,10 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     end)
   end
 
-  test "returns 404 if the project does not exist", %{conn: conn} do
-    conn = get(conn, Routes.project_show_path(conn, :show, "doesnt", "exist"))
-    assert conn.status == 404
+  test "raises 404 if the project does not exist", %{conn: conn} do
+    assert_raise ShoutoutsWeb.NotFoundError, fn ->
+      get(conn, Routes.project_show_path(conn, :show, "doesnt", "exist"))
+    end
   end
 
   test "returns 301 when requesting a project with an old owner/name", %{conn: conn} do
@@ -82,7 +83,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       u = Factory.insert(:user)
       conn = login_user(conn, u)
       p = Factory.insert(:project)
-      {:ok, view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+      {:ok, view, _html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
 
       assert element(view, "a", "Be the first!") |> render() =~
                Routes.project_show_path(conn, :add, p.owner, p.name)

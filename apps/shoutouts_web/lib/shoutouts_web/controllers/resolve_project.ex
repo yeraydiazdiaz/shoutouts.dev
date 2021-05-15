@@ -17,7 +17,12 @@ defmodule ShoutoutsWeb.ResolveProject do
   def call(%Plug.Conn{params: %{"owner" => owner, "name" => name}} = conn, _opts) do
     case Projects.resolve_project_by_owner_and_name(owner, name) do
       {:error, :no_such_project} ->
-        conn |> send_resp(:not_found, "Not found") |> halt()
+        if Regex.match?(~r/^\/projects\/[\w-\.]+\/[\w-\.]+\/badge\/?$/, conn.request_path) do
+          # We don't want to render the NotFound view for badges
+          conn |> send_resp(:not_found, "Not Found") |> halt()
+        else
+          raise ShoutoutsWeb.NotFoundError, "Not found"
+        end
 
       {:ok, %Projects.Project{owner: ^owner, name: ^name} = project} ->
         conn |> assign(:project, project)
