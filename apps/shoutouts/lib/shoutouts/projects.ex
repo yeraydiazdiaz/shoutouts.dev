@@ -125,6 +125,9 @@ defmodule Shoutouts.Projects do
       iex> resolve_project_by_owner_and_name("me", "mine")
       {:ok, %Project{}}
 
+      iex> resolve_project_by_owner_and_name("me", "oldmine")
+      {:ok, %Project{}}
+
       iex> resolve_project_by_owner_and_name("me", "nope")
       {:error, :no_such_project}
 
