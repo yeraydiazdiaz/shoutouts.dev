@@ -101,9 +101,56 @@ defmodule Shoutouts.Providers.GitHub do
   end
 
   @impl true
-  def project_info(client, repo_with_owner) do
-    [owner, name] = String.split(repo_with_owner, "/")
-    project_info(client, owner, name)
+  def project_info(client, owner_name_or_node_id) do
+    case String.split(owner_name_or_node_id, "/") do
+      [owner, name] -> project_info(client, owner, name)
+      _ -> project_info_by_node_id(client, owner_name_or_node_id)
+    end
+  end
+
+  defp project_info_by_node_id(client, node_id) do
+    query = """
+    {
+      node(id: "#{node_id}") {
+        ... on Repository {
+          id
+          databaseId
+          owner {
+            login
+          }
+          name
+          createdAt
+          updatedAt
+          url
+          description
+          homepageUrl
+          primaryLanguage {
+            name
+          }
+          languages(last: 10) {
+            nodes {
+              name
+            }
+          }
+          stargazers {
+            totalCount
+          }
+          forks {
+            totalCount
+          }
+        }
+      }
+    }
+    """
+
+    # https://graphql.org/learn/serving-over-http/
+    with {:ok, response} <- graphql(client, query) do
+      # TODO: a malformed query will result in a :no_such_repo
+      repo = response["data"]["node"]
+      {:ok, parse_repo(repo)}
+    else
+      {:error, response} -> {:error, response}
+    end
   end
 
   @impl true
@@ -111,6 +158,7 @@ defmodule Shoutouts.Providers.GitHub do
     query = """
     {
       repository(owner: "#{owner}", name: "#{name}") {
+        id
         databaseId
         owner {
           login
@@ -158,6 +206,7 @@ defmodule Shoutouts.Providers.GitHub do
 
     %ProviderProject{
       provider_id: repo["databaseId"],
+      provider_node_id: repo["id"],
       owner: repo["owner"]["login"],
       name: repo["name"],
       repo_created_at: created_at,

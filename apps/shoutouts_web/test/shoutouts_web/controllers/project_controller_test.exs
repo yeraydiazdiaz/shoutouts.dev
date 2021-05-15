@@ -20,4 +20,12 @@ defmodule ShoutoutsWeb.ProjectControllerTest do
     conn = get(conn, Routes.project_path(conn, :badge, "nope", "doesntexist"))
     assert conn.status == 404
   end
+
+  test "returns 304 when requestion an old owner/name for project", %{conn: conn} do
+    project = Factory.insert(:project, previous_owner_names: ["me/oldname"])
+    conn = get(conn, Routes.project_path(conn, :badge, "me", "oldname"))
+    assert conn.status == 301
+    {_, location} = Enum.find(conn.resp_headers, fn {h, _} -> h == "location" end)
+    assert location == Routes.project_path(conn, :badge, project.owner, project.name)
+  end
 end

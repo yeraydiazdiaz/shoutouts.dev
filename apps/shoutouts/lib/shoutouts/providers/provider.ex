@@ -54,7 +54,7 @@ defmodule Shoutouts.Provider do
   """
   @callback project_info(
               client :: TeslaClient.t(),
-              repo_with_owner :: binary()
+              repo_with_owner_or_node_id :: binary()
             ) :: {:ok, Shoutouts.Providers.ProviderProject} | {:error, response :: Tesla.Env.t()}
 
   @doc """
@@ -75,6 +75,25 @@ defmodule Shoutouts.Provider do
               client :: TeslaClient.t(),
               owner :: binary(),
               name :: binary()
+            ) :: {:ok, Shoutouts.Providers.ProviderProject} | {:error, response :: Tesla.Env.t()}
+
+  @doc """
+  Returns project information given a provider project id.
+
+  ## Examples
+
+    iex> client() |> project_info(58106)
+    {:ok, %Shoutouts.Providers.ProviderProject{...}}
+
+    iex> client() |> project_info(-1)
+    {:ok, :no_such_repo}
+
+    iex> client() |> project_info(1)
+    {:error, %Tesla.Env{status: 500, ...}}
+  """
+  @callback project_info(
+              client :: TeslaClient.t(),
+              project_id :: integer() | binary()
             ) :: {:ok, Shoutouts.Providers.ProviderProject} | {:error, response :: Tesla.Env.t()}
 
   def user_repositories(implementation, login) do

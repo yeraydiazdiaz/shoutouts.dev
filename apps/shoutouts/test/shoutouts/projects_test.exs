@@ -110,6 +110,63 @@ defmodule Shoutouts.ProjectsTest do
     end
   end
 
+  describe "get_project_by_owner_and_name" do
+    test "returns error tuple if project does not exist" do
+      assert {:error, :no_such_project} =
+               Projects.get_project_by_owner_and_name("does not", "exist")
+    end
+
+    test "returns projects with shoutouts with correct order" do
+      project = Factory.insert(:project)
+
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user)})
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user), pinned: true})
+
+      {:ok, project} = Projects.get_project_by_owner_and_name(project.owner, project.name)
+
+      [first, _] = project.shoutouts
+      assert first.pinned
+    end
+  end
+
+  describe "resolve_project_by_owner_and_name" do
+    test "returns error tuple if project does not exist" do
+      assert {:error, :no_such_project} =
+               Projects.resolve_project_by_owner_and_name("does not", "exist")
+    end
+
+    test "returns project with shoutouts with correct order" do
+      project = Factory.insert(:project)
+
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user)})
+      Factory.insert(:shoutout, %{project: project, user: Factory.insert(:user), pinned: true})
+
+      {:ok, project} = Projects.resolve_project_by_owner_and_name(project.owner, project.name)
+
+      [first, _] = project.shoutouts
+      assert first.pinned
+    end
+
+    test "returns project with matching previous owner/name" do
+      p = Factory.insert(:project, previous_owner_names: ["oldorg/oldname"])
+
+      {:ok, project} = Projects.resolve_project_by_owner_and_name("oldorg", "oldname")
+
+      assert project.owner == p.owner
+      assert project.name == p.name
+    end
+
+    test "returns project with matching owner/name over ones with previous owner/name" do
+      p = Factory.insert(:project)
+      Factory.insert(:project, previous_owner_names: ["#{p.owner}/#{p.name}"])
+
+      {:ok, project} = Projects.resolve_project_by_owner_and_name(p.owner, p.name)
+
+      assert project.owner == p.owner
+      assert project.name == p.name
+    end
+  end
+
   test "project_summary_for_username" do
     project = Factory.insert(:project)
 
@@ -217,6 +274,7 @@ defmodule Shoutouts.ProjectsTest do
          %Shoutouts.Providers.ProviderProject{
            description: "New description",
            provider_id: project.provider_id,
+           provider_node_id: "#{project.provider_id}",
            owner: project.owner,
            name: project.name,
            url: project.url,
@@ -227,6 +285,39 @@ defmodule Shoutouts.ProjectsTest do
       {:ok, updated_project} = Projects.refresh_project(project)
 
       assert updated_project.description == "New description"
+    end
+
+    test "updates project owner and/or name placing old ones in previous_owner_names" do
+      project = Factory.insert(:project, previous_owner_names: ["oldorg/oldname"])
+      new_name = "renamed"
+      new_owner = "someorg"
+
+      Shoutouts.MockProvider
+      |> expect(:client, fn -> Tesla.Client end)
+
+      Shoutouts.MockProvider
+      |> expect(:project_info, fn _client, _owner, _name ->
+        {:ok,
+         %Shoutouts.Providers.ProviderProject{
+           description: "New description",
+           provider_id: project.provider_id,
+           provider_node_id: "#{project.provider_id}",
+           owner: new_owner,
+           name: new_name,
+           url: project.url,
+           primary_language: project.primary_language
+         }}
+      end)
+
+      {:ok, updated_project} = Projects.refresh_project(project)
+
+      assert updated_project.owner == new_owner
+      assert updated_project.name == new_name
+
+      assert updated_project.previous_owner_names == [
+               "#{project.owner}/#{project.name}",
+               "oldorg/oldname"
+             ]
     end
 
     test "does not update project on error" do
@@ -258,6 +349,7 @@ defmodule Shoutouts.ProjectsTest do
          %Shoutouts.Providers.ProviderProject{
            description: "New description",
            provider_id: project.provider_id,
+           provider_node_id: "#{project.provider_id}",
            owner: project.owner,
            name: project.name,
            url: project.url,
@@ -301,6 +393,7 @@ defmodule Shoutouts.ProjectsTest do
          %Shoutouts.Providers.ProviderProject{
            description: "New description",
            provider_id: project_to_update.provider_id,
+           provider_node_id: "#{project_to_update.provider_id}",
            owner: project_to_update.owner,
            name: project_to_update.name,
            url: project_to_update.url,

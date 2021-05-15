@@ -15,6 +15,10 @@ defmodule ShoutoutsWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :projects do
+    plug(ShoutoutsWeb.ResolveProject)
+  end
+
   scope "/", ShoutoutsWeb do
     pipe_through(:browser)
 
@@ -29,11 +33,14 @@ defmodule ShoutoutsWeb.Router do
     live("/account/projects/:id/edit", UserLive.Index, :edit_project)
     live("/account/projects/:id/delete", UserLive.Index, :delete)
     live("/account/shoutouts", UserLive.Index, :shoutouts)
+  end
 
-    live("/projects/register", ProjectLive.Register, :index)
-    live("/projects/:owner/:name", ProjectLive.Show, :show)
-    live("/projects/:owner/:name/add", ProjectLive.Show, :add)
-    get("/projects/:owner/:name/badge", ProjectController, :badge)
+  scope "/projects", ShoutoutsWeb do
+    pipe_through([:browser, :projects])
+    live("/register", ProjectLive.Register, :index)
+    live("/:owner/:name", ProjectLive.Show, :show)
+    live("/:owner/:name/add", ProjectLive.Show, :add)
+    get("/:owner/:name/badge", ProjectController, :badge)
   end
 
   scope "/auth", ShoutoutsWeb do

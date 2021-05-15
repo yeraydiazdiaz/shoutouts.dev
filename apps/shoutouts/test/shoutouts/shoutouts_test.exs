@@ -369,6 +369,6 @@ defmodule Shoutouts.ShoutoutsTest do
       Factory.insert(:shoutout, project: project)
       Factory.insert(:shoutout, project: project, flagged: true)
       assert Shoutouts.shoutout_count_for_project(project.owner, project.name) == 1
-    end 
+    end
   end
 end

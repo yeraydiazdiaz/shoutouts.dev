@@ -1,6 +1,7 @@
 defmodule Shoutouts.Providers.ProviderProject do
   @enforce_keys [
     :provider_id,
+    :provider_node_id,
     :owner,
     :name,
     :url,
@@ -9,6 +10,7 @@ defmodule Shoutouts.Providers.ProviderProject do
   ]
   defstruct [
     :provider_id,
+    :provider_node_id,
     :owner,
     :name,
     :url,
@@ -24,6 +26,7 @@ defmodule Shoutouts.Providers.ProviderProject do
 
   @type t :: %Shoutouts.Providers.ProviderProject{
           provider_id: integer,
+          provider_node_id: binary(),
           owner: binary(),
           name: binary(),
           url: binary(),

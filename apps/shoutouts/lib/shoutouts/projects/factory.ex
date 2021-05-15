@@ -18,6 +18,7 @@ defmodule Shoutouts.Factory do
     %Shoutouts.Projects.Project{
       provider: :github,
       provider_id: sequence(:provider_id, fn x -> x end),
+      provider_node_id: sequence(:provider_node_id, &"#{&1}"),
       owner: sequence(:owner, &"owner-#{&1}"),
       name: sequence(:name, &"name-#{&1}"),
       primary_language: sequence(:primary_language, ["python", "elixir", "rust", "javascript"]),
@@ -28,7 +29,8 @@ defmodule Shoutouts.Factory do
           "machine learning",
           "text processing"
         ]),
-      user: build(:user)
+      user: build(:user),
+      previous_owner_names: []
     }
   end
 
@@ -43,6 +45,7 @@ defmodule Shoutouts.Factory do
   def provider_project_factory(params \\ []) do
     pp = %Shoutouts.Providers.ProviderProject{
       provider_id: sequence(:provider_id, fn x -> x end),
+      provider_node_id: sequence(:provider_node_id, &"#{&1}"),
       owner: sequence(:owner, &"owner-#{&1}"),
       name: sequence(:name, &"name-#{&1}"),
       primary_language: sequence(:primary_language, ["python", "elixir", "rust", "javascript"]),

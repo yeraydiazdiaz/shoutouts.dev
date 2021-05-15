@@ -4,7 +4,6 @@ defmodule ShoutoutsWeb.ProjectController do
   """
   require Logger
   use ShoutoutsWeb, :controller
-  alias Shoutouts.Projects
   alias Shoutouts.Shoutouts
 
   @doc """
@@ -12,18 +11,11 @@ defmodule ShoutoutsWeb.ProjectController do
 
   Note this endpoint does not use a view since we don't want to use layouts.
   """
-  def badge(conn, %{"owner" => owner, "name" => name} = _params) do
-    Logger.debug("Badge for project #{owner}/#{name}")
+  def badge(%Plug.Conn{assigns: %{project: project}} = conn, _params) do
+    Logger.debug("Badge for project #{project.owner}/#{project.name}")
 
-    case Projects.project_exists?(owner, name) do
-      false ->
-        conn
-        |> put_status(404)
-
-      true ->
-        conn
-        |> put_resp_content_type("image/svg+xml")
-        |> text(Shoutouts.badge_for_project(owner, name))
-    end
+    conn
+    |> put_resp_content_type("image/svg+xml")
+    |> text(Shoutouts.render_badge(length(project.shoutouts)))
   end
 end

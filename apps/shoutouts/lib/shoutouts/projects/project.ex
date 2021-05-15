@@ -11,6 +11,7 @@ defmodule Shoutouts.Projects.Project do
     field(:pinned_only, :boolean, default: false)
     field(:provider, Ecto.Enum, values: [:github], default: :github)
     field(:provider_id, :integer)
+    field(:provider_node_id, :string)
     field(:owner, :string)
     field(:name, :string)
     field(:repo_created_at, :utc_datetime)
@@ -22,6 +23,8 @@ defmodule Shoutouts.Projects.Project do
     field(:languages, {:array, :string})
     field(:stars, :integer)
     field(:forks, :integer)
+    # a list of "prev_org/prev_name" strings
+    field(:previous_owner_names, {:array, :string})
 
     belongs_to(:user, Shoutouts.Accounts.User)
 
@@ -36,6 +39,7 @@ defmodule Shoutouts.Projects.Project do
     |> cast(attrs, [
       :pinned_only,
       :provider_id,
+      :provider_node_id,
       :owner,
       :name,
       :repo_created_at,
@@ -46,12 +50,15 @@ defmodule Shoutouts.Projects.Project do
       :primary_language,
       :languages,
       :stars,
-      :forks
+      :forks,
+      :previous_owner_names
     ])
+    # TODO: add provider_node_id once projects have been updated
     |> validate_required([:provider_id, :pinned_only, :owner, :name, :description],
       message: "Must not be empty"
     )
     |> unique_constraint([:provider, :provider_id])
+    # TODO: add :provider, :provider_node_id once projects have been updated
     |> unique_constraint([:owner, :name])
     |> validate_length(:description, min: 10, max: 250)
     |> validate_format(:description, ~r/^\X+$/u, message: "Invalid character")

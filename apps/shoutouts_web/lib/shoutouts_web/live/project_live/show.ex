@@ -16,7 +16,9 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
   @doc """
   Mount the project's LiveView with the :show action for registered users.
 
-  Fetch the project, if it raises Ecto.NoResultsError Phoenix returns 404.
+  The ShoutoutsWeb.ResolveProject plug guarantees the owner/name exists
+  and is up-to-date, however, we still need to make a query to fetch it here
+  because LiveViews don't have access to the Plug connection, only to the socket.
   """
   @impl true
   def mount(
