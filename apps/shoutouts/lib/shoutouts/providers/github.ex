@@ -142,6 +142,7 @@ defmodule Shoutouts.Providers.GitHub do
       }
     }
     """
+
     # https://graphql.org/learn/serving-over-http/
     with {:ok, response} <- graphql(client, query) do
       # TODO: a malformed query will result in a :no_such_repo

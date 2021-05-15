@@ -27,8 +27,8 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
   end
 
   test "returns 404 if the project does not exist", %{conn: conn} do
-   conn = get(conn, Routes.project_show_path(conn, :show, "doesnt", "exist"))
-   assert conn.status == 404
+    conn = get(conn, Routes.project_show_path(conn, :show, "doesnt", "exist"))
+    assert conn.status == 404
   end
 
   test "renders project title, description, and no shoutouts copy", %{conn: conn} do

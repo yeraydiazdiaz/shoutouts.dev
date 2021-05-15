@@ -54,7 +54,7 @@ defmodule Shoutouts.Projects.Project do
       :previous_owner_names
     ])
     # TODO: add provider_node_id once projects have been updated
-    |> validate_required([:provider_id,:pinned_only, :owner, :name, :description],
+    |> validate_required([:provider_id, :pinned_only, :owner, :name, :description],
       message: "Must not be empty"
     )
     |> unique_constraint([:provider, :provider_id])

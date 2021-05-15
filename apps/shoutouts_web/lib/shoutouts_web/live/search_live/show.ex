@@ -24,10 +24,12 @@ defmodule ShoutoutsWeb.SearchLive.Show do
   end
 
   def handle_event("search", params, socket) do
-    path = case params do
-      %{"q" => ""} -> Routes.search_show_path(socket, :index)
-      %{"q" => terms} -> Routes.search_show_path(socket, :index, q: terms)
-    end
+    path =
+      case params do
+        %{"q" => ""} -> Routes.search_show_path(socket, :index)
+        %{"q" => terms} -> Routes.search_show_path(socket, :index, q: terms)
+      end
+
     {:noreply, push_patch(socket, to: path)}
   end
 

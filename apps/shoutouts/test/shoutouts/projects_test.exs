@@ -112,7 +112,8 @@ defmodule Shoutouts.ProjectsTest do
 
   describe "get_project_by_owner_and_name" do
     test "returns error tuple if project does not exist" do
-      assert {:error, :no_such_project} = Projects.get_project_by_owner_and_name("does not", "exist")
+      assert {:error, :no_such_project} =
+               Projects.get_project_by_owner_and_name("does not", "exist")
     end
 
     test "returns projects with shoutouts with correct order" do
@@ -130,7 +131,8 @@ defmodule Shoutouts.ProjectsTest do
 
   describe "resolve_project_by_owner_and_name" do
     test "returns error tuple if project does not exist" do
-      assert {:error, :no_such_project} = Projects.resolve_project_by_owner_and_name("does not", "exist")
+      assert {:error, :no_such_project} =
+               Projects.resolve_project_by_owner_and_name("does not", "exist")
     end
 
     test "returns project with shoutouts with correct order" do
@@ -284,7 +286,7 @@ defmodule Shoutouts.ProjectsTest do
 
       assert updated_project.description == "New description"
     end
-    
+
     test "updates project owner and/or name placing old ones in previous_owner_names" do
       project = Factory.insert(:project, previous_owner_names: ["oldorg/oldname"])
       new_name = "renamed"
@@ -311,7 +313,11 @@ defmodule Shoutouts.ProjectsTest do
 
       assert updated_project.owner == new_owner
       assert updated_project.name == new_name
-      assert updated_project.previous_owner_names == ["#{project.owner}/#{project.name}", "oldorg/oldname"]
+
+      assert updated_project.previous_owner_names == [
+               "#{project.owner}/#{project.name}",
+               "oldorg/oldname"
+             ]
     end
 
     test "does not update project on error" do
