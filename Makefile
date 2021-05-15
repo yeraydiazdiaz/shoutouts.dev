@@ -1,3 +1,5 @@
+.PHONY: prod-devserver mac-release release server
+
 prod-devserver:
 	cd apps/shoutouts_web/assets && npm run deploy
 	MIX_ENV=prod mix phx.digest
@@ -10,4 +12,6 @@ release:
 	docker-compose -f docker/docker-compose.yml build
 	docker-compose -f docker/docker-compose.yml run app /opt/build/docker/build.sh
 
-.PHONY: release
+# Invokes the Phoenix dev server with a name and a shell
+server:
+	iex --sname phx -S mix phx.server
