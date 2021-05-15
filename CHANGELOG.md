@@ -5,8 +5,8 @@
 - Store provider_node_id and add refreshing project by it, not used just yet
 until all projects have been refreshed and contain one.
 - Store previous owner/names on refresh and handle redirections and not found
-reponses based on them, i.e. requesting a project with an older name will
-redirect the user to the approriate URL, or return 404.
+responses based on them, i.e. requesting a project with an older name will
+redirect the user to the approriate URL, or return 404 if no project matches.
 
 ## [21.2.6] - 2021-05-07
 
