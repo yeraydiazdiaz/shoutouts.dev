@@ -15,15 +15,22 @@ defmodule ShoutoutsWeb.ProjectController do
   def badge(conn, %{"owner" => owner, "name" => name} = _params) do
     Logger.debug("Badge for project #{owner}/#{name}")
 
-    case Projects.project_exists?(owner, name) do
-      false ->
+    case Projects.resolve_project_by_owner_and_name(owner, name) do
+      {:error, :no_such_project} ->
         conn
-        |> put_status(404)
+        |> put_status(:not_found)
+        |> text("Project not found")
 
-      true ->
+      {:ok, %Projects.Project{owner: ^owner, name: ^name}} -> 
         conn
         |> put_resp_content_type("image/svg+xml")
         |> text(Shoutouts.badge_for_project(owner, name))
+
+      {:ok, project} -> 
+        conn
+        |> put_status(:moved_permanently)
+        |> put_resp_header("location", Routes.project_path(conn, :badge, project.owner, project.name))
+        |> text("Moved permanently")
     end
   end
 end

@@ -111,6 +111,7 @@ defmodule Shoutouts.Shoutouts do
 
   """
   def shoutout_count_for_project(owner, name) do
+    # TODO: version taking a Project struct
     Repo.one(
       from(s in Shoutout,
         join: p in assoc(s, :project),
