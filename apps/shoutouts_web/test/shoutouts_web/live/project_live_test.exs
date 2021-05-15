@@ -31,6 +31,14 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     assert conn.status == 404
   end
 
+  test "returns 301 when requesting a project with an old owner/name", %{conn: conn} do
+    p = Factory.insert(:project, previous_owner_names: ["me/old"])
+    conn = get(conn, Routes.project_show_path(conn, :show, "me", "old"))
+    assert conn.status == 301
+    {_, location} = Enum.find(conn.resp_headers, fn {h, _} -> h == "location" end)
+    assert location == Routes.project_show_path(conn, :show, p.owner, p.name)
+  end
+
   test "renders project title, description, and no shoutouts copy", %{conn: conn} do
     p = Factory.insert(:project)
     {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
@@ -75,7 +83,6 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       conn = login_user(conn, u)
       p = Factory.insert(:project)
       {:ok, view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
-      IO.inspect(html)
 
       assert element(view, "a", "Be the first!") |> render() =~
                Routes.project_show_path(conn, :add, p.owner, p.name)

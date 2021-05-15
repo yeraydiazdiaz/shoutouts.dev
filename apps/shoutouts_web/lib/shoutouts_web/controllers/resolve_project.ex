@@ -14,9 +14,7 @@ defmodule ShoutoutsWeb.ResolveProject do
 
   def init(opts), do: opts
 
-  def call(%Plug.Conn{params: %{"name" => name, "owner" => owner}} = conn, _opts) do
-    Logger.info("Resolving project")
-
+  def call(%Plug.Conn{params: %{"owner" => owner, "name" => name}} = conn, _opts) do
     case Projects.resolve_project_by_owner_and_name(owner, name) do
       {:error, :no_such_project} ->
         conn |> send_resp(:not_found, "Not found") |> halt()
@@ -28,7 +26,8 @@ defmodule ShoutoutsWeb.ResolveProject do
         conn
         |> put_resp_header(
           "location",
-          ShoutoutsWeb.Router.Helpers.project_path(conn, :badge, project.owner, project.name)
+          conn.request_path
+          |> String.replace("/#{owner}/#{name}", "/#{project.owner}/#{project.name}")
         )
         |> send_resp(:moved_permanently, "Moved permanently")
         |> halt()
