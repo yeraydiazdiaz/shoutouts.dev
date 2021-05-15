@@ -36,8 +36,7 @@ defmodule ShoutoutsWeb.Router do
   end
 
   scope "/projects", ShoutoutsWeb do
-    pipe_through(:browser)
-    pipe_through(:projects)
+    pipe_through([:browser, :projects])
     live("/register", ProjectLive.Register, :index)
     live("/:owner/:name", ProjectLive.Show, :show)
     live("/:owner/:name/add", ProjectLive.Show, :add)

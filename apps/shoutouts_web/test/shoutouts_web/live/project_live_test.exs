@@ -16,6 +16,21 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     |> get(Routes.auth_path(conn, :callback, :github))
   end
 
+  def setup_mock(user_repositories \\ []) do
+    Shoutouts.MockProvider
+    |> expect(:client, 2, fn -> Tesla.Client end)
+
+    Shoutouts.MockProvider
+    |> expect(:user_repositories, 2, fn _client, _login ->
+      {:ok, user_repositories}
+    end)
+  end
+
+  test "returns 404 if the project does not exist", %{conn: conn} do
+   conn = get(conn, Routes.project_show_path(conn, :show, "doesnt", "exist"))
+   assert conn.status == 404
+  end
+
   test "renders project title, description, and no shoutouts copy", %{conn: conn} do
     p = Factory.insert(:project)
     {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
@@ -45,22 +60,12 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     assert view |> element("svg") |> render() =~ "shoutouts"
   end
 
-  test "anonymous user sare prompted to log in to leave a shoutout", %{conn: conn} do
+  test "anonymous users are prompted to log in to leave a shoutout", %{conn: conn} do
     p = Factory.insert(:project)
     {:ok, view, _html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
 
     assert element(view, "a", "Log in to leave a shoutout") |> render() =~
              Routes.auth_path(conn, :request, :github)
-  end
-
-  def setup_mock(user_repositories \\ []) do
-    Shoutouts.MockProvider
-    |> expect(:client, 2, fn -> Tesla.Client end)
-
-    Shoutouts.MockProvider
-    |> expect(:user_repositories, 2, fn _client, _login ->
-      {:ok, user_repositories}
-    end)
   end
 
   describe "logged in users" do
@@ -69,7 +74,8 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       u = Factory.insert(:user)
       conn = login_user(conn, u)
       p = Factory.insert(:project)
-      {:ok, view, _html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+      {:ok, view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+      IO.inspect(html)
 
       assert element(view, "a", "Be the first!") |> render() =~
                Routes.project_show_path(conn, :add, p.owner, p.name)
