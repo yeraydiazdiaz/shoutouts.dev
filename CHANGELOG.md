@@ -7,6 +7,7 @@ until all projects have been refreshed and contain one.
 - Store previous owner/names on refresh and handle redirections and not found
 responses based on them, i.e. requesting a project with an older name will
 redirect the user to the approriate URL, or return 404 if no project matches.
+- Attempting to log in again redirects to account page.
 
 ## [21.2.6] - 2021-05-07
 
