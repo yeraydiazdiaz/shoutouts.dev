@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.3.0] - 2021-05-18
 
 - Store provider_node_id and add refreshing project by it, not used just yet
 until all projects have been refreshed and contain one.
