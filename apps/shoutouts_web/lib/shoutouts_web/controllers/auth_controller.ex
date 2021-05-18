@@ -28,6 +28,14 @@ defmodule ShoutoutsWeb.AuthController do
     |> put_session(:redirect_to, redirect_target(conn))
     |> Ueberauth.run_request(provider_name, get_provider_config())
   end
+  def request(
+        %{assigns: %{current_user_id: _}} = conn,
+        _params
+      ) do
+    conn
+    |> put_flash(:info, "Already logged in")
+    |> redirect(to: Router.Helpers.user_index_path(conn, :show))
+  end
 
   @doc """
   OAuth successful callback.
