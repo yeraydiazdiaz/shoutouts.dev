@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add "write a shoutout" CTA to home page
+
 ## [21.3.0] - 2021-05-18
 
 - Store provider_node_id and add refreshing project by it, not used just yet
