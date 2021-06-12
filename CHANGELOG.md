@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.3.1] - 2021-06-12
 
 - Add "write a shoutout" CTA to home page
 
