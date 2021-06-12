@@ -12,10 +12,13 @@
 <section class="w-full mb-8 md:mb-12 lg:mb-20 flex flex-col lg:flex-row lg:w-5/6 lg:mx-auto lg:justify-between lg:items-top">
   <div class="text-lg lg:w-1/2 md:mr-4">
     <h3 class="text-2xl text-dark font-bold">Gratitude works</h3>
-    <p class="mt-4">
+    <p class="mt-2">
       Maintaining an Open Source project is a labour of love, but most of the time the only feedback maintainers get are bug reports, issues, and complaints.
     </p>
-    <p class="mt-2"><a class="link" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Search for your favourite projects</a> and write public shoutout letting them know how much you value their work.</p>
+    <p class="mt-2">Leave shoutouts for your favourite projects and let them know how much you value their work.</p>
+    <p class="mt-6 text-center">
+      <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Write a shoutout</a>
+    </p>
   </div>
   <div class="mt-12 mb-4 h-70 md:h-52 lg:h-70 lg:my-0 lg:w-1/2">
     <div class="flex flex-col">
@@ -37,10 +40,10 @@
 <section class="w-full mb-14 flex flex-col items-center lg:flex-row-reverse lg:w-5/6 lg:mx-auto lg:justify-between">
   <div class="lg:w-1/2">
     <h3 class="text-2xl text-dark font-bold">Beyond stars and stats</h3>
-    <div class="text-lg mt-4">
+    <div class="text-lg mt-2">
       <p>They're great and all, but they're not exactly personal or even relevant for small/niche projects.</p>
       <p class="mt-4">Shoutouts are real feedback from real people your project is helping. A badge of honor.</p>
-      <p class="mt-8 text-center">
+      <p class="mt-6 text-center">
         <%= if @current_user == nil do %>
         <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to register your projects</a>
         <% else %>
