@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- Add "write a shoutout" CTA to home page
+- Add "write a shoutout" CTA to home page.
+- Move release version to rel/config.exs to speed up release process.
 
 ## [21.3.0] - 2021-05-18
 

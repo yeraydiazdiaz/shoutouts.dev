@@ -46,7 +46,7 @@ end
 # will be used by default
 
 release :shoutouts_umbrella do
-  set(version: current_version(:shoutouts))
+  set(version: "21.3.0")
 
   set(
     applications: [

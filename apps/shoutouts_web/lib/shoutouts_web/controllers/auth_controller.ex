@@ -28,6 +28,7 @@ defmodule ShoutoutsWeb.AuthController do
     |> put_session(:redirect_to, redirect_target(conn))
     |> Ueberauth.run_request(provider_name, get_provider_config())
   end
+
   def request(
         %{assigns: %{current_user_id: _}} = conn,
         _params

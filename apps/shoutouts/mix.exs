@@ -4,7 +4,8 @@ defmodule Shoutouts.MixProject do
   def project do
     [
       app: :shoutouts,
-      version: "21.3.0",
+      # Fixed version, the actualy one is defined in rel/config.exs
+      version: "1.0.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",

@@ -83,7 +83,7 @@ these should be change together to avoid confusion.
 
 Pre-release checklist:
 
-- Bump the version, we use a CalVer YY.MAJOR.MINOR
+- Bump the version in `rel/config.exs`, we use a CalVer YY.MAJOR.MINOR
 - Test the app using `make prod-server` to ensure production assets are correct.
 - Run `make mac-release` to create a Mac release and test locally via Distillery
 commands.
