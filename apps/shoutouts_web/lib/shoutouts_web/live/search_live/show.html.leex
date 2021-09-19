@@ -1,12 +1,8 @@
 <div class="bg transform translate-y-8 md:-translate-y-16"></div>
-<section class="m-auto w-full lg:mt-8">
-  <div class="flex flex-col items-center lg:w-11/12 m-auto lg:flex-row lg:justify-around lg:items-center">
-    <h1 class="tracking-tight text-4xl md:text-6xl text-center lg:text-left text-dim font-bold max-w-screen-xlm-auto">
-      <span class="textshadow">shoutouts.dev</span>
-    </h1>
-    <h2 class="text-2xl md:text-4xl text-primary font-hairline leading-tight max-w-screen-xl">
-      <span>Open Source is hard<br />Show your gratitude</span>
-    </h2>
+<section class="m-auto w-full mt-4 lg:mt-8">
+  <div class="flex flex-col w-full mb-12 lg:flex-row lg:justify-around text-4xl md:text-5xl text-center lg:text-left text-primary leading-tight max-w-screen-xl">
+    <div class="mr-2">Open Source is hard</div>
+    <div class="font-bold">Show your gratitude</div>
   </div>
 
   <%= live_component @socket, ShoutoutsWeb.SearchLive.SearchComponent, terms: @terms, results: @results, id: :search, current_user_id: @current_user_id %>

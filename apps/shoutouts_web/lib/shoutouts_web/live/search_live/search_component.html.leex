@@ -1,5 +1,5 @@
   <form action="#" phx-change="search" phx-submit="search" class="w-full flex flex-col my-8 md:mb-16 m-auto max-w-4xl">
-    <input type="text" name="q" placeholder="Find registered projects" value="<%= @terms %>" phx-debounce="500" autocomplete="off" class="text-lg lg:text-2xl mx-1 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" />
+    <input type="text" name="q" placeholder="Find your favourite project" value="<%= @terms %>" phx-debounce="500" autocomplete="off" class="text-lg lg:text-2xl mx-1 py-2 px-4 rounded-md shadow-lg outline-none focus:border focus:border-secondary" />
   </form>
 
   <%= if @terms != "" and length(@results) == 0 do %>

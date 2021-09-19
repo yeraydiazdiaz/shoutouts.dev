@@ -1,6 +1,7 @@
-<section class="flex flex-col lg:flex-row lg:justify-around w-full mt-4 lg:mt-8 mb-10 lg:mb-24">
-  <div class="flex flex-col items-center w-full lg:flex-row lg:justify-around">
-    <h2 class="text-4xl text-primary leading-tight max-w-screen-xl">
+<div class="bg transform translate-y-8 md:-translate-y-16"></div>
+<section class="flex flex-col lg:flex-row lg:justify-around w-full mt-4 lg:mt-8 mb-10 lg:mb-16">
+  <div class="flex flex-col w-full lg:flex-row lg:justify-around">
+    <h2 class="text-4xl md:text-5xl text-primary leading-tight max-w-screen-xl md:mr-8">
       <p class="mb-2 text-center lg:text-left">Open Source is hard</p>
       <p class="font-bold text-center lg:text-left">Show your gratitude</p>
     </h2>
@@ -29,8 +30,8 @@
     <p class="mt-2">Leave shoutouts for your favourite projects and let them know how much you value their work.</p>
   </div>
   <div class="flex-grow">
-    <p class="text-center mt-8 md:mt-0 m-auto">
-      <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Write a shoutout</a>
+    <p class="text-center mt-8 m-auto">
+      <a class="inline-block text-dim bg-primary text-lg font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Write a shoutout</a>
     </p>
   </div>
 </section>
