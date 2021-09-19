@@ -1,19 +1,19 @@
 <section class="flex flex-col lg:flex-row lg:justify-around w-full mt-4 lg:mt-8 mb-10 lg:mb-24">
   <div class="flex flex-col items-center w-full lg:flex-row lg:justify-around">
     <h2 class="text-4xl text-primary leading-tight max-w-screen-xl">
-      <p class="mb-2">Open Source is hard</p>
-      <p class="font-bold ">Show your gratitude</p>
+      <p class="mb-2 text-center lg:text-left">Open Source is hard</p>
+      <p class="font-bold text-center lg:text-left">Show your gratitude</p>
     </h2>
-    <div class="flex flex-col md:flex-row h-36 mt-12 mb-4 lg:my-0 w-full lg:w-1/2">
+    <div class="flex flex-col lg:flex-row h-48 mt-12 mb-4 lg:my-0 w-full lg:w-1/2">
       <div class="relative flex-grow">
         <%= for i <- 0..length(@shoutouts) - 1 do %>
           <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
         <% end %>
       </div>
-      <div class="flex flex-row md:flex-col justify-evenly ml-8">
+      <div class="flex flex-row lg:flex-col justify-evenly ml-0 lg:ml-8 mt-8 lg:mt-0">
         <%= if length(@shoutouts) > 1 do %>
           <%= for i <- 0..length(@shoutouts) - 1 do %>
-            <button class="block h-2 w-2 focus:outline-none <%= if i == @shoutout_idx do %>bg-bone<% else %>bg-dim<% end %>" phx-click="carrousel_switch" phx-value-idx="<%= i %>"></button>
+            <button class="block h-2 lg:h-8 w-12 lg:w-2 focus:outline-none <%= if i == @shoutout_idx do %>bg-bone<% else %>bg-dim<% end %>" phx-click="carrousel_switch" phx-value-idx="<%= i %>"></button>
           <% end %>
         <% end %>
       </div>
@@ -37,10 +37,10 @@
 <section class="w-full mb-14 flex flex-col items-center lg:flex-row-reverse lg:w-5/6 lg:mx-auto lg:justify-between">
   <div class="lg:w-1/2">
     <h3 class="text-2xl text-dark font-bold">Beyond stars and stats</h3>
-    <div class="text-lg mt-2">
-      <p>They're great and all, but they're not exactly personal or even relevant for small/niche projects.</p>
-      <p class="mt-4">Shoutouts are real feedback from real people your project is helping. A badge of honor.</p>
-      <p class="mt-6 text-center">
+    <div class="mt-2">
+      <p class="text-lg">They're great and all, but they're not exactly personal or even relevant for small/niche projects.</p>
+      <p class="text-lg mt-4">Shoutouts are real feedback from real people your project is helping. A badge of honor.</p>
+      <p class="text-lg mt-6 text-center">
         <%= if @current_user == nil do %>
         <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to register your projects</a>
         <% else %>
