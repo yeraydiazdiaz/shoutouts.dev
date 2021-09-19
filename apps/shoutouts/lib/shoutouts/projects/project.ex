@@ -60,7 +60,7 @@ defmodule Shoutouts.Projects.Project do
     |> unique_constraint([:provider, :provider_id])
     # TODO: add :provider, :provider_node_id once projects have been updated
     |> unique_constraint([:owner, :name])
-    |> validate_length(:description, min: 10, max: 250)
+    |> validate_length(:description, min: 10, max: 2500)
     |> validate_format(:description, ~r/^\X+$/u, message: "Invalid character")
   end
 end
