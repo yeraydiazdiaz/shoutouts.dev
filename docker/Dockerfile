@@ -50,6 +50,7 @@ RUN mix do clean, compile --force
 # Copy the JS dependency files and install them
 COPY apps/shoutouts_web/assets/package.json apps/shoutouts_web/assets/package-lock.json /opt/build/apps/shoutouts_web/assets/
 WORKDIR /opt/build/apps/shoutouts_web/assets/
+RUN npm install -g npm
 RUN npm install
 WORKDIR /opt/build
 
