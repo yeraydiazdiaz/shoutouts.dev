@@ -14,7 +14,7 @@
       <div class="flex flex-row justify-evenly mx-2 mt-4">
         <%= if length(@shoutouts) > 1 do %>
           <%= for i <- 0..length(@shoutouts) - 1 do %>
-            <button class="block h-2 w-2 focus:outline-none <%= if i == @shoutout_idx do %>bg-bone<% else %>bg-dim<% end %>" phx-click="carrousel_switch" phx-value-idx="<%= i %>"></button>
+            <button class="text-primary focus:outline-none" phx-click="carrousel_switch" phx-value-idx="<%= i %>"><i class="<%= if i == @shoutout_idx do %>fas fa-circle<% else %>far fa-circle<% end %>"></i></button>
           <% end %>
         <% end %>
       </div>
