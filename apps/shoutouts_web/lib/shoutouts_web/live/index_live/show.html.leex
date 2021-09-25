@@ -1,17 +1,17 @@
 <div class="bg transform translate-y-8 md:-translate-y-16"></div>
-<section class="flex flex-col lg:flex-row lg:justify-around w-full mt-4 lg:mt-8 mb-10 lg:mb-16">
+<section class="flex flex-col lg:flex-row lg:justify-around w-full mt-4 mb-10 lg:mb-16">
   <div class="flex flex-col w-full lg:flex-row lg:justify-around">
-    <h2 class="text-4xl md:text-5xl text-primary leading-tight max-w-screen-xl md:mr-8">
+    <h2 class="text-4xl md:text-5xl text-primary leading-tight max-w-screen-xl md:mr-8 lg:mt-8">
       <p class="mb-2 text-center lg:text-left">Open Source is hard</p>
       <p class="font-bold text-center lg:text-left">Show your gratitude</p>
     </h2>
-    <div class="flex flex-col h-56 mt-12 mb-4 lg:my-0 w-full lg:w-1/2">
-      <div class="relative flex-grow">
+    <div class="flex flex-col mt-12 mb-4 lg:my-0 w-full lg:w-1/2">
+      <div class="relative flex-grow h-56">
         <%= for i <- 0..length(@shoutouts) - 1 do %>
           <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
         <% end %>
       </div>
-      <div class="flex flex-row justify-evenly mx-2">
+      <div class="flex flex-row justify-evenly mx-2 mt-4">
         <%= if length(@shoutouts) > 1 do %>
           <%= for i <- 0..length(@shoutouts) - 1 do %>
             <button class="block h-2 w-2 focus:outline-none <%= if i == @shoutout_idx do %>bg-bone<% else %>bg-dim<% end %>" phx-click="carrousel_switch" phx-value-idx="<%= i %>"></button>

@@ -1,9 +1,11 @@
-<div class="absolute inset-0 flex flex-row justify-center transition duration-500 ease-out transition-opacity <%= if @visible do %>opacity-100 z-10 pointer-events-auto<% else %>opacity-0 pointer-events-none<% end %>">
+<div class="absolute inset-0 h-56 flex flex-row items-center justify-center transition duration-500 ease-out transition-opacity <%= if @visible do %>opacity-100 z-10 pointer-events-auto<% else %>opacity-0 pointer-events-none<% end %>">
   <a data-phx-link="redirect" data-phx-link-state="push" href="<%= if @shoutout.project != nil, do: Routes.project_show_path(@socket, :show, @shoutout.project.owner, @shoutout.project.name), else: "#" %>">
   <div>
+    <div class="mb-2 ml-2 text-lg font-bold"><i class="fab fa-github mr-2"></i><%= "#{@shoutout.project.owner}/#{@shoutout.project.name}" %></div>
     <div class="shoutout text-xl md:text-2xl mb-3 pl-4">
       <%= text_to_html(render_emojis(@shoutout.text)) %>
     </div>
+
     <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
       <div class="<%= if @shoutout.flagged do %>text-gray-400<% end %>">
         <p class="font-bold text-xl md:text-2xl"><%= @shoutout.user.name %></p>
