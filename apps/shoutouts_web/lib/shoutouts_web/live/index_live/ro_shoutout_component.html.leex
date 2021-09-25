@@ -1,18 +1,18 @@
-<div class="absolute inset-0 h-56 flex flex-row items-center justify-center transition duration-500 ease-out transition-opacity <%= if @visible do %>opacity-100 z-10 pointer-events-auto<% else %>opacity-0 pointer-events-none<% end %>">
-  <a data-phx-link="redirect" data-phx-link-state="push" href="<%= if @shoutout.project != nil, do: Routes.project_show_path(@socket, :show, @shoutout.project.owner, @shoutout.project.name), else: "#" %>">
-  <div>
-    <div class="mb-2 ml-2 text-lg font-so-bold"><i class="fab fa-github mr-2"></i><%= "#{@shoutout.project.owner}/#{@shoutout.project.name}" %></div>
-    <div class="shoutout text-xl md:text-2xl mb-3 pl-4">
-      <%= text_to_html(render_emojis(@shoutout.text)) %>
-    </div>
-
-    <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
-      <div class="<%= if @shoutout.flagged do %>text-gray-400<% end %>">
-        <p class="font-so-bold text-xl md:text-2xl"><%= @shoutout.user.name %></p>
-        <%= if @shoutout.user.signature do %><p class="text-sm md:text-md"><%= @shoutout.user.signature %></p><% end %>
+<div class="absolute inset-0 h-56 flex flex-row items-center transition duration-500 ease-out transition-opacity <%= if @visible do %>opacity-100 z-10 pointer-events-auto<% else %>opacity-0 pointer-events-none<% end %>">
+  <div class="w-full">
+    <a data-phx-link="redirect" data-phx-link-state="push" href="<%= if @shoutout.project != nil, do: Routes.project_show_path(@socket, :show, @shoutout.project.owner, @shoutout.project.name), else: "#" %>">
+      <div class="mb-2 ml-2 text-lg font-so-bold"><i class="fab fa-github mr-2"></i><%= "#{@shoutout.project.owner}/#{@shoutout.project.name}" %></div>
+      <div class="shoutout text-xl md:text-2xl mb-3 pl-4">
+        <%= text_to_html(render_emojis(@shoutout.text)) %>
       </div>
-      <img alt="<%= @shoutout.user.username %>s' avatar" class="w-12 h-12 rounded-full ml-4" src="<%= @shoutout.user.avatar_url %>" />
-    </div>
+
+      <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
+        <div class="<%= if @shoutout.flagged do %>text-gray-400<% end %>">
+          <p class="font-so-bold text-xl md:text-2xl"><%= @shoutout.user.name %></p>
+          <%= if @shoutout.user.signature do %><p class="text-sm md:text-md"><%= @shoutout.user.signature %></p><% end %>
+        </div>
+        <img alt="<%= @shoutout.user.username %>s' avatar" class="w-12 h-12 rounded-full ml-4" src="<%= @shoutout.user.avatar_url %>" />
+      </div>
+    </a>
   </div>
-  </a>
 </div>
