@@ -1,6 +1,7 @@
 defmodule ShoutoutsWeb.IndexLive.Show do
   use ShoutoutsWeb, :live_view
   alias Shoutouts.Accounts
+  alias Shoutouts.Projects
   alias Shoutouts.Shoutouts
 
   require Logger
@@ -71,7 +72,10 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         signature: "Prolific Open Source contributor",
         avatar_url: Routes.static_path(socket, "/images/sample_avatar.png")
       },
-      project: nil
+      project: %Projects.Project{
+        owner: "generous",
+        name: "maintainer"
+      }
     }
   end
 end
