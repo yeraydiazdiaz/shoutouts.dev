@@ -113,7 +113,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     </div>
     <%= if length(@claimable_projects) > 0 do %>
 
-    <p class="text-primary text-xl">The following projects have been registered by users, <strong>claim</strong> them and manage their shoutouts:</p>
+    <p class="text-primary text-xl">The following projects have been registered by users, <strong>claim</strong> them to manage their shoutouts:</p>
 
     <form action="#" class="w-full mt-8" id="claim" method="post" phx-submit="claim">
       <div class="w-full flex flex-row flex-wrap mb-4">
@@ -130,7 +130,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
     <% end %>
 
-    <p class="text-primary text-xl">Select one or more repositories to add, only repositories you <strong>own</strong> are eligible:</p>
+    <p class="text-primary text-xl">Select one or more repositories to add. Only repositories you own, collaborate on, or are part of its organisation are eligible:</p>
 
     <form action="#" class="w-full mt-8" id="add" method="post" phx-submit="submit" data-controller="project-select">
       <div class="mb-4">
@@ -152,7 +152,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     </form>
 
     <%= if length(@existing_projects) > 0 do %>
-      <p class="mt-8 text-primary text-md mb-4">Can't find a project? The following have been already registered by you our another owner:</p>
+      <p class="mt-8 text-primary text-md mb-4">Can't find a project? The following have been already added by you our another owner:</p>
       <div class="w-full flex flex-row flex-wrap mb-8">
       <%= for repo <- @existing_projects do %>
         <div class="mr-4"><a data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, repo.owner, repo.name) %>" class="link"><%= repo.owner %>/<%= repo.name %></a></div>

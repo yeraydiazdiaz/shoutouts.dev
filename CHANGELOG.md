@@ -4,6 +4,12 @@
 
 - Tweak front page design.
 - Fix bold font rendering issue.
+- Amend "Add Projects" copy describing the conditions for projects to be eligible.
+- Sort lists of projects in "Add Projects" page.
+
+## [21.3.2] - 2021-09-19
+
+- Increase minimum length for project description.
 
 ## [21.3.1] - 2021-06-12
 
