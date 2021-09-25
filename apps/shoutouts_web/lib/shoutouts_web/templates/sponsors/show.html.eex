@@ -1,6 +1,6 @@
 <div class="bg transform translate-y-8 md:-translate-y-16"></div>
 <section class="m-auto w-full md:mt-4">
-  <h1 class="text-dark text-4xl font-bold mb-12">Sponsors</h1>
+  <h1 class="text-dark text-4xl font-so-bold mb-12">Sponsors</h1>
   <div class="flex flex-col items-center md:flex-row">
     <div class="w-96 px-2 flex-shrink-0 md:px-0">
        <a href="https://appsignal.com/" target="_blank"><img src="<%= Routes.static_url(@conn, "/images/appsignal-logo.svg") %>" alt="AppSignal logo" /></a>

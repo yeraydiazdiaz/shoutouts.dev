@@ -30,7 +30,7 @@
   <body class="flex flex-col justify-between h-screen bg-dimmer">
     <header class="flex-none flex flex-row items-center bg-primary text-dim shadow-bottom h-header px-4 lg:px-8 py-2">
       <div class="mx-auto flex flex-row justify-between items-center w-full max-w-screen-xl">
-        <a class="flex flex-row items-center font-logo text-2xl lg:text-3xl" href="/">
+        <a class="flex flex-row items-center font-so-logo text-2xl lg:text-3xl" href="/">
           <div class="flex flex-col">
             <span class="tracking-tight">shoutouts.dev</span>
             <span class="text-sm text-alert text-right p-0 -mt-3 mr-2">BETA</span>
@@ -46,22 +46,22 @@
               </form>
             </div>
             <%= if Map.get(assigns, :current_user) != nil do %>
-              <a class="inline-block font-bold hover:underline text-center mr-8" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
-              <a class="inline-block font-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
+              <a class="inline-block font-so-bold hover:underline text-center mr-8" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
+              <a class="inline-block font-so-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
             <% else %>
-              <a class="inline-block font-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :request, :github) %>">
+              <a class="inline-block font-so-bold hover:underline text-center" href="<%= Routes.auth_path(@conn, :request, :github) %>">
                 <div class="flex flex-row items-center"><i class="fab fa-github fa-2x"></i><span class="ml-2">Login with GitHub</span></div>
               </a>
             <% end %>
           </div>
           <div id="nav-bars" class="lg:hidden text-lg cursor-pointer"><i class="fas fa-bars"></i></div>
           <div id="nav-menu" class="hidden absolute top-0 right-0 mt-14 flex flex-col bg-dimmer text-secondary border border-secondary">
-            <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.search_show_path(@conn, :index) %>">Search</a>
+            <a class="block text-primary font-so-bold text-center px-5 py-2" href="<%= Routes.search_show_path(@conn, :index) %>">Search</a>
             <%= if Map.get(assigns, :current_user) != nil do %>
-              <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
-              <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
+              <a class="block text-primary font-so-bold text-center px-5 py-2" href="<%= Routes.user_index_path(@conn, :projects) %>">@<%= @current_user.username %></a>
+              <a class="block text-primary font-so-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :delete) %>">Logout<i class="ml-2 fas fa-sign-out-alt"></i></a>
             <% else %>
-              <a class="block text-primary font-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :request, :github) %>">
+              <a class="block text-primary font-so-bold text-center px-5 py-2" href="<%= Routes.auth_path(@conn, :request, :github) %>">
                 <div class="flex flex-row items-center"><i class="fab fa-github"></i><span class="ml-2">Login with GitHub</span></div>
               </a>
             <% end %>

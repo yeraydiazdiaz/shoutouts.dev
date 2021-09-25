@@ -21,21 +21,21 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     <div class="w-full flex flex-row lg:flex-col justify-center items-center">
       <img alt="<%= @current_user.username %>s' avatar" class="w-16 lg:w-4/6 lg:max-w-xs rounded-full mr-4 lg:mr-0 lg:mb-4" src="<%= @current_user.avatar_url %>" />
       <div class="flex flex-col items-center">
-        <p class="text-2xl font-bold"><%= @current_user.name %></p>
+        <p class="text-2xl font-so-bold"><%= @current_user.name %></p>
         <p class="text-lg font-normal"><a class="hover:underline" href="https://github.com/<%= @current_user.username %>"/>@<%= @current_user.username %></a></p>
       </div>
     </div>
     <div class="w-full mt-8">
-    <a class="block w-full font-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :projects do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Projects</a>
+    <a class="block w-full font-so-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :projects do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Projects</a>
     <a class="block w-full text-sm py-2 px-8 border-b-1 border-dim hover:bg-dim <%= if @live_action == :add do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Add projects</a>
-    <a class="block w-full font-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :shoutouts do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :shoutouts) %>">Shoutouts</a>
-    <a class="block w-full font-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :show do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :show) %>">Account settings</a>
+    <a class="block w-full font-so-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :shoutouts do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :shoutouts) %>">Shoutouts</a>
+    <a class="block w-full font-so-bold py-2 px-4 border-b-1 border-dim hover:bg-dim <%= if @live_action == :show do %>bg-dim text-primary cursor-default<% end %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :show) %>">Account settings</a>
     </div>
   </div>
 
   <div class="w-full mt-4 lg:pl-4 lg:pl-12">
   <%= if @live_action == :show do %>
-    <h1 class="font-logo text-4xl text-dark leading-tight">Account settings</h1>
+    <h1 class="font-so-logo text-4xl text-dark leading-tight">Account settings</h1>
     <%= live_component @socket, ShoutoutsWeb.UserLive.SettingsComponent,
       id: @current_user.id,
       current_user: @current_user%>
@@ -43,7 +43,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
   <%= if @live_action == :projects do %>
     <div class="mb-8 flex flex-row justify-between">
-      <h1 class="font-logo text-4xl text-dark">Your projects</h1>
+      <h1 class="font-so-logo text-4xl text-dark">Your projects</h1>
     </div>
     <div class="mb-8">
       <%= if length(@projects) == 0 do %>
@@ -72,12 +72,12 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
         </table>
       <% end %>
     </div>
-    <a class="text-dim bg-primary font-bold px-6 py-3 mt-4 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Add projects</a>
+    <a class="text-dim bg-primary font-so-bold px-6 py-3 mt-4 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Add projects</a>
   <% end %>
 
   <%= if @live_action == :shoutouts do %>
     <div class="mb-8 flex flex-row justify-between">
-      <h1 class="font-logo text-4xl text-dark leading-tight">Your shoutouts</h1>
+      <h1 class="font-so-logo text-4xl text-dark leading-tight">Your shoutouts</h1>
     </div>
     <div class="mb-8">
       <%= if length(@shoutouts) == 0 do %>
@@ -109,7 +109,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
   <%= if @live_action == :add do %>
     <div class="mb-8 flex flex-row justify-between">
-      <h1 class="font-logo text-4xl text-dark">Add projects</h1>
+      <h1 class="font-so-logo text-4xl text-dark">Add projects</h1>
     </div>
     <%= if length(@claimable_projects) > 0 do %>
 
@@ -125,7 +125,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
         <% end %>
       </div>
       <%# This should disable itself, phx_disable_with but with the same text would be nice %>
-      <%= submit "Claim projects", class: "text-dim bg-primary font-bold px-6 py-3 mb-12 rounded-md leading-4" %>
+      <%= submit "Claim projects", class: "text-dim bg-primary font-so-bold px-6 py-3 mb-12 rounded-md leading-4" %>
     </form>
 
     <% end %>
@@ -147,7 +147,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
           <button class="cursor-pointer text-dim text-sm bg-secondary px-4 py-1 rounded-md" data-action="click->project-select#all" data-project-select-target="">Select all</button>
         </div>
       </div>
-      <%= submit "Add projects", class: "text-dim bg-primary font-bold px-6 py-3 mt-2 rounded-md leading-4", phx_disable_with: "Adding projects..." %>
+      <%= submit "Add projects", class: "text-dim bg-primary font-so-bold px-6 py-3 mt-2 rounded-md leading-4", phx_disable_with: "Adding projects..." %>
       <%= if assigns[:error] do %><p class="text-alert mt-2"><%= @error %><% end %>
     </form>
 
@@ -160,12 +160,12 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
       </div>
     <% end %>
 
-    <a class="inline-block text-dim bg-secondary font-bold px-6 py-3 mt-2 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Back</a>
+    <a class="inline-block text-dim bg-secondary font-so-bold px-6 py-3 mt-2 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">Back</a>
   <% end %>
 
   <%= if @live_action == :edit_project do %>
     <div class="mb-8 flex flex-row justify-between">
-      <h1 class="font-logo text-2xl lg:text-4xl">Edit <span class="text-primary"><%= Projects.name_with_owner(@project) %></span></h1>
+      <h1 class="font-so-logo text-2xl lg:text-4xl">Edit <span class="text-primary"><%= Projects.name_with_owner(@project) %></span></h1>
     </div>
     <%= live_component @socket, ShoutoutsWeb.UserLive.EditProjectComponent,
       id: @project.id,
@@ -174,11 +174,11 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
   <%= if @live_action == :delete do %>
     <div class="mb-8 flex flex-col justify-between">
-      <h1 class="font-logo text-4xl mb-8">Delete <%= Projects.name_with_owner(@project) %>?</h1>
+      <h1 class="font-so-logo text-4xl mb-8">Delete <%= Projects.name_with_owner(@project) %>?</h1>
       <p class="mb-4">All shoutouts will also be deleted, are you sure?<p>
       <div class="flex flex-row">
-        <button class="cursor-pointer inline-block text-dim bg-alert font-bold px-6 py-3 mt-2 rounded-md leading-4 mr-8" phx-click="delete">Yes, I'm sure</button>
-        <a class="inline-block text-dim bg-secondary font-bold px-6 py-3 mt-2 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects, id: @project.id) %>">Never mind</a>
+        <button class="cursor-pointer inline-block text-dim bg-alert font-so-bold px-6 py-3 mt-2 rounded-md leading-4 mr-8" phx-click="delete">Yes, I'm sure</button>
+        <a class="inline-block text-dim bg-secondary font-so-bold px-6 py-3 mt-2 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects, id: @project.id) %>">Never mind</a>
       <div>
     </div>
   <% end %>

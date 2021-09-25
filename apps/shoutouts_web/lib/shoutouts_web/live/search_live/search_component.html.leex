@@ -7,9 +7,9 @@
     <div class="text-xl text-center text-primary font-sans mb-4">Would you like to register the project and leave a shoutout?</div>
     <div class="text-center">
     <%= if @current_user_id == nil do %>
-      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github, next: Routes.project_register_path(@socket, :index, q: @terms)) %>">Log in to register the project</a>
+      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-so-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github, next: Routes.project_register_path(@socket, :index, q: @terms)) %>">Log in to register the project</a>
     <% else %>
-      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_register_path(@socket, :index, q: @terms) %>">Register the project</a>
+      <a class="inline-block mx-auto mt-4 lg:mt-0 text-dim bg-primary font-so-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_register_path(@socket, :index, q: @terms) %>">Register the project</a>
     <% end %>
     </div>
   <% else %>
@@ -18,7 +18,7 @@
       <a id="<%= result.id %>" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, result.owner, result.name) %>" class="w-full lg:max-w-lg m-2 mb-8">
         <div class="flex flex-col md:flex-row items-center justify-between border-t border-gray-700">
           <div class="w-full">
-            <div class="text-xl text-dark font-bold p-2 mb-2 leading-none hover:underline"><%= Projects.name_with_owner(result) %></div>
+            <div class="text-xl text-dark font-so-bold p-2 mb-2 leading-none hover:underline"><%= Projects.name_with_owner(result) %></div>
             <div class="text-sm px-2"><%= render_emojis result.description %></div>
           </div>
           <div class="h-6 text-sm text-gray-500 h-1 pt-2 px-2 mt-2 leading-none"><%= result.primary_language %></div>

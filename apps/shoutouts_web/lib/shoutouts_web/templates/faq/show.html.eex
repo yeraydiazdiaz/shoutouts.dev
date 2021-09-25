@@ -1,8 +1,8 @@
 <div class="bg transform translate-y-8 md:-translate-y-16"></div>
 <section class="m-auto w-full lg:mt-4">
-  <h1 class="text-gray-900 text-4xl font-bold mb-4">FAQ</h1>
+  <h1 class="text-gray-900 text-4xl font-so-bold mb-4">FAQ</h1>
 
-  <a href="#why"><h2 class="text-primary text-3xl font-bold mb-4" id="why">Why?</h2></a>
+  <a href="#why"><h2 class="text-primary text-3xl font-so-bold mb-4" id="why">Why?</h2></a>
   <div class="text-gray-900 text-xl mb-8">
     <p class="mb-4">If you ever spent any time maintaining an Open Source project, you will have noticed that most of the feedback you get take the form of issues, bug reports, or questions.</p>
     <p class="mb-4">And that's great, it means people are using the project and would like to continue using it. But sometimes you'd like to hear what people think first hand about it, how they use it, and how your work has impacted their lives.</p>
@@ -10,7 +10,7 @@
   </div>
 
   <div class="text-gray-900 text-xl">
-    <a href="#trolling"><h2 class="text-primary text-3xl font-bold mb-4" id="trolling">What about trolling?</h2></a>
+    <a href="#trolling"><h2 class="text-primary text-3xl font-so-bold mb-4" id="trolling">What about trolling?</h2></a>
     <div class="text-gray-900 text-xl">
     <p class="mb-4">Any time you have users posting about other users there's a risk of abuse. It's not an easy problem to solve but shoutouts.dev has some strict rules and practices in place that I hope will prevent it, and it all starts with accountability.</p>
     <ol>
@@ -21,23 +21,23 @@
     <p class="mb-4">These rules may vary over time depending on their success, but it is my hope that will make shoutouts.dev "good vibes only" site.</p>
   </div>
 
-  <a href="#github-only"><h2 class="text-primary text-3xl font-bold mb-4" id="github-only">Why only GitHub repos?</h2></a>
+  <a href="#github-only"><h2 class="text-primary text-3xl font-so-bold mb-4" id="github-only">Why only GitHub repos?</h2></a>
   <div class="text-gray-900 text-xl mb-8">
     <p class="mb-4">Dev time mostly, but also because GitHub is quite dominant in the Open Source space at the moment. Don't worry though, adding support for other providers is definitely in the cards.</p>
   </div>
 
-  <a href="#badge"><h2 class="text-primary text-3xl font-bold mb-4" id="badge">How do I add my project's badge to the README?</h2></a>
+  <a href="#badge"><h2 class="text-primary text-3xl font-so-bold mb-4" id="badge">How do I add my project's badge to the README?</h2></a>
   <div class="text-gray-900 text-xl mb-8">
     <p class="mb-4">Easy, just add the following to your README file:</p>
     <div class="border-gray-900 bg-dim p-4 my-4 overflow-auto">[![shoutouts.dev](https://shoutouts.dev/projects/<span class="text-alert">ME/MY_PROJECT</span>/badge)](https://shoutouts.dev/projects/<span class="text-alert">ME/MY_PROJECT</span>)</div>
   </div>
 
-  <a href="#tech"><h2 class="text-primary text-3xl font-bold mb-4" id="tech">What did you use to build shoutouts.dev?</h2>
+  <a href="#tech"><h2 class="text-primary text-3xl font-so-bold mb-4" id="tech">What did you use to build shoutouts.dev?</h2>
   <div class="text-gray-900 text-xl mb-8">
     <p class="mb-4">The site is written in <a class="link" href="https://elixir-lang.org/">Elixir</a> using the <a class="link" href="https://phoenixframework.org/">Phoenix Framework</a>. The frontend is built with <a class="link" href="https://tailwindcss.com/">Tailwind CSS</a> and <a class="link" href="https://stimulus.hotwire.dev/">Stimulus</a> but most interactivity comes from <a class="link" href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html">Phoenix LiveView</a>.</p>
   </div>
 
- <a href="#help"> <h2 class="text-primary text-3xl font-bold mb-4" id="help">Neat! How can I help?</h2></a>
+ <a href="#help"> <h2 class="text-primary text-3xl font-so-bold mb-4" id="help">Neat! How can I help?</h2></a>
   <div class="text-gray-900 text-xl mb-8">
     <p class="mb-4">I'm glad you like it! There's several ways:</p>
     <ul class="list-disc pl-4">

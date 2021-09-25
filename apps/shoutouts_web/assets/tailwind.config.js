@@ -5,9 +5,9 @@ module.exports = {
         'xs': '400px'
       },
       fontFamily: {
-        'sans': 'Light',
-        'bold': 'Bold',
-        'logo': 'Logo',
+        'sans': 'Light',  // setting Light as sans makes it the default
+        'so-bold': 'Bold',  // prefix to avoid Tailwind applying font-weight
+        'so-logo': 'Logo',
       },
       colors: {
         'primary': 'var(--color-primary)',

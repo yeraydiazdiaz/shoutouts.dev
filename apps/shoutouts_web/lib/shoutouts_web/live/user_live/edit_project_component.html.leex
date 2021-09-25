@@ -23,13 +23,13 @@
   <div class="flex flex-row justify-between h-12 mt-2">
     <div class="flex flex-row justify-end">
       <%# This should disable itself, phx_disable_with but with the same text would be nice %>
-      <%= submit "Edit project", phx_disable_with: "Edit project", class: "text-dim font-bold bg-primary px-2 sm:px-4 py-2 lg:py-3 rounded-md leading-none mr-1 md:mr-4" %>
+      <%= submit "Edit project", phx_disable_with: "Edit project", class: "text-dim font-so-bold bg-primary px-2 sm:px-4 py-2 lg:py-3 rounded-md leading-none mr-1 md:mr-4" %>
       <a class="contents" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :delete, @project.id) %>">
-        <button class="leading-none text-dim font-bold bg-alert px-2 sm:px-4 py-2 lg:py-3 mr-1 lg:mr-0 rounded-md">Delete project</button>
+        <button class="leading-none text-dim font-so-bold bg-alert px-2 sm:px-4 py-2 lg:py-3 mr-1 lg:mr-0 rounded-md">Delete project</button>
       </a>
     </div>
     <a class="contents" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :projects) %>">
-      <button class="leading-none text-dim font-bold bg-secondary px-6 py-3 rounded-md">Back</button>
+      <button class="leading-none text-dim font-so-bold bg-secondary px-6 py-3 rounded-md">Back</button>
     </a>
   </div>
 </form>

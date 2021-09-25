@@ -2,7 +2,7 @@
 <section class="m-auto w-full mt-4 lg:mt-8">
   <div class="flex flex-col w-full mb-12 lg:flex-row lg:justify-around text-4xl md:text-5xl text-center lg:text-left text-primary leading-tight max-w-screen-xl">
     <div class="mr-2">Open Source is hard</div>
-    <div class="font-bold">Show your gratitude</div>
+    <div class="font-so-bold">Show your gratitude</div>
   </div>
 
   <%= live_component @socket, ShoutoutsWeb.SearchLive.SearchComponent, terms: @terms, results: @results, id: :search, current_user_id: @current_user_id %>
@@ -14,7 +14,7 @@
       <%= for [lang, project_count, projects] <- @summary do %>
         <div class="w-80 mb-8 mx-4 lg:mb-4">
           <div class="text-xl flex flex-row items-center justify-between text-primary mb-2">
-            <a href="<%= Routes.search_show_path(%Plug.Conn{}, :index, %{"q" => lang}) %>" data-phx-link="redirect" data-phx-link-state="push" class="font-bold text-primary underline"><%= lang %></a>
+            <a href="<%= Routes.search_show_path(%Plug.Conn{}, :index, %{"q" => lang}) %>" data-phx-link="redirect" data-phx-link-state="push" class="font-so-bold text-primary underline"><%= lang %></a>
             <span class="text-sm"><%= project_count %> projects</span>
           </div>
           <div>

@@ -1,11 +1,11 @@
 <div class="bg text-dark transform translate-y1 md:-translate-y-16"></div>
-<h1 class="text-3xl font-logo mb-8">Register a project</h1>
+<h1 class="text-3xl font-so-logo mb-8">Register a project</h1>
 <p class="font-sans text-dark">Registering a project will allow yourself and other thankful users to post shoutouts for it.</p>
 <p class="font-sans text-dark mb-2">The project's owner(s) will be able to claim the project at any point to manage its shoutouts.</p>
 <p class="font-sans text-dark mb-4">Only public projects hosted in GitHub are permitted at this time.</p>
 <%= if @current_user_id == nil do %>
-  <p class="font-sans font-bold text-alert mt-8 mb-8">You must log in before you can register a project.</p>
-  <a class="text-dim bg-primary font-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in with GitHub</a>
+  <p class="font-sans font-so-bold text-alert mt-8 mb-8">You must log in before you can register a project.</p>
+  <a class="text-dim bg-primary font-so-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in with GitHub</a>
 <% else %>
   <%= f = form_for @changeset, "#",
     id: "project-registration-form",
@@ -17,7 +17,7 @@
     <%= error_tag f, :url_or_owner_name %>
     <div class="flex flex-row justify-between mt-8">
 
-   <button class="font-bold px-6 py-3 rounded-md text-dim <%= if @disabled do %>bg-light cursor-not-allowed<% else %>bg-primary<% end %>" type="submit" <%= if @disabled do %> disabled="disabled"<% end %>>Register project</button> 
-    <a class="block text-dim bg-secondary font-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Back</a>
+   <button class="font-so-bold px-6 py-3 rounded-md text-dim <%= if @disabled do %>bg-light cursor-not-allowed<% else %>bg-primary<% end %>" type="submit" <%= if @disabled do %> disabled="disabled"<% end %>>Register project</button> 
+    <a class="block text-dim bg-secondary font-so-bold px-6 py-3 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Back</a>
     </div>
 <% end %>

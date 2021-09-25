@@ -24,8 +24,8 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         stp -> stp
       end
 
-    if connected?(socket) and length(shoutouts) > 1,
-      do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
+    # if connected?(socket) and length(shoutouts) > 1,
+    #   do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
 
     {:ok,
      socket
