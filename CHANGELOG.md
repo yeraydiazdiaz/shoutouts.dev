@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.3.3] - 2021-09-25
 
 - Tweak front page design.
 - Fix bold font rendering issue.
