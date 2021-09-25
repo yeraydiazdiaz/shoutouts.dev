@@ -1,6 +1,6 @@
 .PHONY: prod-devserver mac-release release server
 
-prod-devserver:
+prod-server:
 	cd apps/shoutouts_web/assets && npm run deploy
 	MIX_ENV=prod mix phx.digest
 	MIX_ENV=prod mix phx.server
