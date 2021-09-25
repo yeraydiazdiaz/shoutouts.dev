@@ -100,9 +100,12 @@ defmodule ShoutoutsWeb.UserLive.Index do
         {:ok,
          socket
          |> assign(:current_user, user)
-         |> assign(:repos, repos_to_be_added)
-         |> assign(:existing_projects, existing_projects)
-         |> assign(:claimable_projects, claimable_projects)}
+         |> assign(:repos, Enum.sort(repos_to_be_added))
+         |> assign(
+           :existing_projects,
+           Projects.sort_projects_by_owner_name(existing_projects)
+         )
+         |> assign(:claimable_projects, Projects.sort_projects_by_owner_name(claimable_projects))}
 
       {:error, error} ->
         Logger.error("Could not retrieve user repos", error: error)

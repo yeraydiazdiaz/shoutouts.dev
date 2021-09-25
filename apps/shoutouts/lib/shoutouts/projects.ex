@@ -528,4 +528,11 @@ defmodule Shoutouts.Projects do
     |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.update()
   end
+
+  def sort_projects_by_owner_name(projects) do
+    Enum.sort(
+      projects,
+      &(name_with_owner(&1) <= name_with_owner(&2))
+    )
+  end
 end
