@@ -70,7 +70,7 @@ defmodule ShoutoutsWeb.IndexLiveTest do
     assert view |> element(".opacity-100") |> render() =~ s2.text
     assert view |> element(".opacity-0") |> render() =~ s1.text
 
-    view |> element(".bg-dim") |> render_click()
+    view |> element("button[phx-value-idx='1']") |> render_click()
     assert view |> element(".opacity-100") |> render() =~ s1.text
 
     # timeout switching does nothing once user has clicked

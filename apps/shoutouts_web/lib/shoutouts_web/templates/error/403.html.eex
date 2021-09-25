@@ -13,7 +13,7 @@
   <body class="flex flex-col justify-between h-screen bg-dimmer">
     <header class="flex-none flex flex-row items-center bg-primary text-dim shadow-bottom h-header px-4 lg:px-8 py-2">
       <div class="mx-auto flex flex-row justify-between items-center w-full max-w-screen-xl">
-        <a class="flex flex-row items-center font-logo text-2xl lg:text-3xl" href="/">
+        <a class="flex flex-row items-center font-so-logo text-2xl lg:text-3xl" href="/">
           <div class="flex flex-col">
             <span class="tracking-tight">shoutouts.dev</span>
             <span class="text-sm text-alert text-right p-0 -mt-4 mr-2">BETA</span>
@@ -28,14 +28,14 @@
                 <input type="text" name="q" placeholder="Search projects" class="ml-2 text-dark appearance-none outline-none bg-transparent" />
               </form>
             </div>
-              <a class="inline-block font-bold hover:underline text-center" href="/auth/github">
+              <a class="inline-block font-so-bold hover:underline text-center" href="/auth/github">
                 <div class="flex flex-row items-center"><i class="fab fa-github fa-2x"></i><span class="ml-2">Login with GitHub</span></div>
               </a>
           </div>
           <div id="nav-bars" class="lg:hidden text-lg cursor-pointer"><i class="fas fa-bars"></i></div>
           <div id="nav-menu" class="hidden absolute top-0 right-0 mt-16 flex flex-col bg-white text-secondary border border-secondary">
-            <a class="inline-block text-primary font-bold hover:underline text-center px-6 py-4" href="/search">Search</a>
-              <a class="inline-block text-primary font-bold hover:underline text-center px-6 py-4" href="/auth/github">
+            <a class="inline-block text-primary font-so-bold hover:underline text-center px-6 py-4" href="/search">Search</a>
+              <a class="inline-block text-primary font-so-bold hover:underline text-center px-6 py-4" href="/auth/github">
                 <div class="flex flex-row items-center"><i class="fab fa-github fa-2x"></i><span class="ml-2">Login with GitHub</span></div>
               </a>
           </div>
@@ -46,7 +46,7 @@
       <div class="bg transform translate-y-8 md:-translate-y-16"></div>
       <%# --- CONTENT STARTS HERE --- %>
       <section class="flex flex-col lg:flex-row lg:justify-around lg:items-center m-auto w-full mt-8 mb-12">
-        <h1 class="tracking-tight text-6xl text-center lg:text-left text-dim font-bold max-w-screen-xlm-auto">
+        <h1 class="tracking-tight text-6xl text-center lg:text-left text-dim font-so-bold max-w-screen-xlm-auto">
           <span class="textshadow">Unauthorized</span>
         </h1>
       </section>

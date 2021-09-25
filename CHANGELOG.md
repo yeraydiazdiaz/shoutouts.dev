@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Tweak front page design.
+- Fix bold font rendering issue.
+
 ## [21.3.1] - 2021-06-12
 
 - Add "write a shoutout" CTA to home page

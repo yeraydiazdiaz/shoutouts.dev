@@ -19,7 +19,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 
 <%= if @live_action == :show do %>
   <div class="flex flex-row items-center mb-3">
-      <h1 class="font-logo text-2xl sm:text-4xl md:text-5xl mr-4"><%= Projects.name_with_owner(@project) %></h1>
+      <h1 class="font-so-logo text-2xl sm:text-4xl md:text-5xl mr-4"><%= Projects.name_with_owner(@project) %></h1>
       <div>
         <a href="<%= @project.url %>" target="_blank"><i class="fab fa-github fa-lg text-xl sm:text-2xl md:text-4xl"></i></a>
       </div>
@@ -31,31 +31,31 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
       <%= if @project.primary_language != nil do %>
       <div class="text-sm">
         <span class="text-dark">Written mostly in:</span>
-        <span class="font-bold"><%= @project.primary_language %></span>
+        <span class="font-so-bold"><%= @project.primary_language %></span>
       </div>
       <% end %>
       <%# Shoutout count %>
       <div class="mt-4">
         <%= if @num_shoutouts == 0 do %>
           <%# No shoutouts, add yours CTA %>
-          <h2 class="font-bold text-2xl mt-20">No shoutouts yet.</h2>
+          <h2 class="font-so-bold text-2xl mt-20">No shoutouts yet.</h2>
           <%# Show CTA if the user has logged in, they are not the owner, and they haven't already added one %>
           <%= if @current_user_id != nil and not @user_is_owner and @user_shoutout == nil do %>
             <div class="flex flex-col mt-4">
               <%# Disable the CTA if the user's provider accounts is too young or they have been banned %>
               <div class="mb-4">
-                <a class="inline-block text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4<%= if @disable_cta do %> text-gray-400 bg-dim cursor-not-allowed<% end %>" <%= if @disable_cta do %> disabled="disabled"<% end %> data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :add, @project.owner, @project.name) %>">Be the first!</a>
+                <a class="inline-block text-dim bg-primary font-so-bold px-6 py-3 h-10 rounded-md leading-4<%= if @disable_cta do %> text-gray-400 bg-dim cursor-not-allowed<% end %>" <%= if @disable_cta do %> disabled="disabled"<% end %> data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :add, @project.owner, @project.name) %>">Be the first!</a>
               </div>
               <div class="w-full md:w-3/4 lg:w-1/2">
                 <%= if @user_account_too_young do %>
                   <p class="text-sm pl-8">Sorry, only users with a provider account older than 3 months are allowed to add shoutouts.</p>
                 <% end %>
                 <%= if @user_is_banned_for_owner do %>
-                  <p class="font-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
+                  <p class="font-so-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
                   <p class="mt-2 text-dark">Please take a moment to consider the reasons the owner may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
                 <% end %>
                 <%= if @user_is_banned_globally do %>
-                  <p class="font-bold text-alert">Several owners have flagged your shoutouts, as a result you are not allowed to post more on any project.</p>
+                  <p class="font-so-bold text-alert">Several owners have flagged your shoutouts, as a result you are not allowed to post more on any project.</p>
                   <p class="mt-2 text-dark">Please take a moment to consider the reasons the owners may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
                 <% end %>
               </div>
@@ -84,21 +84,21 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     <%= if @current_user == nil do %>
       <%# If anonymous user log in CTA %>
       <div>
-        <a class="inline-block mt-4 lg:mt-0 text-dim bg-primary font-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to leave a shoutout</a>
+        <a class="inline-block mt-4 lg:mt-0 text-dim bg-primary font-so-bold px-6 py-3 h-10 rounded-md leading-4" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to leave a shoutout</a>
       </div>
     <% else %>
       <%= if @user_is_owner do %>
         <%# If owner render some info about flagging and pinning %>
         <%# # TODO: consider clicking to dismiss and possibly remember the decision %>
         <div class="text-md mt-4 lg:text-right lg:mt-0">
-          <p>We hope you enjoy the shoutouts for your project. Note you can <span class="font-bold text-secondary">pin</span> or <span class="font-bold text-alert">flag</span> any of them.</p>
+          <p>We hope you enjoy the shoutouts for your project. Note you can <span class="font-so-bold text-secondary">pin</span> or <span class="font-so-bold text-alert">flag</span> any of them.</p>
           <p class="mt-2"><span class="text-secondary">Pinned</span> shoutouts will show at the top of the page.</p>
           <p class="mt-2"><span class="text-alert">Flagging</span> a shoutout will hide it and prevent the user from adding more shoutouts to your other projects.</p>
         </div>
       <% else %>
         <%= if @user_can_claim_project do %>
           <div class="text-md mt-4 lg:text-right">
-            <p class="mb-2">It looks like you are one of the owners of this project.</p><p>Go to <a class="link text-bold" href="<%= Routes.user_index_path(@socket, :add) %>" data-phx-link="redirect" data-phx-link-state="push">your projects</a> to claim it and <span class="font-bold text-secondary">pin</span> or <span class="font-bold text-alert">flag</span> the shoutouts and to add more of your projects</p>
+            <p class="mb-2">It looks like you are one of the owners of this project.</p><p>Go to <a class="link text-bold" href="<%= Routes.user_index_path(@socket, :add) %>" data-phx-link="redirect" data-phx-link-state="push">your projects</a> to claim it and <span class="font-so-bold text-secondary">pin</span> or <span class="font-so-bold text-alert">flag</span> the shoutouts and to add more of your projects</p>
           </div>
         <% end %>
         <%# If registered user, project already has shoutouts and the user has not added a shoutouts: add shoutout CTA (there's another CTA above for projects with no shoutouts) %>
@@ -106,17 +106,17 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
           <div class="mt-12 lg:mt-0 lg:text-right">
             <%# Disable button if the account is not old enough or has been banned %>
             <div class="mb-4">
-              <a class="inline-block font-bold px-6 py-3 h-10 rounded-md leading-4<%= if @disable_cta do %> text-gray-400 bg-gray-200 cursor-not-allowed<% else %> text-dim bg-primary<% end %>" <%= if @disable_cta do %> disabled="disabled"<% end %> data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :add, @project.owner, @project.name) %>">Add your shoutout</a>
+              <a class="inline-block font-so-bold px-6 py-3 h-10 rounded-md leading-4<%= if @disable_cta do %> text-gray-400 bg-gray-200 cursor-not-allowed<% else %> text-dim bg-primary<% end %>" <%= if @disable_cta do %> disabled="disabled"<% end %> data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :add, @project.owner, @project.name) %>">Add your shoutout</a>
             </div>
             <%= if @user_account_too_young do %>
               <p class="text-sm mt-2 text-alert">Sorry, only users with an account older than 2 years are allowed to add shoutouts.</p>
             <% end %>
             <%= if @user_is_banned_for_owner do %>
-              <p class="font-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
+              <p class="font-so-bold text-alert">The owner of this project has flagged a shoutout on another one of their projects. As such your are not allowed to add shoutouts to this or any other of their projects.</p>
               <p class="mt-2 text-dark">Please take a moment to consider the reasons why the owner may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
             <% end %>
             <%= if @user_is_banned_globally do %>
-              <p class="font-bold text-alert">Several owners have flagged your shoutouts, as a result you are not allow to post shououts on any project.</p>
+              <p class="font-so-bold text-alert">Several owners have flagged your shoutouts, as a result you are not allow to post shououts on any project.</p>
               <p class="mt-2 text-dark">Please take a moment to consider the reasons the owners may have decided to flag your shoutout. Remember this is a good vibes only site.</p>
             <% end %>
           </div>
@@ -149,15 +149,15 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
 <% end %>
 
 <%= if @live_action == :add do %>
-<h1 class="font-logo text-4xl mt-4 mb-8 mr-4 leading-tight">Add shoutout for <span class="text-primary ml-2"><%= Projects.name_with_owner(@project) %></span></h1>
+<h1 class="font-so-logo text-4xl mt-4 mb-8 mr-4 leading-tight">Add shoutout for <span class="text-primary ml-2"><%= Projects.name_with_owner(@project) %></span></h1>
   <%= cond do %>
   <% @project.user_id == @current_user_id -> %>
     <p class="text-lg mb-12">Sorry, owners cannot leave shoutouts for their own projects.</p>
-    <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
+    <a class="inline-block text-dim font-so-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
   <% @user_shoutout -> %>
     <p class="text-lg mb-12">You already left a shoutout for this project, maybe you can encourage other users to add one?</p>
     <div class="text-3xl shoutout pl-8 mb-12"><%= text_to_html(render_emojis(@user_shoutout.text)) %></div>
-    <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
+    <a class="inline-block text-dim font-so-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
   <% true -> %>
     <%= live_component @socket, ShoutoutsWeb.ProjectLive.FormComponent, id: @project.id, project: @project, current_user: @current_user, current_user_id: @current_user_id %>
   <% end %>

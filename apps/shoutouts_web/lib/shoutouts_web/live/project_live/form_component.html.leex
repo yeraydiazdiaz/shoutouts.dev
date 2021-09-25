@@ -4,7 +4,7 @@
     <li>This is strictly a good vibes site, if you have any negative things to say please take them elsewhere.</li>
     <li>Keep it short and sweet, there's an upper limit of 250 characters. If you feel you have even more to say contact the owner, they'll appreciate it.</li>
     <li>Please write in English, it makes things more open and easier for everyone. Emojis are ✅ as-is or in :colon-form:.</li>
-    <li>If, for any reason, your shoutout is flagged by the owner, you will be <span class="font-bold">banned</span>, see point 1.</li>
+    <li>If, for any reason, your shoutout is flagged by the owner, you will be <span class="font-so-bold">banned</span>, see point 1.</li>
   </ol>
 </div>
 <%= f = form_for @changeset, "#",
@@ -26,7 +26,7 @@
       <div class="text-3xl shoutout pl-8"><%= text_to_html(render_emojis(@changeset.changes.text)) %></div>
       <div class="flex flex-row mt-4 text-xl text-dark text-right items-center justify-end leading-tight">
         <div>
-          <p class="font-bold text-2xl"><%= @current_user.name %></p>
+          <p class="font-so-bold text-2xl"><%= @current_user.name %></p>
           <%= if @current_user.signature do %><p><%= @current_user.signature %></p><% end %></p>
         </div>
         <img alt="<%= @current_user.username %>s' avatar" class="w-12 h-12 rounded-full ml-4" src="<%= @current_user.avatar_url %>" />
@@ -37,7 +37,7 @@
 
   <div class="flex flex-row justify-start">
     <%# This should disable itself, phx_disable_with but with the same text would be nice %>
-    <%= submit "Add shoutout", class: "text-dim font-bold bg-primary px-6 py-3 mt-2 rounded-md leading-none mr-4" %>
-    <a class="inline-block text-dim font-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back</a>
+    <%= submit "Add shoutout", class: "text-dim font-so-bold bg-primary px-6 py-3 mt-2 rounded-md leading-none mr-4" %>
+    <a class="inline-block text-dim font-so-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back</a>
   </div>
 </form>

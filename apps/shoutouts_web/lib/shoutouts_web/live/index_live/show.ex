@@ -1,6 +1,7 @@
 defmodule ShoutoutsWeb.IndexLive.Show do
   use ShoutoutsWeb, :live_view
   alias Shoutouts.Accounts
+  alias Shoutouts.Projects
   alias Shoutouts.Shoutouts
 
   require Logger
@@ -24,8 +25,8 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         stp -> stp
       end
 
-    if connected?(socket) and length(shoutouts) > 1,
-      do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
+    # if connected?(socket) and length(shoutouts) > 1,
+    #   do: Process.send_after(self(), :carrousel_timeout, @carrousel_timeout)
 
     {:ok,
      socket
@@ -71,7 +72,10 @@ defmodule ShoutoutsWeb.IndexLive.Show do
         signature: "Prolific Open Source contributor",
         avatar_url: Routes.static_path(socket, "/images/sample_avatar.png")
       },
-      project: nil
+      project: %Projects.Project{
+        owner: "generous",
+        name: "maintainer"
+      }
     }
   end
 end

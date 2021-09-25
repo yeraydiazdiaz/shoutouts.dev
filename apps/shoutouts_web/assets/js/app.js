@@ -16,12 +16,13 @@ import {
 import {
   faFlag as faFlagRegular,
   faCopy as faCopyRegular,
+  faCircle as faCircleRegular
 } from '@fortawesome/free-regular-svg-icons'
 import {
-  faThumbtack, faSignOutAlt, faFlag, faBars, faSearch
+  faThumbtack, faSignOutAlt, faFlag, faBars, faSearch, faCircle
 } from '@fortawesome/free-solid-svg-icons'
 // Add them to the library here
-library.add(faGithub, faTwitter, faThumbtack, faSignOutAlt, faFlag, faFlagRegular, faBars, faSearch, faCopyRegular)
+library.add(faGithub, faTwitter, faThumbtack, faSignOutAlt, faFlag, faFlagRegular, faBars, faSearch, faCopyRegular, faCircle, faCircleRegular)
 // And make use of them in the classNames on <span> tags with no content
 dom.watch()
 

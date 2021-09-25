@@ -1,53 +1,51 @@
 <div class="bg transform translate-y-8 md:-translate-y-16"></div>
-<section class="flex flex-col lg:flex-row lg:justify-around m-auto w-full lg:mt-8 mb-10 lg:mb-24">
-  <div class="flex flex-col items-center lg:w-11/12 m-auto lg:flex-row lg:justify-around lg:items-center">
-    <h1 class="tracking-tight text-4xl md:text-6xl text-center lg:text-left text-dim font-bold max-w-screen-xlm-auto">
-      <span class="textshadow">shoutouts.dev</span>
-    </h1>
-    <h2 class="text-2xl md:text-4xl text-primary font-hairline leading-tight max-w-screen-xl">
-      <span>Open Source is hard<br />Show your gratitude</span>
+<section class="flex flex-col lg:flex-row lg:justify-around w-full mt-4 mb-10 lg:mb-16">
+  <div class="flex flex-col w-full lg:flex-row lg:justify-around">
+    <h2 class="text-4xl md:text-5xl text-primary leading-tight max-w-screen-xl md:mr-8 lg:mt-8">
+      <p class="mb-2 text-center lg:text-left">Open Source is hard</p>
+      <p class="font-so-bold text-center lg:text-left">Show your gratitude</p>
     </h2>
-  </div>
-</section>
-<section class="w-full mb-8 md:mb-12 lg:mb-20 flex flex-col lg:flex-row lg:w-5/6 lg:mx-auto lg:justify-between lg:items-top">
-  <div class="text-lg lg:w-1/2 md:mr-4">
-    <h3 class="text-2xl text-dark font-bold">Gratitude works</h3>
-    <p class="mt-2">
-      Maintaining an Open Source project is a labour of love, but most of the time the only feedback maintainers get are bug reports, issues, and complaints.
-    </p>
-    <p class="mt-2">Leave shoutouts for your favourite projects and let them know how much you value their work.</p>
-    <p class="mt-6 text-center">
-      <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Write a shoutout</a>
-    </p>
-  </div>
-  <div class="mt-12 mb-4 h-70 md:h-52 lg:h-70 lg:my-0 lg:w-1/2">
-    <div class="flex flex-col">
-      <div class="relative h-70 md:h-52 lg:h-70">
+    <div class="flex flex-col mt-12 mb-4 lg:my-0 w-full lg:w-1/2">
+      <div class="relative flex-grow h-56">
         <%= for i <- 0..length(@shoutouts) - 1 do %>
           <%= live_component @socket, ShoutoutsWeb.IndexLive.ROShoutoutComponent, shoutout: Enum.at(@shoutouts, i), visible: i == @shoutout_idx %>
         <% end %>
       </div>
-      <div class="flex flex-row justify-evenly">
+      <div class="flex flex-row justify-evenly mx-2 mt-4">
         <%= if length(@shoutouts) > 1 do %>
           <%= for i <- 0..length(@shoutouts) - 1 do %>
-            <button class="block h-2 w-16 focus:outline-none <%= if i == @shoutout_idx do %>bg-bone<% else %>bg-dim<% end %>" phx-click="carrousel_switch" phx-value-idx="<%= i %>"></button>
+            <button class="text-primary focus:outline-none" phx-click="carrousel_switch" phx-value-idx="<%= i %>"><i class="<%= if i == @shoutout_idx do %>fas fa-circle<% else %>far fa-circle<% end %>"></i></button>
           <% end %>
         <% end %>
       </div>
     </div>
   </div>
 </section>
+<section class="w-full mb-12 lg:mb-20 flex flex-col lg:flex-row lg:w-5/6 lg:mx-auto lg:justify-between lg:items-center">
+  <div class="text-lg lg:w-1/2 md:mr-4">
+    <h3 class="text-2xl text-dark font-so-bold">Gratitude works</h3>
+    <p class="mt-2">
+      Maintaining an Open Source project is a labour of love, but most of the time the only feedback maintainers get are bug reports, issues, and complaints.
+    </p>
+    <p class="mt-2">Leave shoutouts for your favourite projects and let them know how much you value their work.</p>
+  </div>
+  <div class="flex-grow">
+    <p class="text-center mt-8 m-auto">
+      <a class="inline-block text-dim bg-primary text-lg font-so-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.search_show_path(@socket, :index) %>">Write a shoutout</a>
+    </p>
+  </div>
+</section>
 <section class="w-full mb-14 flex flex-col items-center lg:flex-row-reverse lg:w-5/6 lg:mx-auto lg:justify-between">
   <div class="lg:w-1/2">
-    <h3 class="text-2xl text-dark font-bold">Beyond stars and stats</h3>
-    <div class="text-lg mt-2">
-      <p>They're great and all, but they're not exactly personal or even relevant for small/niche projects.</p>
-      <p class="mt-4">Shoutouts are real feedback from real people your project is helping. A badge of honor.</p>
+    <h3 class="text-2xl text-dark font-so-bold">Beyond stars and stats</h3>
+    <div class="mt-2">
+      <p class="text-lg">They're great and all, but they're not exactly personal or even relevant for small/niche projects.</p>
+      <p class="text-lg mt-4">Shoutouts are real feedback from real people your project is helping. A badge of honor.</p>
       <p class="mt-6 text-center">
         <%= if @current_user == nil do %>
-        <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to register your projects</a>
+        <a class="inline-block text-dim bg-primary text-md font-so-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.auth_path(@socket, :request, :github) %>">Log in to register your projects</a>
         <% else %>
-        <a class="inline-block text-dim bg-primary text-md font-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Register your projects</a>
+        <a class="inline-block text-dim bg-primary text-md font-so-bold px-6 py-3 rounded-md md:leading-3" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.user_index_path(@socket, :add) %>">Register your projects</a>
         <% end %>
       </p>
       </div>
@@ -58,7 +56,7 @@
 </section>
 <section class="w-full mb-8 md:mb-12 lg:mb-20 flex flex-col items-center lg:flex-row lg:w-5/6 lg:mx-auto lg:justify-between">
   <div class="lg:w-1/2">
-    <h3 class="text-2xl text-dark font-bold">Good vibes only, please</h3>
+    <h3 class="text-2xl text-dark font-so-bold">Good vibes only, please</h3>
     <div class="text-lg mt-4">
       <p>No anonymous trolling allowed. Only real users with real accounts are allowed to post shoutouts.</p>
       <p class="mt-4">Pin your shoutouts to customize your project page. Don't like a shoutout? Flag it with <a class="link" href="<%= Routes.faq_path(@socket, :show) %>#trolling">immediate consequences</a>.</p>
