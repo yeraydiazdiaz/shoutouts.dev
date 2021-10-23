@@ -1,4 +1,4 @@
-/* This file is for your main application css. */
+/* The colours below need to be added to tailwind.config.js as well */
 
 :root {
     --color-primary: #2D2E64;
@@ -10,6 +10,8 @@
     --color-dimmer: #f9fafb;
     --color-bone: #e5dcc5;
     --color-contrast: #720524;
+    --color-twitter: #1D9BF0;
+    --color-twitter-light: #ABDAF9;
 }
 
 @tailwind base;

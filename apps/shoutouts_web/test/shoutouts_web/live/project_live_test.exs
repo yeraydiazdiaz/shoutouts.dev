@@ -183,7 +183,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
   end
 
   describe "project owners" do
-    test "pin and flag buttons are rendered on each shoutout", %{conn: conn} do
+    test "pin, flag, and tweet buttons are rendered on each shoutout", %{conn: conn} do
       setup_mock()
       p = Factory.insert(:project)
       Factory.insert(:shoutout, %{project: p})
@@ -194,6 +194,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       assert html =~ "We hope you enjoy the shoutouts for your project"
       assert has_element?(view, "button[title=\"Click to pin this shoutout\"]")
       assert has_element?(view, "button[title=\"Click to flag this shoutout\"]")
+      assert has_element?(view, "button[title=\"Share on Twitter\"]")
     end
 
     test "pinning a shoutout updates it and renders it at the top", %{conn: conn} do

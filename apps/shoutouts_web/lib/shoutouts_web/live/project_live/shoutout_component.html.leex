@@ -12,7 +12,8 @@
     </div>
   </div>
   <%= if @user_is_owner do %>
-    <div class="flex flex-col items-center justify-start pl-8">
+    <div class="flex flex-col items-center justify-between pl-8">
+      <div class="flex flex-col">
       <%= if not @shoutout.flagged do %>
         <%= if @shoutout.pinned do %>
         <button class="text-secondary mb-4 cursor-pointer transform rotate-45" phx-target="<%= @myself %>" phx-click="unpin" title="Click to unpin this shoutout"><i class="fas fa-thumbtack fa-2x"></i><span class="hidden">Unpin</span></button>
@@ -25,6 +26,15 @@
       <button class="text-alert mb-4 cursor-pointer" phx-target="<%= @myself %>" phx-click="unflag" title="Click to unflag this shoutout"><i class="fas fa-flag fa-2x"></i><span class="hidden">Unflag</span></button>
       <% else %>
       <button class="text-red-200 mb-4 cursor-pointer" phx-target="<%= @myself %>" phx-click="flag" title="Click to flag this shoutout"><i class="far fa-flag fa-2x"></i><span class="hidden">Flag</span></button>
+      <% end %>
+      </div>
+
+      <%= if @twitter_url != nil do %>
+      <button class="text-twitter-light hover:text-twitter" title="Share on Twitter">
+        <a href="https://twitter.com/intent/tweet?<%= @twitter_url %>" target="_blank">
+          <i class="fab fa-lg fa-twitter"></i>
+        </a>
+      </button>
       <% end %>
     </div>
   <% end %>

@@ -129,7 +129,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
   <div class="flex flex-row flex-wrap mt-12 lg:mt-20">
   <%= for shoutout <- Enum.sort(@shoutouts, &((&1.pinned and not &2.pinned) or (&1.inserted_at < &2.inserted_at))) do %>
     <%= if @user_is_owner or (shoutout.pinned or (not shoutout.pinned and not @project.pinned_only)) do %>
-      <%= live_component @socket, ShoutoutsWeb.ProjectLive.ShoutoutComponent, id: shoutout.id, shoutout: shoutout, user_is_owner: @user_is_owner %>
+      <%= live_component @socket, ShoutoutsWeb.ProjectLive.ShoutoutComponent, id: shoutout.id, shoutout: shoutout, project: @project, user_is_owner: @user_is_owner, twitter_url: get_twitter_intent_url(@socket, @project, shoutout) %>
     <% end %>
   <% end %>
   </div>
@@ -141,7 +141,7 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     <%= if @show_flagged_shoutouts do %>
       <div class="flex flex-row flex-wrap mt-8">
       <%= for shoutout <- @flagged_shoutouts do %>
-        <%= live_component @socket, ShoutoutsWeb.ProjectLive.ShoutoutComponent, id: shoutout.id, shoutout: shoutout, user_is_owner: @user_is_owner %>
+        <%= live_component @socket, ShoutoutsWeb.ProjectLive.ShoutoutComponent, id: shoutout.id, shoutout: shoutout, project: @project, user_is_owner: @user_is_owner, twitter_url: nil %>
       <% end %>
       </div>
     <% end %>
@@ -159,6 +159,6 @@ Given the flash is removed after showing it's fairly safe to duplicate. %>
     <div class="text-3xl shoutout pl-8 mb-12"><%= text_to_html(render_emojis(@user_shoutout.text)) %></div>
     <a class="inline-block text-dim font-so-bold bg-secondary px-6 py-3 mt-2 rounded-md" data-phx-link="redirect" data-phx-link-state="push" href="<%= Routes.project_show_path(@socket, :show, @project.owner, @project.name) %>">Back to project</a>
   <% true -> %>
-    <%= live_component @socket, ShoutoutsWeb.ProjectLive.FormComponent, id: @project.id, project: @project, current_user: @current_user, current_user_id: @current_user_id %>
+    <%= live_component @socket, ShoutoutsWeb.ProjectLive.FormComponent, id: @project.id, project: @project, current_user: @current_user, current_user_id: @current_user_id, twitter_url: nil %>
   <% end %>
 <% end %>
