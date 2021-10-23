@@ -101,21 +101,22 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
                Routes.project_show_path(conn, :add, p.owner, p.name)
     end
 
-    test "that have already left a shoutout are not prompted to leave another",
+    test "that have already left a shoutout are not prompted to leave another, and a Twitter button is shown",
          %{conn: conn} do
       setup_mock()
       owner = Factory.insert(:user, %{name: "owner"})
       p = Factory.insert(:project, %{user: owner})
       s = Factory.insert(:shoutout, %{project: p})
       conn = login_user(conn, s.user)
-      {:ok, _view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
+      {:ok, view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
 
       assert html =~ s.text
       assert html =~ s.user.name
       refute html =~ "Add your shoutout"
+      assert has_element?(view, "button[title=\"Share on Twitter\"]")
     end
 
-    test "whose provider account is too young are not prompted to leave another",
+    test "whose provider account is too young are not prompted to leave a shoutout",
          %{conn: conn} do
       setup_mock()
       owner = Factory.insert(:user, %{name: "owner"})
