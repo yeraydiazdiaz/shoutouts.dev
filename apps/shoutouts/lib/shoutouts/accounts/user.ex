@@ -57,7 +57,7 @@ defmodule Shoutouts.Accounts.User do
       message: "Must consist only alphanumeric characters and spaces"
     )
     |> validate_format(:twitter_handle, ~r/^@[A-Za-z0-9_]{1,15}+$/,
-      message: "Twitter handles must start with an @ and be alphanumeric and underscors"
+      message: "Twitter handles must start with an @ and consist of up to 15 alphanumeric characters and underscores"
     )
     |> unique_constraint([:provider, :provider_id])
   end

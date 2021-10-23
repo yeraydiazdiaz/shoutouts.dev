@@ -54,13 +54,18 @@ defmodule ShoutoutsWeb.UserLiveTest do
 
       view
       |> form("#account-settings-form", %{
-        "user" => %{signature: "New signature", notify_when: "disabled"}
+        "user" => %{
+          signature: "New signature",
+          notify_when: "disabled",
+          twitter_handle: "@yera_ee"
+        }
       })
       |> render_submit()
 
       user = Accounts.get_user(project.user.id)
       assert user.signature == "New signature"
       assert user.notify_when == :disabled
+      assert user.twitter_handle == "@yera_ee"
     end
   end
 
