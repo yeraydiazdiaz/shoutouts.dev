@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Twitter integration:
+  - Project owners can now tweet shoutouts with a link to the project page and
+  tagging @shoutouts_dev.
+  - Users can add supply their Twitter handle to be tagged on these tweets.
+  - Users can tweet their own shoutouts tagging the project owner.
+
 ## [21.3.3] - 2021-09-25
 
 - Tweak front page design.

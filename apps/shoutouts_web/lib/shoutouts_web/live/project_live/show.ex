@@ -278,13 +278,22 @@ defmodule ShoutoutsWeb.ProjectLive.Show do
   end
 
   defp get_twitter_intent_url(socket, project, shoutout, is_user_shoutout) do
-    text = shoutout.text |> String.replace(~r/[\r\n]+/, " ")
-    text = if is_user_shoutout, do: text, else: "\"#{text}\" — #{shoutout.user.name}"
     query_params = %{
-      text: "#{text}\n",
+      text: "#{twitter_url_text(project, shoutout, is_user_shoutout)}\n",
       url: "#{Routes.project_show_url(socket, :show, project.owner, project.name)}\##{shoutout.id}",
       via: "shoutouts_dev"
     }
     Plug.Conn.Query.encode(query_params)
+  end
+
+  defp twitter_url_text(project, shoutout, is_user_shoutout) do
+    text = shoutout.text |> String.replace(~r/[\r\n]+/, " ")
+    user = if is_user_shoutout, do: project.user, else: shoutout.user
+    handle = if user.twitter_handle != nil, do: user.twitter_handle, else: user.name
+    if is_user_shoutout do
+      "Shoutout to #{handle}'s #{String.capitalize(project.name)}: #{text}"
+    else
+      "\"#{text}\" — #{handle}"
+    end
   end
 end
