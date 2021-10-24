@@ -52,7 +52,7 @@ defmodule ShoutoutsWeb.UserLive.SettingsComponent do
         {:noreply,
          socket
          |> assign(:changeset, changeset)
-         |> put_flash(:error, "Error creating shoutout")}
+         |> put_flash(:error, "Error updating account settings")}
     end
   end
 end

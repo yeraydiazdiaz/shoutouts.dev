@@ -1,4 +1,4 @@
-<div class="relative flex flex-row pb-8 lg:mr-16" id="<%= @shoutout.id %>">
+<div class="relative flex flex-row pb-24 lg:mr-16" id="<%= @shoutout.id %>">
   <div>
     <div class="shoutout text-2xl md:text-3xl mb-3 pl-4<%= if @shoutout.flagged do %> text-gray-400<% end %>">
       <%= text_to_html(render_emojis(@shoutout.text)) %>
@@ -11,8 +11,9 @@
       <img alt="<%= @shoutout.user.username %>s' avatar" class="w-12 h-12 rounded-full ml-4" src="<%= @shoutout.user.avatar_url %>" />
     </div>
   </div>
-  <%= if @user_is_owner do %>
-    <div class="flex flex-col items-center justify-start pl-8">
+  <div class="flex flex-col items-center justify-between pl-8">
+    <div class="flex flex-col">
+    <%= if @user_is_owner do %>
       <%= if not @shoutout.flagged do %>
         <%= if @shoutout.pinned do %>
         <button class="text-secondary mb-4 cursor-pointer transform rotate-45" phx-target="<%= @myself %>" phx-click="unpin" title="Click to unpin this shoutout"><i class="fas fa-thumbtack fa-2x"></i><span class="hidden">Unpin</span></button>
@@ -26,6 +27,14 @@
       <% else %>
       <button class="text-red-200 mb-4 cursor-pointer" phx-target="<%= @myself %>" phx-click="flag" title="Click to flag this shoutout"><i class="far fa-flag fa-2x"></i><span class="hidden">Flag</span></button>
       <% end %>
-    </div>
-  <% end %>
+      </div>
+    <% end %>
+    <%= if @twitter_url != nil do %>
+      <button class="text-twitter-light hover:text-twitter" title="Share on Twitter">
+        <a href="https://twitter.com/intent/tweet?<%= @twitter_url %>" target="_blank">
+          <i class="fab fa-lg fa-twitter"></i>
+        </a>
+      </button>
+    <% end %>
+  </div>
 </div>

@@ -31,7 +31,8 @@ defmodule Shoutouts.AccountsTest do
     avatar_url: "https://example.org/avatar/",
     provider: "github",
     provider_id: "1234",
-    provider_joined_at: ~U[2014-02-20T16:58:32Z]
+    provider_joined_at: ~U[2014-02-20T16:58:32Z],
+    twitter_handle: nil
   }
 
   describe "create_user" do
@@ -45,6 +46,10 @@ defmodule Shoutouts.AccountsTest do
 
     test "requires username" do
       assert {:error, _user} = Accounts.create_user(%{username: "test@example.org"})
+    end
+
+    test "validates twitter handle" do
+      assert {:error, _user} = Accounts.create_user(%{@valid_attrs | twitter_handle: "not@valid"})
     end
 
     test "creates a user" do

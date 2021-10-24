@@ -24,6 +24,12 @@
       <p class="text-xs text-gray-600">How often would you like to receive shoutout notification emails.</p>
       <%= error_tag f, :notify_when %>
     </div>
+    <div class="w-full flex flex-col justify-between mb-4">
+      <%= label f, :twitter_handle, "Twitter:", class: "text-dark text-sm" %>
+      <%= text_input f, :twitter_handle, phx_debounce: "500", class: "max-w-lg px-3 py-1 mb-2 text-lg bg-dimmer border border-gray-400 rounded-md outline-none focus:shadow-inner focus:border focus:border-secondary resize-none #{error_class f, :description}", placeholder: "@shoutouts_dev" %>
+      <p class="text-xs text-gray-600">Your Twitter handle, allows owners to tweet your shoutouts and tag you.</p>
+      <%= error_tag f, :twitter_handle %>
+    </div>
   </div>
 
   <div class="flex flex-row justify-start">

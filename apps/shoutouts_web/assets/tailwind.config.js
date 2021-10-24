@@ -19,6 +19,8 @@ module.exports = {
         'dimmer': 'var(--color-dimmer)',
         'bone': 'var(--color-bone)',
         'contrast': 'var(--color-contrast)',
+        'twitter': 'var(--color-twitter)',
+        'twitter-light': 'var(--color-twitter-light)',
       },
       zIndex: {
         '-10': '-10',

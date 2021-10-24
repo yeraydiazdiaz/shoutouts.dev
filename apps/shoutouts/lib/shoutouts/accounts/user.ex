@@ -25,6 +25,7 @@ defmodule Shoutouts.Accounts.User do
     field(:provider_joined_at, :utc_datetime)
     # notifications preference
     field(:notify_when, Ecto.Enum, values: [:disabled, :weekly], default: :weekly)
+    field(:twitter_handle, :string)
 
     has_many(:projects, Shoutouts.Projects.Project)
     has_many(:shoutouts, Shoutouts.Shoutouts.Shoutout)
@@ -45,7 +46,8 @@ defmodule Shoutouts.Accounts.User do
       :provider,
       :provider_id,
       :provider_joined_at,
-      :notify_when
+      :notify_when,
+      :twitter_handle
     ])
     |> validate_required([:name, :username, :email, :avatar_url, :provider, :provider_id])
     |> validate_format(:email, ~r/^[\w.!#$%&’*+\-\/=?\^`{|}~]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/)
@@ -53,6 +55,9 @@ defmodule Shoutouts.Accounts.User do
     |> validate_format(:name, ~r/^[\p{L}\ 0-9]+$/u, message: "Unsupported character")
     |> validate_format(:signature, ~r/^[a-zA-Z0-9\ \.,!?\-\_'"\n#]+$/,
       message: "Must consist only alphanumeric characters and spaces"
+    )
+    |> validate_format(:twitter_handle, ~r/^@[A-Za-z0-9_]{1,15}+$/,
+      message: "Twitter handles must start with an @ and consist of up to 15 alphanumeric characters and underscores"
     )
     |> unique_constraint([:provider, :provider_id])
   end
