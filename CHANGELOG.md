@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [21.3.4] - 2021-10-24
 
 - Twitter integration:
   - Project owners can now tweet shoutouts with a link to the project page and
