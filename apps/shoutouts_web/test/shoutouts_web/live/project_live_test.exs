@@ -113,7 +113,12 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       assert html =~ s.text
       assert html =~ s.user.name
       refute html =~ "Add your shoutout"
-      assert has_element?(view, "button[title=\"Share on Twitter\"]")
+      twitter_button = element(view, "button[title=\"Share on Twitter\"]") |> render()
+
+      assert twitter_button =~
+               Plug.Conn.Query.encode(%{
+                 text: "Shoutout to #{p.user.name}'s #{String.capitalize(p.name)}: #{s.text}"
+               })
     end
 
     test "whose provider account is too young are not prompted to leave a shoutout",
@@ -187,7 +192,7 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
     test "pin, flag, and tweet buttons are rendered on each shoutout", %{conn: conn} do
       setup_mock()
       p = Factory.insert(:project)
-      Factory.insert(:shoutout, %{project: p})
+      s = Factory.insert(:shoutout, %{project: p})
       conn = login_user(conn, p.user)
       {:ok, view, html} = live(conn, Routes.project_show_path(conn, :show, p.owner, p.name))
 
@@ -195,7 +200,12 @@ defmodule ShoutoutsWeb.ProjectLiveTest do
       assert html =~ "We hope you enjoy the shoutouts for your project"
       assert has_element?(view, "button[title=\"Click to pin this shoutout\"]")
       assert has_element?(view, "button[title=\"Click to flag this shoutout\"]")
-      assert has_element?(view, "button[title=\"Share on Twitter\"]")
+      twitter_button = element(view, "button[title=\"Share on Twitter\"]") |> render()
+
+      assert twitter_button =~
+               Plug.Conn.Query.encode(%{
+                 text: "\"#{s.text}\" — #{s.user.name}"
+               })
     end
 
     test "pinning a shoutout updates it and renders it at the top", %{conn: conn} do
