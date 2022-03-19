@@ -1,5 +1,9 @@
 # Changelog
 
+## [22.1.1] - 2022-03-19
+
+- Dependency upgrades.
+
 ## [21.3.4] - 2021-10-24
 
 - Twitter integration:
